@@ -74,6 +74,7 @@ $(document).ready(function() {
 	
 	
 	var htmlName = $("#htmlName").val();
+	
 	switch(htmlName){
 	
 	case "login":
@@ -86,15 +87,18 @@ $(document).ready(function() {
 	case "main":
 
 		$("#selectProject").show();
-
 		ajaxTranCall("code/selectProjectList.do", {}, jspCallbackS, jspCallbackE);
 		break;
 		
 	default:
-		$("#selectProject").hide();
+		//$("#selectProject").hide();
+		$("#selectProject").show();
 		ajaxTranCall("code/selectProjectList.do", {}, jspCallbackS, jspCallbackE);
 		break;
 	}
+	
+
+	$("#navbarDropdown_name").text(getCookie('name') + " ("+getCookie('team_name') +")");
 	
 // 	//단위/통합테스트 리스트 조회
 <%-- 	<% if(pagePath == "login") {%> --%>

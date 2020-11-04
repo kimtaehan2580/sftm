@@ -13,6 +13,12 @@
 			aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
+		
+		<select class="form-control" id="selectProject" name="selectProject" title=""
+		 style="width:150px; font-size:11px;">
+		</select>
+				
+				
 		<!-- 메인 메뉴 아이템 -->
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
@@ -20,6 +26,7 @@
 				<li class="nav-item active">
 					<a class="nav-link nav_color_white" href="/ntm?path=main">Home</a>
 				</li>	
+				
 				<!-- Link 메뉴 -->
 				<!-- Dropdown 메뉴 -->
 				<li class="nav-item dropdown"><a
@@ -64,23 +71,29 @@
 					role="button" data-toggle="dropdown" aria-haspopup="true"
 					aria-expanded="false">환경설정</a>
 					<div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
-<!-- 						<a class="dropdown-item" href="/ntm?path=common/project"> -->
 						<a class="dropdown-item" href="/ntm?path=common/code">코드 속성</a> 
 						<a class="dropdown-item" href="/ntm?path=common/project">단위/통합테스트 설정</a> 
 						<a class="dropdown-item" href="/ntm?path=common/type">테스트케이스 유형</a>
-						<a class="dropdown-item" href="javascript:setCookie('autoLogin', 'N', '1'); c_window.setUserInfo('', 'N'); location.href = '/ntm';">로그아웃</a>
-<!-- 				skInterface.setUserInfo(user_id, "N");		// -->
+						
 					</div>
 				</li>
 				
 				
 			</ul>
-			
 		
 		</div>
-		<select class="form-control" id="selectProject" name="selectProject" title="" style="width:200px; float:right; display:none;">
-		</select>
-<!-- 		<button id="btLogin" type="button" class="btn btn-info"  >로그아웃</button> -->
+		
+		<div class="collapse navbar-collapse" id="navbarSupportedContent" style="flex: none;">
+		 <ul class="navbar-nav mr-auto">
+			<li class="nav-item dropdown" style="float:right;"><a 
+					class="nav-link dropdown-toggle" href="#" id="navbarDropdown_name"
+					role="button" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false">컴맹현업 (현업1팀)</a>
+					<div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown" >
+						<a class="dropdown-item" href="javascript:setCookie('autoLogin', 'N', '1'); c_window.setUserInfo('', 'N'); location.href = '/ntm';">로그아웃</a>
+<!-- 						<a class="dropdown-item" href="/ntm?path=user/user">사용자관리</a> -->
+					</div>
+				</li> </ul></div>
 	</nav>
 </body>
 </html>

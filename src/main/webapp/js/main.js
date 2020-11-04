@@ -51,7 +51,7 @@ var initDoucument = function(){
 	}
 	//USER 정보 설정 
 	
-	$("#titleMain").text(name + "(" + team_name + ")님 환영합니다.");
+//	$("#titleMain").text(name + "(" + team_name + ")님 환영합니다.");
 	
 	
 	if( getCookie("role_code") == "ADMIN" || getCookie("role_code") == "ETC"){

@@ -1690,7 +1690,6 @@ pre code {
 .table td {
 	font-size: 9.6pt;
   	padding: 0.35rem;
-  	word-b
 /*   vertical-align: top; */
 /*   border-top: 1px solid #dee2e6; */
 }
@@ -1750,14 +1749,14 @@ pre code {
 	 border: 1px solid #dee2e6;
  	background-color: #fcfcfc;
 /* 	 font-weight: normal; */
-	font-size: 10pt;
+	font-size: 9pt;
 	text-align: center;
 }
 .table-bordered td {
 	
 /* 	text-align: center; */
   border: 1px solid #dee2e6;
-	font-size: 10pt;
+	font-size: 9pt;
 }
 
 .table-bordered td input{
@@ -1768,7 +1767,7 @@ pre code {
 .table-bordered thead td {
 	text-align: center;
   	border-bottom-width: 2px;
-	font-size: 10pt;
+	font-size: 9pt;
     background-color: #fcfcfc;
         color: #888;
 }
