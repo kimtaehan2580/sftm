@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+	
+	<div class="row">
+		<div class="col-md-6">
+			<h6 id="grid-options" class="title">SFTM 2020 > 결함(현업) > 테스트케이스</h6>
+			<div style="height:40px;">  
+				 <button type="button" class="btn btn-outline-secondary" id="" onclick="history.back();" >이전화면으로</button>
+				 <button type="button" class="btn btn-outline-secondary" id="btnStateUpdate">테스트케이스</button>
+			 </div> 
+			<table id="testDefectModalTable" class="table table-bordered" style="width:100%">
+				<thead>
+					<tr>
+						<th colspan="12">테스트케이스 목록</th>
+					</tr>
+				</thead>
+		       <tbody>
+	        	   <tr>
+		       	 		<th colspan="2">업무분류</th>
+		       	 		<td colspan="10">
+		       	 			<input id="depth" class="form-control required" style="width:100%" readonly="readonly" disabled/>
+		       	  		</td>
+		       	  </tr>	
+		       	  <tr>
+		       	 		<th colspan="2">시나리오명</th>
+		       	  		<td colspan="4">
+		       	  			<input id="scenario_name" class="form-control required" style="width:100%" readonly="readonly" disabled/>
+						</td>	
+		       	  		<th colspan="2">테스트명</th>
+		       	  		<td colspan="4">
+		       	  			<input id="case_name" class="form-control required" style="width:100%" readonly="readonly" disabled/>
+						</td>	
+		       	  </tr>
+		       	  <tr>
+		       	 		<th colspan="2">상세내용</th>
+		       	 		<td colspan="10">
+		       	 			<textarea  id="descriptionT" rows="5" style="width:100%" readonly="readonly" disabled></textarea>
+		       	  		</td>	
+		       	  </tr>
+		       	  
+		       	  <tr>
+		       	 		<th colspan="2">현업</th>
+		       	  		<td colspan="4">
+		       	  			<input id="test_name" class="form-control required" style="width:100%" readonly="readonly" disabled/>
+						</td>	
+		       	  		<th colspan="2">개발자</th>
+		       	  		<td colspan="4">
+		       	  			<input id="dev_name" class="form-control required" style="width:100%" readonly="readonly" disabled/>
+						</td>	
+		       	  </tr>
+		       	  <tr>
+		       	 		<th colspan="2">테스트 상태</th>
+		       	  		<td colspan="4">
+		       	  			<select  class="form-control" id="state" title="선택 구분" style="width:100%" readonly="readonly" disabled>
+							</select>
+						</td>	
+		       	  		<td colspan="6">
+							
+						</td>
+		       	  		
+		       	  </tr>
+		       	 
+		      </tbody>
+		   </table>
+			
+			<div>
+			
+			
+			<table id="testDefectTable" class="table table-bordered" style="width:100%">
+		    	 <thead>
+		            <tr>
+		                <th>No</th>
+		                <th>결함명</th>
+		                <th>결함유형</th>
+		                <th>결함상태</th>
+		                <th>등록일</th> 
+		                <th>조치일</th> 
+		            </tr>
+		        </thead>
+		    </table>
+		    </div>
+		</div>
+		<div class="col-md-6">
+			<h6 id="grid-options" class="title">SFTM 2020 > 결함(현업) > 결함상세내용</h6> 
+			<div style="height:40px;">  
+				 <button type="button" class="btn btn-outline-secondary" id="btnUpdate" style="display:none;">변경내용 저장</button>
+				 <button type="button" class="btn btn-outline-secondary" id="btnClose" style="display:none;">결함종료처리</button>
+				 <button type="button" class="btn btn-outline-secondary" id="btnReject" style="display:none;">결함반려처리</button>
+				 <button type="button" class="btn btn-dark" id="btnAutoTestExcute" style="display:none;">테스트화면 녹화시작</button>
+				 <span id="spanClose" style="color:RED; display:none;">결함이 종료된 건입니다.</span>
+			 </div>
+	        <table id="devDefectModalTable" class="table table-bordered" style="width:100%">
+	        	<thead>
+					<tr>
+						<th colspan="12">결함상세내용</th>
+					</tr>
+				</thead>
+		       <tbody>
+	        	   <tr>
+		       	 		<th colspan="2" style="width:16.6%">결함</th>
+		       	 		<td colspan="10">
+		       	 			<input id="defect_id" class="" style="display:none;"   />
+		       	 			<input id="titleU" class="form-control required" style="width:100%" />
+		       	  		</td>
+		       	  </tr>	
+		       	  <tr>
+		       	 		<th colspan="2">결함유형 </th>
+		       	  		<td colspan="4">
+		       	  			<select  class="form-control" id="test_typeU" title="선택 구분" style="width:100%"  >
+							</select>
+						</td>	
+		       	  		<th colspan="2">결함상태 </th>
+		       	  		<td colspan="4">
+		       	  			<select  class="form-control" id="defect_codeU" title="선택 구분" style="width:100%" readonly="readonly" disabled>
+							</select>
+						</td>	
+		       	  </tr>
+		       	  <tr>
+		       	 		<th colspan="2">결함설명<br/>(현업)</th>
+		       	 		<td colspan="10">
+		       	 			<textarea  id="descriptionU" rows="5" style="width:100%" ></textarea>
+		       	  		</td>	
+		       	  </tr>	
+		       	  <tr style="height:120px;">
+		       	 		<th colspan="2">첨부파일<br/>(현업)</th>
+		       	 		<td colspan="10">
+		       	 			<div id="existingImgs" >
+		       	 				<img id="img1" />
+		       	 				<img id="img2" />
+		       	  			</div>
+	       	  			</td>
+		       	  </tr>	
+		       	  <tr>
+		       	 		<th colspan="2" >첨부파일</th>
+		       	  		<td colspan="10">
+		       	  			<input multiple="multiple" type="file" id="files2" name="filename[]" />
+						</td>	
+		       	  </tr>	
+		       	  <tr>
+		       	 		<th colspan="2">조치설명<br/>(조치자)</th>
+		       	 		<td colspan="10">
+		       	 			<textarea  id="defect_resultU" rows="5" style="width:100%" readonly="readonly" disabled></textarea>
+		       	  		</td>	
+		       	  </tr>	
+		       	  <tr>
+		       	  		<th colspan="2">개발자 </th>
+		       	  		<td colspan="4">
+		       	  			<input id="defect_userU" style="display:none;"  readonly="readonly" disabled />
+		       	  			<input id="defect_user_nameU" class="form-control required"  readonly="readonly" disabled/>
+						</td>	
+						<th colspan="2">등록일자 </th>
+		       	  		<td colspan="4">
+		       	  			<input id="defect_dateU" class="form-control required"   readonly="readonly" disabled/>
+						</td>	
+		       	  		
+		       	  </tr>
+		       	  <tr>
+		       	  	<th colspan="2">결함이력</th>	
+					<td colspan="2" style="text-align: center; width:16.6%">
+						<span id="spanDefectHistoryCnt" style="text-align: center;">-건</span>
+					</td>	
+					<td colspan="2">
+	       	  			<button type="button" class="btn btn-dark" style="width:100%;" id="btndefectHistory">이력 확인</button>
+					</td>	
+					<th colspan="2" style ="width:16.6%">
+						화면 녹화
+					</th>	 
+					<td colspan="2" style="text-align: center; width:16.6%">
+	       	  			<span id="spanAutoTestCnt" >-건</span>
+					</td>	
+					<td colspan="2">
+	       	  			<button type="button" class="btn btn-dark" style="width:100%;" id="btnAutoTest">결과 확인</button>
+					</td>	
+		       	  </tr>
+		       </tbody>
+		    </table>
+ 	        
+		</div>
+		
+	</div>
+	
+	<!-- Modal window  -->
+	<div class="modal fade" id="modalNewDefect">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header bg-ntm">
+					<h6 id="modalTitle" class="modal-title color-white">신규결함 등록</h6>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+	
+				</div>
+				<div class="modal-body">
+						<table id="defectTableModal"  class="table table-bordered" style="width:100%">
+					       <tbody>
+	          				  <tr>
+					       	 		<th colspan="2">* 결함명</th>
+					       	  		<td colspan="10"><input class="form-control required" style="width:100%" id="title"  /></td>	
+					       	  </tr>	
+					       	  
+					       	  <tr>
+					       	 		<th colspan="2">* 결함유형 </th>
+					       	  		<td colspan="10">
+					       	  			<select  class="form-control required" id="test_type" title="선택 구분" style="width:100%">
+					       	  				<option selected="selected" value="">선택해주세요</option>
+										</select>
+									</td>	
+					       	  </tr>
+					       	 <tr>
+					       	 		<th colspan="2">* 상세 내용</th>
+					       	  		<td colspan="10">
+					       	  			<textarea rows="5" cols=""  class="required" style="width:100%" id="description"></textarea>
+									</td>	
+					       	  </tr>	
+					       	  <tr>
+					       	 		<th colspan="2" rowspan="2">첨부파일</th>
+					       	  		<td colspan="10">
+					       	  			<input multiple="multiple" type="file" id="files" name="filename[]" />
+									</td>	
+					       	  </tr>	
+					       	   <tr>
+					       	 		<td colspan="10">
+					       	 			<div id="imgs" >
+					       	 				<img id="img2" style="height:100px;"/>
+					       	  			</div>
+				       	  			</td>
+					       	  </tr>	
+					       </tbody>
+					    </table>
+				    </div>	
+					
+				<div class="modal-footer">
+					<button type="button" class="btn btn-dark" id="btnSave" >저장</button>
+					<button type="button" class="btn btn-dark" data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="modalDefactHistory">
+		<div id="modelId" class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header bg-ntm">
+					<h6 id="modalTitle" class="modal-title color-white">결함 이력</h6>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+				</div>
+				<div class="modal-body">
+					<table id="modalTabledefectHistroty"  class="table table-bordered" style="width:100%">
+						<thead>
+				            <tr>
+				                <th>결함유형</th>
+				                <th>결함상태</th>
+				                <th>이름</th>
+				                <th>수정일</th>
+				            </tr>
+				        </thead>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-dark" data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	<div class="modal fade" id="modalAutoTest">
+		<div id="modelId" class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header bg-ntm">
+					<h6 id="modalTitle" class="modal-title color-white">화면 테스트 녹화 이력</h6>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+				</div>
+				<div class="modal-body">
+					
+					<table class="table table-select">
+						<thead>
+							<tr>
+								<td style="width:100px;">
+									 <label>재생방법</label>
+								</td>
+								
+								<td>
+									<select class="form-control" id="selectViewType" name="selectViewType" title="" > 
+						        		<option selected="selected" value="auto">3초 주기로 자동수행</option>
+						        		<option value="manual">사용자가 직접 단계별 수행</option>
+					        		</select>
+								</td>
+							</tr>
+						</thead>
+					</table>
+					
+					* 리스트를 선택하시면 녹화된 테스트를 보실수 있습니다.
+					
+					<table id="modalTableautoTest"  class="table table-bordered" style="width:100%">
+						<thead>
+				            <tr>
+				                <th>테스터</th>
+				                <th>테스터일시</th>
+				            </tr>
+				        </thead>
+					</table>
+				</div>
+ 
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-dark" data-dismiss="modal">닫기</button>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	<div class="modal fade" id="modalImg">
+		<div id="modelId" class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header bg-ntm">
+					<h6 id="modalImgTitle" class="modal-title color-white">테스터 첨부파일 확인</h6>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-7">
+							<table id="modalTableImg"  class="table table-bordered2" style="width:100%">
+								<thead>
+						            <tr>
+						                <th>첨부파일 리스트</th>
+						                <th></th>
+						            </tr>
+						        </thead>
+						        
+							</table>
+						</div>
+						
+						
+						<div class="col-md-5">
+							* 썸네일 이미지
+							<div style="height:150px; weight:100%; border:1px solid; text-align: center;">
+								<img id="selectedImg" style="height:inherit; vertical-align: middle; padding: 10px;"  src="">
+							</div>
+							<br/>
+							* 파일 정보 
+							<table id="userDetailImg" class="table table-bordered" style="width:100%">
+					   			
+						       <tbody>
+					        	    <tr>
+						       	 		<th colspan="4" style="width:30%">파일명</th>
+						       	 		<td colspan="8" id ="selectedFileName"></td>
+						       	  	</tr>
+						       	  	<tr>
+						       	 		<th colspan="4">등록자</th>
+						       	 		<td colspan="8" id ="selectedName"></td>
+						       	  	</tr>
+						       	  	<tr>
+						       	 		<th colspan="4">등록일시</th>
+						       	 		<td colspan="8" id ="selectedDate"></td>
+						       	  	</tr>
+						       	  	<tr>
+						       	 		<th colspan="4">파일크기</th>
+						       	 		<td colspan="8" id ="selectedSize"></td>
+						       	  	</tr>
+					       	  	</tbody>
+				       	  	</table>
+							
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button id="btnDown" type="button" class="btn btn-dark"  >다운로드</button>
+					<button type="button" class="btn btn-dark" data-dismiss="modal">닫기</button>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	<input id = "scenario_id"  style="display:none"></input>
+	<input id = "case_id"  style="display:none"></input>
+	<input id = "imgkey"  style="display:none"></input>
+</body>
+</html>

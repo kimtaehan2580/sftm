@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html>
+<body>
+	
+	<h6 id="grid-options" class="title">SFTM 2020 > 시나리오 > 업무분류 > 서브시스템</h6>
+	<div class="row">
+		<div class="col-md-3">
+			<div>
+				<button type="button" class="btn btn-success" style="float: right; margin-right: 5px; visibility:hidden;" >-</button>
+			</div>
+			<table id="tableA" class="table table-bordered" style="width:100%">
+		        <thead>
+		            <tr>
+		                <th>대분류</th>
+		            </tr>
+		        </thead>
+		    </table>
+		</div>
+		<div class="col-md-3">
+			<div>
+				<button type="button" class="btn btn-success" style="float: right; margin-right: 5px; visibility:hidden;" >-</button>
+			</div>
+			<table id="tableB" class="table table-bordered" style="width:100%">
+		        <thead>
+		            <tr>
+		                <th>중분류 (<span id="tableThB">전체</span>)</th>
+		            </tr>
+		        </thead>
+		    </table>
+		</div>
+		<div class="col-md-6">
+			<div>
+				<button type="button" class="btn btn-success" style="float: right; margin-right: 5px; visibility:hidden;" >-</button>
+			</div>
+			<table id="tableC" class="table table-bordered" style="width:100%">
+		        <thead>
+		            <tr>
+		                <th>소분류 (<span id="tableThC">전체</span>)</th>
+		                <th>개발 팀</th>
+		                <th>개발 팀장</th>
+		            </tr>
+		        </thead>
+		    </table>
+		</div>
+	</div>
+	
+	
+	<!-- Modal window  -->
+	<div class="modal fade" id="layerpop">
+		<div id="modelId" class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header bg-ntm">
+					<h6 id="hearderTitle" class="modal-title color-white"></h6>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+				</div>
+				<div class="modal-body">
+					<table id="teamTableModal" class="table table-bordered" style="width:100%">
+						
+<!-- 						<thead> -->
+<!-- 			   				 <tr> -->
+<!-- 				                <th colspan="12" id="hearderTitle"> </th> -->
+<!-- 			                </tr> -->
+<!-- 			   			</thead> -->
+				       <tbody>
+          				  <tr id="modalTrA">
+				       	 		<th>서브시스템</th>
+				       	 		<td>
+				       	  			<select  class="form-control required" id="selectA" title="선택 구분" style="width:100%">
+											<option selected="selected" value="">선택해 주세요</option>
+									</select>
+								</td>	
+				       	  		
+				       	  </tr>	
+				       	  <tr id="modalTrB">
+				       	 		<th>업무구분</th>
+				       	  		<td>
+				       	  			<select  class="form-control required" id="selectB" title="선택 구분" style="width:100%">
+											<option selected="selected" value="">선택해 주세요</option>
+									</select>
+								</td>	
+				       	  </tr>	
+				       	  <tr>
+				       	 		<th id="thName">이름</th>
+				       	  		<td><input id="name" class="form-control required" maxlength="20" width:100%" id="name"  /></td>	
+				       	  </tr>		
+				       	  <tr id="modalTrC">
+				       	 		<th>개발 팀</th>
+				       	  		<td>
+				       	  			<select  class="form-control required" id="selectTeam" title="선택 구분" style="width:100%">
+											<option selected="selected" value="">선택해 주세요</option>
+									</select>
+				       	  		</td>	
+				       	  </tr>	
+				       	  
+				       	  	
+				       </tbody>
+				    </table>
+						
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success" id="btnSave" >저장</button>
+					<button type="button" class="btn btn-success" id="btnUpdate">수정</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

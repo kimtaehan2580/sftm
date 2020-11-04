@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+
+	<!-- 메인 화면 -->
+	<div class="row">
+		<div class="col-md-12">
+			<h6 id="grid-options" class="title">SFTM 2020 > 단위/통합테스트 설정</h6> 
+			<table id="projectTable" class="table table-bordered" style="width:100%">
+		        <thead>
+		            <tr>
+		                <th>테스트명</th>
+		                <th>사용여부</th>
+		                <th>테스트 시작일시</th>
+		                <th>테스트 종료일시</th>
+		                <th>시나리오건수</th>
+		                <th>등록자</th>
+		                <th>등록일</th>
+		            </tr>
+		        </thead>
+		    </table>
+		</div>
+	</div>
+	
+	<!-- Modal window  -->
+	<div class="modal fade" id="modalProject">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header bg-ntm">
+					<h6 id="modalProjectTitle" class="modal-title color-white"></h6>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+				</div>
+				<div class="modal-body">
+					<table id="modalProjectTable" class="table table-bordered" style="width:100%">
+
+				       <tbody>
+				       		 
+				       		<tr>
+				       	 		<th>테스트명</th>
+				       	  		<td>	
+				       	  			<input class="form-control required" style="width:100%" maxlength="100" id="project_name"/>
+				       	  			<input style="display: none;" id="id"/>
+				       	  		</td>	
+				       	  	</tr>
+				       	  	<tr>	
+				       	  		<th >사용여부 </th>
+				       	  		<td>
+				       	  			<select  class="form-control" id="use_yn" title="선택 구분" style="width:100%">
+											<option selected="selected" value="Y">사용 (Y)</option>
+											<option value="N">미사용 (N)</option>
+											
+									</select>
+								</td>	
+				       	  	</tr>
+				       	  	<tr>
+				       	  		<th>시작일자</th>
+				       	  		<td>
+				       	  			<input type='date' name='start_date' id = 'start_date' class="form-control"/>
+				       	  		</td>	
+				       	  	</tr>
+				       	  	<tr>
+				       	  		<th>종료일자</th>
+				       	  		<td>
+				       	  			<input type='date' name='end_date' id = 'end_date' class="form-control"/>
+				       	  		</td>	
+				       	  	</tr>
+				       	  	
+				       </tbody>
+				    </table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-dark" id="btnSave" >저장</button>
+					<button type="button" class="btn btn-dark" id="btnUpdate">수정</button>
+					<button type="button" class="btn btn-dark" data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

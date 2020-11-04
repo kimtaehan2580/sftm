@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div>
+		<div class="row">
+			<div class="col-md-8">
+				
+				<h6 id="grid-options" class="title">SFTM 2020 > 사용자 > 팀관리</h6>
+				
+				<table class="table table-select">
+					<thead>
+						<tr>
+							<td style="width:100px;">
+								 <label>역할 구분</label>
+							</td>
+							<td>
+								<select class="form-control" id="role_code_main" title="" style="width: 200px;">
+									<option selected="selected" value="">전체</option>
+								</select> 
+							</td>
+							<td>
+								
+							</td>
+							<td>
+								<button type="button" class="btn btn-dark" style="width: 100px; float: right; margin-right: 5px;"  id="btnSelect">조회</button>
+							</td>
+						</tr>
+					</thead>
+				</table>
+				<table id="teamTable" class="table table-bordered" style="width: 100%">
+					<thead>
+						<tr>
+							<th style="width:15%">팀 명</th>
+							<th style="display: none">id</th>
+							<th style="width:30%">팀 설명</th>
+							<th style="width:15%">팀 역할</th>
+							<th style="width:20%">팀장</th>
+							<th style="width:10%">팀원수</th>
+							<th>생성일자</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div class="col-md-4">
+				<h6 id="grid-options" class="title">SFTM 2020 > 사용자 > 팀원관리</h6>
+				<table class="table table-select">
+					<thead>
+						<tr>
+							<td style="width:80px;">
+								 <label>팀 구분</label>
+							</td>
+							<td>
+								<select class="form-control" id="team_code_main" title="" style="width:150px;" readonly="readonly" disabled>
+									<option selected="selected" value="">미선택</option>
+								</select> 
+							</td>
+							<td>
+							</td>
+						</tr>
+					</thead>
+				</table>
+				<table id="userTable" class="table table-bordered" style="width: 100%">
+					<thead>
+						<tr>
+							<th style="width:15%">직함</th>
+							<th style="width:15%">직급</th>
+							<th>소속</th>
+							<th style="width:15%">사번</th>
+							<th>이름</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+
+
+
+		<!-- Modal window  -->
+		<div class="modal fade" id="modalTeam"  >
+			<div class="modal-dialog" >
+				<div class="modal-content">
+					<div class="modal-header bg-ntm">
+<!-- 						 -->
+						<h6 id="modalTitle" class="modal-title color-white">신규팀 등록</h6>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+					</div>
+					<div class="modal-body">
+						<table id="teamTableModal" class="table table-bordered"
+							style="width: 100%">
+<!-- 							<thead> -->
+<!-- 				   				 <tr> -->
+<!-- 					                <th colspan="12" id="">신규 팀 등록</th> -->
+<!-- 				                </tr> -->
+<!-- 				   			</thead> -->
+							<tbody>
+								<tr>
+									<th style="width:30%">* 팀명</td>
+									<td><input class="form-control required" style="width: 100%" id="name" maxlength="20" /></td>
+								</tr>
+								<tr>
+									<th>팀 소개</th>
+									<td>
+										<textarea class="form-control" rows="5" cols=""
+											style="width: 100%" id="description"></textarea>
+									</td>
+								</tr>
+								<tr>
+									<th>* 역할</th>
+									<td><select class="form-control required" id="role_code"
+										title="선택 구분" style="width: 100%">
+											<option selected="selected" value="">선택해 주세요</option>
+									</select>
+									* 개발자, 테스터, 관리자등의 그룹의 역할을 지정
+									</td>
+									
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-dark"  id="btnSave">저장</button>
+						<button type="button" class="btn btn-dark"  id="btnUpdate">수정</button>
+						<button type="button" class="btn btn-dark"  data-dismiss="modal">닫기</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="modalTeamReader">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header bg-ntm">
+					<h6 id="modalTeamReaderTitle" class="modal-title color-white">팀장 등록</h6>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+				</div>
+				<div class="modal-body">
+					
+					
+					<table class="table table-select">
+						<thead>
+							<tr>
+								<td style="width:80px;">
+									 <label>팀 구분</label>
+								</td>
+								<td>
+									<select  class="form-control" id="team_id_select" title="" style="width:200px; ">
+										<option selected="selected" value="">전체 팀</option>
+									</select>
+								</td>
+								<td>
+								</td>
+							</tr>
+						</thead>
+					</table>
+					 
+					<table id="userTableModal" class="table table-bordered" style="width: 100%">
+						<thead>
+							<tr>
+								<th>팀</th>
+								<th>사번</th>
+								<th>이름</th>
+							</tr>
+						</thead>
+					</table>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-dark" data-dismiss="modal" style="width:80px;">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<input id = "team_id"  style="display:none"></input>
+</body>
+</html>

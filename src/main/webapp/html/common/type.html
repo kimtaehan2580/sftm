@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+	<div class="row">
+		<div class="col-md-4">
+			<h6 id="grid-options" class="title">SFTM 2020 > 테스트케이스 유형</h6> 
+			<table id="groupTable" class="table table-bordered" style="width:100%">
+		        <thead>
+		            <tr>
+		                <th>이름</th>
+		                <th>사용구분</th>
+		                <th>건수</th>
+		            </tr>
+		        </thead>
+		    </table>
+		</div>
+		<div class="col-md-8"> 
+			<h6 id="grid-options" class="title">SFTM 2020 > 테스트케이스 유형 상세</h6> 
+			<input style="display:none;" id="selected_type_group_id" />
+			<input style="display:none;" id="selected_type_group" />
+			<table id="typeTable" class="table table-bordered" style="width:100%">
+		        <thead>
+		            <tr>
+		            
+		            	<th>케이스 유형</th>
+		                <th>타이틀</th>
+		                <th>설명</th>
+		                <th>등록일</th>
+		            </tr>
+		        </thead>
+		    </table>
+		</div>
+		
+	</div>
+	
+	
+	<div class="modal fade" id="modalGroup">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header bg-ntm">
+					<h6 id="modalGroupTitle" class="modal-title color-white"></h6>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+				</div>
+				<div class="modal-body">
+					<table id="modalGroupTable" class="table table-bordered" style="width:100%">
+<!-- 						<thead> -->
+<!-- 				   				 <tr> -->
+<!-- 					                <th colspan="12" id="modalGroupTitle"></th> -->
+<!-- 				                </tr> -->
+<!-- 				   			</thead> -->
+				       <tbody>
+          				  <tr>
+				       	 		<th>이름</th>
+				       	  		<td>
+				       	  			<input class="form-control required" style="width:100%" id="type_group"/>
+				       	  			<input class="form-control required" style="width:100%; display:none;" id="type_group_id" />
+				       	  		</td>	
+				       	  </tr>	
+				       	  <tr>
+				       	 		<th>설정</th>
+				       	  		<td>
+				       	  			<select  class="form-control" id="use_type" title="선택 구분" style="width:100%">
+											<option selected="selected" value="A">ALL</option>
+											<option value="O">Online</option>
+											<option value="B">Batch</option>
+											
+									</select>
+								</td>	
+				       	  </tr>		
+				       	 <tr>
+				       	 		<th>설명</th>
+				       	  		<td>
+				       	  			<textarea rows="5" cols="" style="width:100%" id="description"></textarea>
+								</td>	
+				       	  </tr>	
+				       	 
+				       </tbody>
+				    </table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-dark" id="btnSave" >저장</button>
+					<button type="button" class="btn btn-dark" id="btnUpdate">수정</button>
+					<button type="button" class="btn btn-dark" data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	
+	<!-- Modal window  -->
+	<div class="modal fade" id="modalType">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header bg-ntm">
+					<h6 id="modalTypeTitle" class="modal-title color-white"></h6>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+				</div>
+				<div class="modal-body">
+					<table id="modalTypeTable" class="table table-bordered" style="width:100%">
+<!-- 						<thead> -->
+<!-- 				   				 <tr> -->
+<!-- 					                <th colspan="12" id="modalTypeTitle">신규사용자 등록</th> -->
+<!-- 				                </tr> -->
+<!-- 				   			</thead> -->
+				       <tbody>
+          				  <tr>
+				       	 		<th>케이스유형</th>
+				       	  		<td>
+				       	  			<input class="form-control required" style="width:100%" id="type_group2" readonly="readonly"  />
+				       	  			<input class="form-control required" style="width:100%; display:none;" id="id" />	
+				       	  		</td>	
+				       	  </tr>	
+				       	  <tr>
+				       	 		<th>타이틀</th>
+				       	  		<td>
+				       	  			<input class="form-control required" style="width:100%" id="case_name"  />
+								</td>	
+				       	  </tr>
+			       	    	<tr>
+				       	 		<th>설명</th>
+				       	  		<td>
+				       	  			<textarea rows="5" cols="" style="width:100%" id="case_desc"></textarea>
+								</td>	
+				       	  </tr>	
+				       	 
+				       </tbody>
+				       타이틀과 설명에 '{#}' 입력시에 시나리오명이 들어가게 됩니다.
+				    </table>
+				</div> 
+				<div class="modal-footer">
+					<button type="button" class="btn btn-dark" id="btnSave2" >저장</button>
+					<button type="button" class="btn btn-dark" id="btnUpdate2">수정</button>
+					<button type="button" class="btn btn-dark" data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	
+</body>
+</html>

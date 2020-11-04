@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PushDAO">
+ 	<resultMap id="PackageHeaderMap"               type="java.util.HashMap">
+       <result property="java.lang.String"         column="row_id"/>
+       <result property="object"                   column="PackageBeanResult"/>
+    </resultMap>
+    
+	<insert id="insertPush" parameterType="map" useGeneratedKeys="true">
+		INSERT INTO sftm.itm_push
+		(	
+			id , 
+			push_code,
+			title, 
+			msg, 
+			recv_user, 
+			recv_yn, 
+			reg_user, 
+			reg_date 
+		)
+		VALUES (
+			nextval('sftm.itm_push_id_seq'::REGCLASS),
+			#{ push_code },
+			#{ title },
+			#{ msg} , 
+			#{ recv_user }, 
+			'N', 
+			#{reg_user},
+			now()
+		)
+  	</insert>
+	
+	<select id="selectPushListById" parameterType="java.util.Map" resultMap="PackageHeaderMap">
+	    select ps.id
+			, ps.push_code
+			, sftm.GET_CODENAME('P001', ps.push_code) as push_code_name
+			, ps.title
+			, ps.msg
+			, ps.reg_user
+			, us.name as req_user_name 
+			, ps.reg_date
+			, to_char(ps.reg_date, 'YYYY-MM-DD HH24:MI') reg_date_str
+			,sftm.GET_WHAT_DAY( ps.reg_date) as what_day
+		from sftm.itm_push ps
+		 	left outer join sftm.itm_user us on us.user_id = ps.reg_user
+		where 1=1
+		and recv_user = #{cookieUserId} 
+		and recv_yn != 'Y'
+		order by ps.reg_date desc
+	</select>
+	
+	<select id="selectPushListByUser" parameterType="java.util.Map" resultMap="PackageHeaderMap">
+	   select ps.id
+			, ps.push_code
+			, sftm.GET_CODENAME('P001', ps.push_code) as push_code_name
+			, ps.title
+			, ps.msg
+			, ps.reg_user
+			, us.name as req_user_name 
+			, ps.reg_date
+			, sftm.GET_WHAT_DAY(ps.reg_date) reg_date_str
+		from sftm.itm_push ps
+		 	left outer join sftm.itm_user us on us.user_id = ps.reg_user
+		where 1=1
+		and recv_user = #{cookieUserId}
+		order by ps.reg_date desc
+	</select>
+	
+	
+	<!-- 팀 수정 -->
+    <update id="updatePushListById" parameterType="java.util.HashMap">
+    UPDATE
+        sftm.itm_push
+    SET
+        recv_yn = 'Y',
+        recv_date =NOW() 
+    WHERE
+       recv_user = #{cookieUserId}
+    </update> 
+    
+    
+    <insert id="insertAuto" parameterType="map" useGeneratedKeys="true">
+		INSERT INTO sftm.itm_auto
+		(	
+			id , 
+			defect_id,  
+			html,  
+			reg_user, 
+			reg_date 
+		)
+		VALUES (
+			nextval('sftm.itm_auto_id_seq'::REGCLASS),
+			#{ defect_id }, 
+			#{ html, }, 
+			#{ reg_user },
+			now()
+		)
+  	</insert>
+  	
+  	<select id="selectAutoList" parameterType="java.util.Map" resultMap="PackageHeaderMap">
+	    select auto.id, 
+	    auto.defect_id, 
+	    auto.reg_user, 
+		us.name,
+	    to_char(auto.reg_date, 'YYYY-MM-DD HH24:MI') reg_date
+	    from sftm.itm_auto as auto
+			left outer join sftm.itm_user us on auto.reg_user = us.user_id
+	    where defect_id = #{defect_id}::bigint
+	    order by reg_date desc
+	</select>
+	
+	<select id="selectAutoDetail" parameterType="java.util.Map" resultMap="PackageHeaderMap">
+	     
+		 select  at.id
+		 		,at.defect_id
+				,at.html
+				,sftm.GET_WHAT_DAY(at.reg_date) as what_day
+				,us.name 
+				,us.user_id 
+				, TO_CHAR(at.reg_date, 'YYYY-MM-DD HH24:MI')  reg_date_str
+		 from sftm.itm_auto at
+		 	LEFT outer join sftm.itm_user us on at.reg_user = us.user_id
+		 
+	    where id = #{id}::bigint
+	</select>
+  	
+  	
+  	<select id="selectDefectInfoForPush" parameterType="java.lang.Integer" resultMap="PackageHeaderMap">
+  		select df.title      -- 결함 Title
+			, df.defect_user --결함 담당개발자
+			, df.reg_user    --결함 등록자
+			--단건조회라서 스칼라 쿼리 상관없음
+			, (select name from sftm.itm_user where user_id =  df.defect_user) as defect_user_name
+			, (select name from sftm.itm_user where user_id =  df.reg_user) as reg_user_name
+			, dh.reg_user as reg_user2     --결함 수정자
+			
+			, (select name from sftm.itm_user where user_id =  dh.reg_user) as reg_user_name2
+			, dh.defect_code
+			, sftm.GET_CODENAME('B001', dh.defect_code) as defect_code_name
+			, dh.test_type
+			, sftm.GET_CODENAME('A001', dh.test_type) as test_type_name
+			, tm.reader_id 
+		
+		from sftm.itm_defect df, 
+			sftm.itm_defect_history dh,
+			sftm.itm_scenario sc,
+			sftm.itm_div dv,
+			sftm.itm_team tm
+			
+		where df.defect_id = #{id}::bigint
+		and  df.defect_id = dh.defect_id
+		and dh.seq = (select MAX(seq) from sftm.itm_defect_history where defect_id = #{id}::bigint)
+		and df.scenario_id = sc.scenario_id 
+		and dv.div_id = sc.div_id
+		and dv.team_id = tm.id
+  	</select>
+    
+	
+</mapper>

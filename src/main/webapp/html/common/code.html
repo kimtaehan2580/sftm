@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+	<div class="row">
+		<div class="col-md-4">
+			<h6 id="grid-options" class="title">SFTM 2020 > 코드 그룹</h6> 
+			<table id="groupTable" class="table table-bordered" style="width:100%">
+		        <thead>
+		            <tr>
+		                <th>그룹코드</th>
+		                <th>그룹코드명</th>
+		                <th>사용여부</th>
+		                <th>건수</th>
+		            </tr>
+		        </thead>
+		    </table>
+		</div>
+		<div class="col-md-8"> 
+			<h6 id="grid-options" class="title">SFTM 2020 > 코드</h6> 
+			<table id="codeTable" class="table table-bordered" style="width:100%">
+		        <thead>
+		            <tr>
+		                <th>코드</th>
+		                <th>코드명</th>
+		                <th>사용여부</th>
+		                <th>우선순위</th>
+		                <th>등록자</th>
+		                <th>등록일</th>
+		            </tr>
+		        </thead>
+		    </table>
+		</div>
+		
+	</div>
+	
+	<!-- Modal window  -->
+	<div class="modal fade" id="modalCode">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header bg-ntm">
+					<h6 id="modalCodeTitle" class="modal-title color-white"></h6>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+				</div>
+				<div class="modal-body">
+					<table id="modalCodeTable" class="table table-bordered" style="width:100%">
+					
+<!-- 						<thead> -->
+<!-- 			   				 <tr> -->
+<!-- 				                <th colspan="2" id="modalCodeTitle"></th> -->
+<!-- 			                </tr> -->
+<!-- 			   			</thead> -->
+				       <tbody>
+          				  <tr>
+				       	 		<th>코드</th>
+				       	  		<td><input class="form-control required" style="width:100%" id="code_id"  /></td>	
+				       	  </tr>	
+				       	  <tr>
+				       	 		<th>코드명</th>
+				       	  		<td>
+				       	  			<input class="form-control required" style="width:100%" id="code_name"  />
+								</td>	
+				       	  </tr>
+				       	  <tr>
+				       	 		<th>사용여부 </th>
+				       	  		<td>
+				       	  			<select  class="form-control" id="use_ynCode" title="선택 구분" style="width:100%">
+											<option selected="selected" value="Y">사용 (Y)</option>
+											<option   value="N">미사용 (N)</option>
+											
+									</select>
+								</td>	
+				       	  </tr>		
+				       	  <tr>
+				       	 		<th>우선순위</th>
+				       	  		<td>
+				       	  			<input class="form-control required" style="width:100%" id="priority"  />
+								</td>	
+				       	  </tr>
+				       	  <tr>
+				       	 		<th>설명</th>
+				       	  		<td>
+				       	  			<textarea rows="5" cols="" style="width:100%" id="descriptionCode"></textarea>
+								</td>	
+				       	  </tr>	
+				       	 
+				       </tbody>
+				    </table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-dark" id="btnSaveCode" >저장</button>
+					<button type="button" class="btn btn-dark" id="btnUpdateCode">수정</button>
+					<button type="button" class="btn btn-dark" data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="modal fade" id="modalGroup">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header bg-ntm">
+					<h6 id="modalGroupTitle" class="modal-title color-white"></h6>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+				</div>
+				<div class="modal-body">
+					<table id="modalGroupTable" class="table table-bordered" style="width:100%">
+<!-- 						<thead> -->
+<!-- 			   				 <tr> -->
+<!-- 				                <th colspan="2" id="modalGroupTitle"></th> -->
+<!-- 			                </tr> -->
+<!-- 			   			</thead> -->
+				       <tbody>
+          				  <tr>
+				       	 		<th>그룹코드</th>
+				       	  		<td><input class="form-control required" style="width:100%" id="code_group"  /></td>	
+				       	  </tr>	
+				       	  <tr>
+				       	 		<th>그룹코드명</th>
+				       	  		<td>
+				       	  			<input class="form-control required" style="width:100%" id="code_group_name"  />
+								</td>	
+				       	  </tr>
+				       	  <tr>
+				       	 		<th>사용여부 </th>
+				       	  		<td>
+				       	  			<select  class="form-control" id="use_yn" title="선택 구분" style="width:100%">
+											<option selected="selected" value="Y">사용 (Y)</option>
+											<option   value="N">미사용 (N)</option>
+											
+									</select>
+								</td>	
+				       	  </tr>		
+				       	 <tr>
+				       	 		<th>설명</th>
+				       	  		<td>
+				       	  			<textarea rows="5" cols="" style="width:100%" id="description"></textarea>
+								</td>	
+				       	  </tr>	
+				       	 
+				       </tbody>
+				    </table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-dark" id="btnSave" >저장</button>
+					<button type="button" class="btn btn-dark" id="btnUpdate">수정</button>
+					<button type="button" class="btn btn-dark" data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+</body>
+</html>

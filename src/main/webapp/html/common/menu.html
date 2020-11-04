@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<body style="magin-bottom:220px;">
+
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-dark  fixed-top">
+		<!-- 메뉴의 홈페이지 이름 -->
+<!-- 		<a class="navbar-brand" href="#">NTM</a> -->
+		<!-- 모바일때 표시되는 메뉴 버튼(PC 버젼에서는 보이지 않는다.) -->
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<!-- 메인 메뉴 아이템 -->
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<!-- Home 메뉴 -->
+				<li class="nav-item active">
+					<a class="nav-link nav_color_white" href="/ntm?path=main">Home</a>
+				</li>	
+				<!-- Link 메뉴 -->
+				<!-- Dropdown 메뉴 -->
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+					role="button" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false">사용자</a>
+					<div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/ntm?path=user/team">팀관리</a> 
+						<a class="dropdown-item" href="/ntm?path=user/user">사용자관리</a>
+					</div>
+				</li> 
+				
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+					role="button" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false">시나리오</a>
+					<div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/ntm?path=scenario/division">업무분류</a> 
+						<a class="dropdown-item" href="/ntm?path=scenario/scenario">시나리오</a>
+					</div>
+				</li>
+			
+				<li class="nav-item">
+					<a class="nav-link" href="/ntm?path=defect/excute">테스트 수행(현업)</a>
+				</li>	
+				<li class="nav-item">
+					<a class="nav-link" href="/ntm?path=defect/defect">결함 처리(개발자)</a>
+				</li>	
+				
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+					role="button" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false">통계</a>
+					<div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/ntm?path=stat/statUser">개인별 통계</a> 
+						<a class="dropdown-item" href="/ntm?path=stat/statTeam">팀별 통계</a>
+					</div>
+				</li>
+				
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+					role="button" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false">환경설정</a>
+					<div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
+<!-- 						<a class="dropdown-item" href="/ntm?path=common/project"> -->
+						<a class="dropdown-item" href="/ntm?path=common/code">코드 속성</a> 
+						<a class="dropdown-item" href="/ntm?path=common/project">단위/통합테스트 설정</a> 
+						<a class="dropdown-item" href="/ntm?path=common/type">테스트케이스 유형</a>
+						<a class="dropdown-item" href="javascript:setCookie('autoLogin', 'N', '1'); c_window.setUserInfo('', 'N'); location.href = '/ntm';">로그아웃</a>
+<!-- 				skInterface.setUserInfo(user_id, "N");		// -->
+					</div>
+				</li>
+				
+				
+			</ul>
+			
+		
+		</div>
+		<select class="form-control" id="selectProject" name="selectProject" title="" style="width:200px; float:right; display:none;">
+		</select>
+<!-- 		<button id="btLogin" type="button" class="btn btn-info"  >로그아웃</button> -->
+	</nav>
+</body>
+</html>

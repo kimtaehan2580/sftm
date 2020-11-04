@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div class="row">
+		<div class="col-md-12">
+		 	<h6 id="grid-options" class="title">SFTM > 사용자  > 사용자관리</h6>
+		 	
+		 	<table class="table table-select">
+				<thead>
+					<tr>
+						<td style="width:80px;">
+							 <label>팀 구분</label>
+						</td>
+						<td>
+							<select  class="form-control" id="team_id_main" title="" style="width:200px;">
+								<option selected="selected" value="">전체 팀</option>
+							</select> 
+						</td>
+						<td>
+						</td>
+						<td>
+							<button type="button" class="btn btn-dark" style="width: 100px; float: right; margin-right: 5px;" id="btnSelect">조회</button>
+						</td>
+					</tr>
+				</thead>
+			</table>
+		 	
+			
+			<table id="userTable" class="table table-bordered" style="width:100%">
+		        <thead>
+		            <tr>
+						<th >No</th> 
+		                <th >사번</th>
+		                <th>이름</th>
+		                <th>팀명</th>
+		                <th>조직</th>
+		                <th >직급</th>
+		                <th>전화번호</th>
+		                <th >성별</th>
+		                <th>생년월일</th>
+		                <th >나이</th>
+		            </tr>
+		        </thead>
+		    </table>
+	   </div>
+   </div>
+	
+	
+	<div class="modal fade" id="modalExcel">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				
+				<div class="modal-header bg-ntm">
+					<h6 id="modalTitle" class="modal-title color-white">액셀 업로드 실패건</h6>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+				</div>
+				<div class="modal-body">
+				
+					<table id="userTable2" class="table table-bordered" style="width:100%">
+				        <thead>
+				            <tr>
+				             	<th style="width:5%">순번 </th>
+				                <th>사번</th>
+				                <th>비밀번호</th>
+				                <th>이름</th>
+				                <th>팀명</th>
+				                <th>조직</th>
+				                <th>직급</th>
+				                <th>전화번호</th>
+				                <th>성별</th>
+				                <th>생년월일</th>
+				                <th>실패사유</th>
+				            </tr>
+				        </thead>
+				    </table>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Modal window  -->
+		<div class="modal fade" id="modalUser"  >
+			<div class="modal-dialog" >
+				<div class="modal-content">
+					<div class="modal-header bg-ntm">
+<!-- 						 -->
+						<h6 id="hearderTitle" class="modal-title color-white">신규팀 등록</h6>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+					</div>
+					
+					<div class="modal-body">
+						<table id="userDetailTable" class="table table-bordered" style="width:100%">
+				   			
+					       <tbody>
+				        	    <tr>
+					       	 		<th colspan="4" style="width:30%">*사번</th>
+					       	 		<td colspan="8">
+					       	 			<input id="user_id" maxlength="20" class="form-control required" style="width:100%" /> 
+					       	  		</td>
+					       	  	</tr>
+					       	  	<tr>
+					       	 		<th colspan="4">비밀번호</th>
+					       	 		<td colspan="8">
+					       	 			<input id="password" type="password" maxlength="20" class="form-control" style="width:100%" /> 
+					       	 			*미입력시 사번과 동일하게 등록됩니다.
+					       	  		</td>
+					       	  	</tr>
+					       	  	<tr>
+					       	  		<th colspan="4">* 이름</th>
+					       	 		<td colspan="8">
+					       	 			<input id="name" maxlength="20" class="form-control required" style="width:100%" />
+					       	 			 
+					       	  		</td>
+					       	  	</tr>	
+					       	   	<tr>
+					       	 		<th colspan="4">* 팀선택</th>
+					       	 		<td colspan="8">
+					       	 			<select  class="form-control required" id="team_id" title="" >
+											<option selected="selected" value="">전체 팀</option>
+										</select>
+					       	  		</td>
+					       	  	</tr>	
+					       	 	 <tr>
+					       	 		<th colspan="4">회사명</th>
+					       	 		<td colspan="8">
+					       	 			<input id="organization" maxlength="30" class="form-control " style="width:100%" /> 
+					       	  		</td>
+					       	  	 </tr>	
+						       	  	 <tr>
+						       	  		<th colspan="4">직급</th>
+						       	 		<td colspan="8">
+						       	 			<input id="position" maxlength="20" class="form-control " style="width:100%" /> 
+						       	  		</td>
+						       	 	 </tr>	
+					       	  	 <tr>
+					       	 		<th colspan="4">휴대폰</th>
+					       	 		<td colspan="8">
+					       	 			<div class="row">
+											<div class="col-md-5">
+												<select  class="form-control" id="phone_num1" title=""  >
+													<option selected="selected" value="010">010</option>
+													<option value="011">011</option>
+													<option value="016">016</option>
+													<option value="018">018</option>
+													<option value="019">019</option>
+													<option value="">기타</option>
+												</select>
+											</div>
+											<div class="col-md-7">
+												<input id="phone_num2"  maxlength="8" class="form-control required"  /> 
+											</div>
+										</div>
+									</td>
+					       	  	</tr>	
+					       	  	
+					       	  	<tr>
+					       	 		<th colspan="4">* 생년월일</th>
+					       	 		<td colspan="8">
+					       	 			<div class="row">
+											<div class="col-md-5">
+												<select  class="form-control" id="sex" title=""  >
+													<option selected="selected" value="M">남성</option> 
+													<option value="F">여성</option>
+													<option value="T">미상</option>
+												</select>
+											</div>
+											<div class="col-md-7">
+												<input id="birth" maxlength="6" class="form-control required"  /> 
+											</div>
+										</div>
+					       	  		</td>
+					       	  	</tr>	
+					       	</tbody>
+				       	 </table>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-dark" id="btnSave">저장</button>
+						<button type="button" class="btn btn-dark" id="btnUpdate">수정</button>
+						<button type="button" class="btn btn-dark" data-dismiss="modal">닫기</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+    
+</body>
+</html>

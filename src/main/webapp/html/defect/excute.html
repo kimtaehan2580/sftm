@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+	.img_wrap{
+		heigth :100px;
+	}
+	.img_wrap img{
+		max-height:100%;
+	}
+
+</style>
+</head>
+<body>
+	<h6 id="grid-options" class="title">SFTM 2020 > 테스트 수행(현업) > 테스트케이스 목록</h6> 
+			
+	<table class="table table-select">
+		<thead>
+			<tr>
+				<td style="width:100px;">
+					 <label>팀 구분</label>
+				</td>
+				<td  style="width:200px;">
+					<select class="form-control" id="selectTeam" name="selectTeam" title="">
+						<option selected="selected" value="">전체</option>
+					</select>
+				</td>
+				<td style="width:100px;">
+					<label>테스터</label>
+				</td>
+				<td  style="width:200px;">
+					<select class="form-control" id="selectUser" name="selectUser" title="">
+						<option selected="selected" value="">전체</option>
+					</select>
+				</td>
+				<td style="width:120px;">
+					<label>케이스상태</label>
+				</td>
+				<td  style="width:200px;">
+					<select class="form-control" id="selectState" name="selectState" title="">
+						<option selected="selected" value="">전체</option>
+					</select>
+				</td>
+				<td></td>
+				<td>
+					<button type="button" class="btn btn-dark" style="width: 100px; float: right; margin-right: 5px;" id="btnSelect">조회</button>
+				</td>
+			</tr>
+		</thead>
+	</table>
+			
+	<table id="caseTable" class="table table-bordered" style="width:100%">
+		<thead>
+			<tr>
+				<th style="width:3%">No</th>
+				<th>업무구분</th>
+				
+				<th>시나리오명</th>
+				<th>케이스명</th>
+				<th>현업</th>
+				<th>개발자</th>
+				<th>상태</th>
+				
+				<th style="width:5%">전체</th>
+				<th style="width:5%">현업</th>
+				<th style="width:5%">조치</th>
+				<th style="width:5%">종료</th>
+				<th style="width:5%">지연</th>
+				
+			</tr>
+		</thead>
+	</table>
+
+
+</body>
+</html>
