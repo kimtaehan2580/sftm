@@ -471,9 +471,9 @@ var searchDivListSetTable = function ( detpth, list){
 	            { "mDataProp" : 'reader_name' } 
 	        ],
 			'columnDefs': [
-			    { "targets": 0, "className": "text-center" },
-			    { "targets": 1, "className": "text-center" },
-			    { "targets": 2, "className": "text-center" },
+			    { "targets": 0, "width":"50%", "className": "text-center" },
+			    { "targets": 1, "width":"25%", "className": "text-center" },
+			    { "targets": 2, "width":"25%", "className": "text-center" },
 			],
 	        "language": {
 		        "emptyTable": "데이터가 없어요." , "search": ""

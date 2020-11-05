@@ -331,16 +331,16 @@ var calBackS = function(tran, data){
 	            { "mDataProp" : "age" }
 	        ],
 			'columnDefs': [
-  								{ "targets": 0, "width":"4%", "className": "text-center" },
-			    { "targets": 1, "width":"7%", "className": "text-center" },
+  				{ "targets": 0, "width":"4%",  "className": "text-center" },
+			    { "targets": 1, "width":"7%",  "className": "text-center" },
 			    { "targets": 2, "width":"15%", "className": "text-center" },
 			    { "targets": 3, "width":"15%", "className": "text-center" },
 			    { "targets": 4, "width":"10%", "className": "text-center" },
-			    { "targets": 5, "width":"10%","className": "text-center" },
+			    { "targets": 5, "width":"10%", "className": "text-center" },
 			    { "targets": 6, "width":"15%", "className": "text-center" },
-			    { "targets": 7, "width":"7%", "className": "text-center" },
+			    { "targets": 7, "width":"7%",  "className": "text-center" },
 			    { "targets": 8, "width":"10%", "className": "text-center" }, 
-			    { "targets": 9, "width":"7%", "className": "text-center" }
+			    { "targets": 9, "width":"7%",  "className": "text-center" }
 			],
 			"language": {
 		        "emptyTable": "데이터가 없어요." 

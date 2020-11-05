@@ -1739,21 +1739,21 @@ pre code {
  	font-weight: bold;
 } 
 
-
-
-.table-bordered {
+.table-bordered {table-layout: fixed;
   border: 1px solid #dee2e6;
 	font-size: 9.8pt;
 }
-.table-bordered th{
-	 border: 1px solid #dee2e6;
+.table-bordered th{white-space:nowrap;  text-overflow:ellipsis; overflow:hidden;
+
+    
+	border: 1px solid #dee2e6;
  	background-color: #fcfcfc;
 /* 	 font-weight: normal; */
 	font-size: 9pt;
 	text-align: center;
 }
-.table-bordered td {
-	
+.table-bordered td {white-space:nowrap;  text-overflow:ellipsis; overflow:hidden;
+
 /* 	text-align: center; */
   border: 1px solid #dee2e6;
 	font-size: 9pt;
