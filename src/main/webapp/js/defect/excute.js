@@ -167,6 +167,7 @@ var callBackS = function(tran, data){
 			}
 			list[i].div = div;
 			
+			list[i].scenario_name_c =  list[i].scenario_name + " ("+list[i].scenario_code + ")";
 			if(isCheckTest){
 				var test_check_cnt = Number(list[i].test_check_cnt);
 				if(test_check_cnt > 0){
@@ -185,7 +186,7 @@ var callBackS = function(tran, data){
 	        "columns" : [
 	            { "mDataProp" : 'rnum' },
 	            { "mDataProp" : 'div_name' },
-	            { "mDataProp" : 'scenario_name' },
+	            { "mDataProp" : 'scenario_name_c' },
 	            { "mDataProp" : 'case_name' } ,
 	            { "mDataProp" : 'test_name' } ,
 	            { "mDataProp" : 'dev_name' }  ,

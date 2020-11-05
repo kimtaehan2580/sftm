@@ -195,7 +195,6 @@
   	
 	<!-- testcase Select List  -->
 	<select id="selectTestCaseList" parameterType="java.util.Map" resultMap="PackageHeaderMap">
-		
 		SELECT row_number() OVER () as rnum
 			,COALESCE(div3.name, '') depth1
 			,COALESCE(div2.name, '') depth2
@@ -228,6 +227,7 @@
 			,cs.description
 			,cs.project_id 
 			,pr.project_name
+			,sc.scenario_code
 		FROM (
 			select ics.case_id
 				, ics.scenario_id
