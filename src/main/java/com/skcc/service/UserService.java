@@ -156,6 +156,7 @@ public class UserService {
 	public Map<String, Object> deleteTeamInfo( Map<String, Object> reqMap ) {	
 		
 		Map<String, Object> response = new HashMap<String, Object>();
+		
 
 		int result = sqlSession.update("UserDAO.deleteUserByTeam", reqMap);
 		if(result > -1) {
@@ -182,6 +183,8 @@ public class UserService {
 		
 //		position
 		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("role_code", reqMap.get("role_code"));
+		
 		if(list.size() != -1) { 
 			response.put("resultCode", "0000");
 			response.put("message", "정상적으로 조회되었습니다.");
@@ -249,11 +252,21 @@ public class UserService {
 		return response;
 	}
 	
+	/*
+	 * 사용자 삭제 서비스 
+	 */
 	@Transactional 
 	public Map<String, Object> deleteUser( Map<String, Object> reqMap ) {	
 		
 		Map<String, Object> response = new HashMap<String, Object>();
+		
+		//삭제 프로세스 
+		//1 사용자가 팀장인 경우 팀에 reader 데이터를 삭제함
+		//2 사용자가 현업인 경우 등록된 시나리오와 연게를 종료함 (리더가 있는경우 리더에게 전부 전달?)
+		//3 사용자가 개발자인 경우 등록된 시나리오와 연게를 종료함 (리더가 있는경우 리더에게 전부 전달?)
+		//4 사용자가 현업인 경우 결함담당자를 리더에게 넘김
 
+		
 		int result = sqlSession.update("UserDAO.deleteUser", reqMap);
 		if(result == 1) { 
 			response.put("resultCode", "0000");

@@ -8,7 +8,7 @@ var c_window = {};
 var selectPushMsg = function (){
 	
 	if( getCookie("user_id") != "" && getCookie("user_id") != null){
-		ajaxTranCall("push/selectPushListById.do", {}, c_window.callbackS, c_window.callBackE, false);
+		ajaxTranCall("push/selectPushListById.do", {}, c_window.callbackS, c_window.callbackE, false);
 	}
 	
 };
@@ -38,7 +38,7 @@ c_window.callbackS = function(tran, data){
 		break;
 	}
 };
-c_window.callBackE = function(tran, data){
+c_window.callbackE = function(tran, data){
 	
 };
 

@@ -238,15 +238,6 @@ public class ScenarioService {
 	        			queryMap.put("tester_id", 		tester_id);
 	        		if(dev_id != null)
 	        			queryMap.put("dev_id", 			dev_id);
-
-	        		
-	        		
-//	        		sc_developer: "D023"
-//	        			sc_developer_nm: "(인프라) 박원주"
-//	        			sc_tester: "T001"
-	        		
-//	        		queryMap.put("dev_id", 			reqMap.get("developer"));
-//	        		queryMap.put("description", 	reqMap.get("tc_description"));
 	        		
 	        		try {
 	        			int result2 = sqlSession.insert("ScenarioDAO.insertTestcase", queryMap);
@@ -316,6 +307,116 @@ public class ScenarioService {
 		
 		return response;
 	}
+	
+	
+	
+	/**
+	 * 단건의 testcase에 대한 상세 조회
+	 * 화면 excute.html에서 사용
+	 *
+	 * @param Map (request)
+	 * @return Map (response)
+	 * @exception 예외사항한 라인에 하나씩
+	 */
+	public Map<String, Object> selectTestCaseDetail( Map<String, Object> reqMap ) {		
+	
+		//{"path":"defect/excuteDefect","scenario_id":"1","case_id":"3","cookieUserId":"D001"}
+		Map<String, Object> response = new HashMap<String, Object>();
+		
+		try {
+			
+			//1. 테스트케이스 상세 내역 조회 
+			//2. 단건의 테스트케이스에 등록된 결함 
+			//3. 단건의 테스트케이스에 등록된 테스트이력
+			//4. 단건의 테스트케이스에 등록된 이미지
+			//5. 결함유형
+			List<Object> list = sqlSession.selectList("ScenarioDAO.selectTestCaseList", reqMap);
+			List<Object> commnetList = sqlSession.selectList("ScenarioDAO.selectComment", reqMap);
+			
+//			reqMap.put("code_group", "A001");
+//			List<Object> codeList = sqlSession.selectList("CodeDAO.selectCodeList", reqMap);
+			
+			
+			if(list.size() != -1) {
+				Message.SetSuccesMsg(response, "select");
+				response.put("list", list);
+			}
+			if(commnetList.size() != -1) {
+				response.put("commnetList", commnetList);
+			}
+			
+			//1. image key로 이미지 조회 합니다. 
+			if(reqMap.get("imgkey") != null) {
+				int imgkey;
+				try {
+					imgkey = (Integer) reqMap.get("imgkey");
+				}
+				catch(ClassCastException e) {
+					String temp = (String) reqMap.get("imgkey");
+					imgkey = Integer.parseInt(temp);
+				}
+				
+				if(!"-1".equals(imgkey)) {
+					List<Object> imgList = sqlSession.selectList("ImgDAO.selectImgById", imgkey);
+					if(imgList.size() != -1) {
+						response.put("imgList", imgList);
+					}
+				}
+			}
+			
+			
+		}
+		catch(Exception e) {
+			
+			e.printStackTrace();
+//			Message.SetSuccesMsg(response, "select");
+		}
+		
+		return response;
+	}
+	/**
+	 * 단건의 testcase에 대한 update
+	 * 화면 excute.html에서 사용
+	 *
+	 * @param Map (request)
+	 * @return Map (response)
+	 * @exception 예외사항한 라인에 하나씩
+	 */
+	public Map<String, Object> updateTestCaseDetail( Map<String, Object> reqMap ) {	
+		
+		Map<String, Object> response = new HashMap<String, Object>();
+		
+		reqMap.put("project_id", "0");
+		reqMap.put("type_code", "t");
+		reqMap.put("defect_id", "0");
+		
+//		reqMap.put("user_id", "t");
+		
+		
+		String comment = (String) reqMap.get("comment");
+		String imgkey = (String) reqMap.get("imgkey");
+		if(imgkey.isEmpty()) {
+			reqMap.put("imgkey", -1);
+		}
+		log.debug("["+imgkey+"]");
+		
+		
+//		cookieUserId
+		int result1 = sqlSession.update("ScenarioDAO.updateTestCaseDetail", reqMap);
+		if(comment == null || comment.replaceAll(" ", "").equals("")) {
+			log.debug("comment 추가된 내용은 없습니다.");
+		}
+		else {
+			int result2 = sqlSession.update("ScenarioDAO.insertComment", reqMap);
+		}
+		
+		if(result1 == 1  ) {
+			Message.SetSuccesMsg(response, "update");
+		}
+
+		return response;
+	}
+//	
 	
 	/**
 	 * 시나리오 삭제 (하위 테스트케이도 삭제됨)
@@ -495,45 +596,7 @@ public class ScenarioService {
 		return response;
 	}
 	
-	/**
-	 * 개발자 아이디 결함을 전부 조회. 결함(개발자) 화면에서 사용함
-	 *
-	 * @param Map (request)
-	 * @return Map (response)
-	 * @exception 예외사항한 라인에 하나씩
-	 */
-	public Map<String, Object> selectDefectByDevIdList( Map<String, Object> reqMap ) {	
 	
-		//{"dev_id":"D001","team_id":"1","cookieUserId":"D001"}
-		Map<String, Object> response = new HashMap<String, Object>();
-		
-		try {
-			
-			//개발자가 선택시 개발자 ID로만 조회 가능
-			if(!"".equals(reqMap.get("dev_id"))){
-				reqMap.put("team_id", "");
-				
-			}
-			//선택된 개발자가 없는 경우 팀코드로 조회합니다. 
-			else {
-				
-			}
-			
-			//defect_code_type
-			List<Object> list = sqlSession.selectList("ScenarioDAO.selectDefectByDevIdList", reqMap);
-			
-			if(list.size() != -1) {
-				Message.SetSuccesMsg(response, "select");
-				response.put("list", list);
-			}
-			
-		}
-		catch(Exception e) {
-//			Message.SetSuccesMsg(response, "select");
-		}
-		
-		return response;
-	}
 	
 	/**
 	 * 개발자 아이디 결함을 전부 조회. 결함(개발자) 화면에서 사용함

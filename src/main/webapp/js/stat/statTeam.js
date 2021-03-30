@@ -89,10 +89,10 @@ var selectStatTeamList = function( ){
 		"project_id":$("#selectProject2").val(), 
 		base_date : $("#base_date").val().replace(/-/gi, "")
 	}, 
-	callBackS, callBackE);
+	callbackS, callbackE);
 }
 
-var callBackS = function(tran, data){
+var callbackS = function(tran, data){
 	
 	var list = data["list"];
 	
@@ -222,7 +222,7 @@ var callBackS = function(tran, data){
 			    { "targets": 11, "className": "text-center", "render": function ( data, type, row ) {return data +'시간';}}
 			],
 	        "language": {
-		        "emptyTable": "데이터가 없어요." , "search": ""
+		        "emptyTable": "데이터가 존재하지 않습니다." , "search": ""
 		    },
 		    pageLength:15, //기본 데이터건수
 			lengthChange: false, 	// 표시 건수기능 숨기기
@@ -256,6 +256,6 @@ var callBackS = function(tran, data){
 
 
 
-var callBackE = function(tran, data){
-//	alert("callBackE");
+var callbackE = function(tran, data){
+//	alert("callbackE");
 }

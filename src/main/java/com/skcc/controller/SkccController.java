@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.skcc.batch.TimeScheduled;
+import com.skcc.service.BorderService;
 import com.skcc.service.CodeService;
 import com.skcc.service.CommonService;
 import com.skcc.service.DefectService;
@@ -73,6 +73,8 @@ public class SkccController {
 	private ExcelService excelService;
 	@Autowired
 	private PushService pushService;
+	@Autowired
+	private BorderService boderService;
 
 	//첨부파일 저장공간
 	@Value("${file.path}") private String file_Path;
@@ -116,6 +118,8 @@ public class SkccController {
 				service = excelService;
 			} else if ("push".equals(subDir)) {
 				service = pushService;
+			} else if ("border".equals(subDir)) {
+				service = boderService;
 			} else {
 				// 잘못된 서브 디렉토리 오류
 				service = commonService;
@@ -336,9 +340,6 @@ public class SkccController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-			
-			
 			
 		return response;
 		//HashMap<String, Object> response = null;

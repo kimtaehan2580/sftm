@@ -1,5 +1,6 @@
 package com.skcc.service;
 
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.skcc.batch.process.B_MakeStatInfo;
 import com.skcc.util.Message;
 
 
@@ -82,7 +84,6 @@ public class StatService {
 	 */
 	public Map<String, Object> selectMainDataForTester( Map<String, Object> reqMap ) {	
 		
-//		List<Object> list = sqlSession.selectList("StatDAO.selectStatTeamList", reqMap);
 		List<Map<String, Object>>  listSc = sqlSession.selectList("StatDAO.selectMainDataForTesterTc", reqMap);
 		List<Map<String, Object>>  listDf = sqlSession.selectList("StatDAO.selectMainDataForTesterDf", reqMap);
 		
@@ -122,10 +123,7 @@ public class StatService {
 	public Map<String, Object> selectMainDataForAdmin( Map<String, Object> reqMap ) {	
 		
 		List<Map<String, Object>>  listDf = null;
-				
-		
 		listDf = sqlSession.selectList("StatDAO.selectStatUserList", reqMap);
-		
 		Map<String, Object> response = new HashMap<String, Object>();
 			Message.SetSuccesMsg(response, "select");
 			response.put("listDf", listDf);
@@ -134,5 +132,30 @@ public class StatService {
 	}
 	
 //	
+	
+
+	@Autowired
+	private B_MakeStatInfo _B_MakeStatInfo;
+	/**
+	 * 통계 개인별 화면에서 갱신하는 버튼 클릭시 호출
+	 * @param     Map<String, Object>  요청 Request
+	 * @return    Map<String, Object>  응답 Response
+	 */
+	public Map<String, Object> replaceUserStat( Map<String, Object> reqMap ) {	
+		
+		List<Map<String, Object>>  listDf = null;
+		listDf = sqlSession.selectList("StatDAO.selectStatUserList", reqMap);
+
+		try {
+			_B_MakeStatInfo.run();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Map<String, Object> response = new HashMap<String, Object>();
+		Message.SetSuccesMsg(response, "select");
+//		}
+		return response;
+	}
 	
 }

@@ -4,15 +4,11 @@
 	SET check_function_bodies = false;
 	SET client_min_messages = warning;
 	 
-	  
-	
-	
 	
 	
 	INSERT INTO sftm.itm_role  VALUES ( 0, 'ADMIN', 	'관리자', '', 'admin',  now(), 'admin',now() );
-	INSERT INTO sftm.itm_role  VALUES ( 0, 'TEST', 	'테스터', '', 'admin',  now(), 'admin',now() );
+	INSERT INTO sftm.itm_role  VALUES ( 0, 'TEST', 	    '현업', '', 'admin',  now(), 'admin',now() );
 	INSERT INTO sftm.itm_role  VALUES ( 0, 'DEV', 		'개발자', '', 'admin',  now(), 'admin',now() );
-	INSERT INTO sftm.itm_role  VALUES ( 0, 'ETC', 	     '기타', '', 'admin',  now(), 'admin',now() );
 	
 	
 	--itm_code_group
@@ -27,6 +23,10 @@
 	INSERT INTO sftm.itm_code_group
 			(code_group, code_group_name, description, use_yn, reg_user, reg_date)
 	VALUES ('C001', '테스트케이스상태', '테스트케이스 상태에 대한 표기', 'Y', 'admin', now());
+	
+	INSERT INTO sftm.itm_code_group
+			(code_group, code_group_name, description, use_yn, reg_user, reg_date)
+	VALUES ('D001', '공지사항 유형', '공지사항 유형', 'Y', 'admin', now());
 	
 	
 	INSERT INTO sftm.itm_code_group
@@ -70,55 +70,61 @@
 			(code_group, code_id, code_name, description, use_yn, priority, reg_user, reg_date)
 	VALUES ('B001', 'B001_05', '개발지연', '타팀연계로 인해 개발이 지연되는 경우', 'Y', 40, 'admin', now());
 	
-	
 	INSERT INTO sftm.itm_code
 			(code_group, code_id, code_name, description, use_yn, priority, reg_user, reg_date)
 	VALUES ('B001', 'B001_06', '결함종료', '테스터가 확인하여 결함이 종료', 'Y', 50, 'admin', now());
 	 
 	INSERT INTO sftm.itm_code
 			(code_group, code_id, code_name, description, use_yn, priority, reg_user, reg_date)
-	VALUES ('B001', 'B001_07', '결함반려', '테스터가 확인하여 결함을 반려한 경우', 'Y', 60, 'admin', now());
+	VALUES ('B001', 'B001_07', '조치반려', '테스터가 확인하여 결함을 반려한 경우', 'Y', 60, 'admin', now());
 	
 	--C001 테스트케이스상태 
 	INSERT INTO sftm.itm_code
 			(code_group, code_id, code_name, description, use_yn, priority, reg_user, reg_date)
-	VALUES ('C001', 'C001_01', '수행대기', '테스트케이스 수행대기', 'Y', 0, 'admin', now());
+	VALUES ('C001', 'C001_01', '수행전', '테스트케이스 수행대기', 'Y', 0, 'admin', now());
 	
 	INSERT INTO sftm.itm_code
 			(code_group, code_id, code_name, description, use_yn, priority, reg_user, reg_date)
-	VALUES ('C001', 'C001_02', '수행중', '테스트케이스 수행중', 'Y', 0, 'admin', now());
+	VALUES ('C001', 'C001_02', 'PASS', '테스트케이스 수행완료', 'Y', 0, 'admin', now());
 	
 	INSERT INTO sftm.itm_code
 			(code_group, code_id, code_name, description, use_yn, priority, reg_user, reg_date)
-	VALUES ('C001', 'C001_03', '수행완료', '테스트케이스 수행완료', 'Y', 0, 'admin', now());
+	VALUES ('C001', 'C001_03', 'FAIL', '테스트케이스 수행실패', 'Y', 0, 'admin', now());
+	
+	INSERT INTO sftm.itm_code
+			(code_group, code_id, code_name, description, use_yn, priority, reg_user, reg_date)
+	VALUES ('C001', 'C001_04', 'NE', '테스트 대상아님', 'Y', 0, 'admin', now());
+	
+	
+	-- D001 공지사항 코드
+	INSERT INTO sftm.itm_code
+			(code_group, code_id, code_name, description, use_yn, priority, reg_user, reg_date)
+	VALUES ('D001', 'D001_01', '공지사항', '관리자가 등록한 공지내용', 'Y', 10, 'admin', now());
+	
+	INSERT INTO sftm.itm_code
+			(code_group, code_id, code_name, description, use_yn, priority, reg_user, reg_date)
+	VALUES ('D001', 'D001_02', '인프라', '인프라팀에서 등록한 게시글', 'Y', 20, 'admin', now());
+	
+	INSERT INTO sftm.itm_code
+			(code_group, code_id, code_name, description, use_yn, priority, reg_user, reg_date)
+	VALUES ('D001', 'D001_03', '개발가이드', '공통/솔루션팀에서 제공한 개발가이드', 'Y', 30, 'admin', now());
 	
 	
 	
 	--C001 테스트케이스상태 
 	INSERT INTO sftm.itm_code
 			(code_group, code_id, code_name, description, use_yn, priority, reg_user, reg_date)
-	VALUES ('P001', 'P001_01', '결함배정안내', '신규결함 배정 또는 타개발자 변환', 'Y', 0, 'admin', now());
-	
-	INSERT INTO sftm.itm_code
-			(code_group, code_id, code_name, description, use_yn, priority, reg_user, reg_date)
-	VALUES ('P001', 'P001_02', '결함배정요청', '담당개발자가 없는 경우 팀 리더에서 배정요청 안내', 'Y', 10, 'admin', now());
-	
-	INSERT INTO sftm.itm_code
-			(code_group, code_id, code_name, description, use_yn, priority, reg_user, reg_date)
-	VALUES ('P001', 'P001_03', '결함상태변경', '결함 상태(조치완료, 반려, 지연 등의 상태가 변경시)', 'Y', 20, 'admin', now());
-	
-	INSERT INTO sftm.itm_code
-			(code_group, code_id, code_name, description, use_yn, priority, reg_user, reg_date)
-	VALUES ('P001', 'P001_04', '결함종료안내', '현업이 결함상태를 종료또는 비결함으로 처리하였을떄', 'Y', 30, 'admin', now());
+	VALUES ('P001', 'P001_01', '결함', '신규결함 배정 또는 타개발자 변환', 'Y', 0, 'admin', now());
 	
 	
 	INSERT INTO sftm.itm_code
 			(code_group, code_id, code_name, description, use_yn, priority, reg_user, reg_date)
-	VALUES ('P001', 'P001_05', '공지사항', '관리자가 개발자에게 보내는 메시지', 'Y', 40, 'admin', now());
+	VALUES ('P001', 'P001_02', 'System', 'System에서 자동으로 전달하는 내용', 'Y', 0, 'admin', now());
 	
+	 
 	INSERT INTO sftm.itm_code
 			(code_group, code_id, code_name, description, use_yn, priority, reg_user, reg_date)
-	VALUES ('P001', 'P001_06', 'System', 'system에서 보내는 메시지', 'Y', 50, 'admin', now());
+	VALUES ('P001', 'P001_03', '공지사항', '관리자가 개발/현업들에게 공지하는 내용', 'Y', 0, 'admin', now());
 	
 	
 	

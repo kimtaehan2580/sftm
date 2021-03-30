@@ -15,11 +15,10 @@ var userTable;
 var initDoucument = function(){
 
 	//Team list 조회 (select 박스 용)
-	ajaxTranCall("user/selectTeamList.do", {}, calBackS, callBackE);
+	ajaxTranCall("user/selectTeamList.do", {}, calBackS, callbackE);
 
 	//사용자 리스트 조회
 	basicInquiry();
-	
 	
 	
 	//event 처리
@@ -56,7 +55,7 @@ var initDoucument = function(){
 			dataJson.phone_num = $("#phone_num1").val() + $("#phone_num2").val();
 		}
 		
-		ajaxTranCall("user/insertUser.do", dataJson, calBackS, callBackE);
+		ajaxTranCall("user/insertUser.do", dataJson, calBackS, callbackE);
 	});
 	
 	//
@@ -85,7 +84,7 @@ var initDoucument = function(){
 		}
 		
 		
-		ajaxTranCall("user/updateUser.do", dataJson, calBackS, callBackE);
+		ajaxTranCall("user/updateUser.do", dataJson, calBackS, callbackE);
 	});
 	
 	$("#team_id_main").on('change', function(){
@@ -147,7 +146,7 @@ var initDoucument = function(){
 				list.push(jsonTemp);
 			}
 		}
-		ajaxTranCall("excel/downloadUserExcel.do", {"list": list} ,calBackS, callBackE);
+		ajaxTranCall("excel/downloadUserExcel.do", {"list": list} ,calBackS, callbackE);
 	});
 	
 	
@@ -163,7 +162,7 @@ var basicInquiry = function( ) {
 		team_id : $("#team_id_main").val()		
 	};
 
-	ajaxTranCall("user/selectUserList.do", json, calBackS, callBackE);
+	ajaxTranCall("user/selectUserList.do", json, calBackS, callbackE);
 } 
 
 var calBackS = function(tran, data){
@@ -232,7 +231,7 @@ var calBackS = function(tran, data){
 			            
 			        ],
 					"language": {
-				        "emptyTable": "데이터가 없어요." 
+				        "emptyTable": "데이터가 존재하지 않습니다." 
 				    },
 				    pageLength:10, //기본 데이터건수
 					lengthChange: false, 	// 표시 건수기능 숨기기
@@ -261,6 +260,7 @@ var calBackS = function(tran, data){
 			if( list[i].role_code == 'ADMIN' &&  !common.isAdmin()){
 				continue;	
 			}
+			
 			appendSelectBox("team_id", 		list[i].id, list[i].name  );
 			appendSelectBox("team_id_main", list[i].id, list[i].name);
 		}
@@ -276,7 +276,6 @@ var calBackS = function(tran, data){
 		for(var i=0 ; i< list.length; i++){
 			
 			list[i].rnum = i+1;
-			
 			var phone_num = list[i].phone_num;
 			
 			if(phone_num != ""){
@@ -319,7 +318,6 @@ var calBackS = function(tran, data){
 			destroy: true,
 	        "aaData" : data["list"],
 	        "columns" : [
-	            { "mDataProp" : "rnum" },
 	        	{ "mDataProp" : "user_id" } ,
 	            { "mDataProp" : "name" },
 	            { "mDataProp" : "team_name" },
@@ -331,19 +329,18 @@ var calBackS = function(tran, data){
 	            { "mDataProp" : "age" }
 	        ],
 			'columnDefs': [
-  				{ "targets": 0, "width":"4%",  "className": "text-center" },
-			    { "targets": 1, "width":"7%",  "className": "text-center" },
-			    { "targets": 2, "width":"15%", "className": "text-center" },
-			    { "targets": 3, "width":"15%", "className": "text-center" },
+			    { "targets": 0, "width":"7%",  "className": "text-center" },
+			    { "targets": 1, "width":"15%", "className": "text-center" },
+			    { "targets": 2, "width":"19%", "className": "text-center" },
+			    { "targets": 3, "width":"10%", "className": "text-center" },
 			    { "targets": 4, "width":"10%", "className": "text-center" },
-			    { "targets": 5, "width":"10%", "className": "text-center" },
-			    { "targets": 6, "width":"15%", "className": "text-center" },
-			    { "targets": 7, "width":"7%",  "className": "text-center" },
-			    { "targets": 8, "width":"10%", "className": "text-center" }, 
-			    { "targets": 9, "width":"7%",  "className": "text-center" }
+			    { "targets": 5, "width":"15%", "className": "text-center" },
+			    { "targets": 6, "width":"7%",  "className": "text-center" },
+			    { "targets": 7, "width":"10%", "className": "text-center" }, 
+			    { "targets": 8, "width":"7%",  "className": "text-center" }
 			],
 			"language": {
-		        "emptyTable": "데이터가 없어요." 
+		        "emptyTable": "데이터가 존재하지 않습니다." 
 		    },
 		   
 //			lengthChange: false, 	// 표시 건수기능 숨기기
@@ -413,7 +410,7 @@ var calBackS = function(tran, data){
 		           					var dataJson = {
 		           						user_id : userTable.row($(this)).data().user_id
 	           						};
-	           						ajaxTranCall("user/deleteUser.do", dataJson, calBackS, callBackE);
+	           						ajaxTranCall("user/deleteUser.do", dataJson, calBackS, callbackE);
 		           				 }
 		           				isSelected = true;;
 		           			 }
@@ -437,7 +434,7 @@ var calBackS = function(tran, data){
 								list.push(userTable.data()[i]);
 							}
 						}
-						ajaxTranCall("excel/downloadUserExcel.do", {"list": list} ,calBackS, callBackE);
+						ajaxTranCall("excel/downloadUserExcel.do", {"list": list} ,calBackS, callbackE);
 					}
 				},
 				{
@@ -467,7 +464,7 @@ var calBackS = function(tran, data){
 //	{"resultCode":"0000","message":"정상적으로 조회되었습니다.","list":[{"reg_user":"nexcore","modify_user":"nexcore","description":"관리자계정입니다.","admin":true,"reg_date":1588572727418,"password":"admin","user_id":"admin","organization":"SK주식회사","name":"관리자","phone_num":"010-0000-0000","position":"수석","modify_date":1588572727418,"email":"nexcore4u@sk.com"}]}
 }
 
-var callBackE = function(tran, data){
+var callbackE = function(tran, data){
 	
 }
 

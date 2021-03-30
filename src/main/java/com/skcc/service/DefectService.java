@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.exceptions.PersistenceException;
+import org.json.simple.JSONObject;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,20 +90,13 @@ public class DefectService {
 				return response;
 			}
 		}
-		
-		//1. 결함 테이블 등록 	(itm_defect)
+
 		int id =  sqlSession.selectOne("DefectDAO.selectDefectId"); 
 		reqMap.put("defect_id", id);
 		
-		int result = sqlSession.insert("DefectDAO.insertDefect", reqMap);			//결함테이블 데이터 등록
-		
-		if(result != 1) {
-			return response;
-		}
-		
 		//2. 결함 이력테이블 등록    (itm_defect_history) 결함등록
 		reqMap.put("reg_user", reqMap.get("cookieUserId") );
-		result = sqlSession.insert("DefectDAO.insertDefectHistory", reqMap);   //결함이력테이블 데이터 등록
+		int result = sqlSession.insert("DefectDAO.insertDefectHistory", reqMap);   //결함이력테이블 데이터 등록
 		if(result != 1) {
 			return response;
 		}
@@ -110,32 +104,47 @@ public class DefectService {
 		//자동배정 로직 추가합니다. 
 		//2-1. 개발자가 있는 테스트케이스건의 결함은  자동배정완료 됨 (itm_defect_history) 배정완료
 		//결함 등록 안내
-				
-				
-		
 		String dev_id = sqlSession.selectOne("DefectDAO.selectTestCaseDevId", reqMap); 
 		
-		
 		if(dev_id == null || "".equals(dev_id) ) {
-			//pl 찾아서 PUSH 발송?? 
-//			List<HashMap<String,String>> listReader = sqlSession.selectList("ScenarioDAO.selectScenarioInfo", reqMap);
-//			if(listReader.size() > 0) {
-//				String user_id = listReader.get(0).get("user_id");
-////				pushService.insertPushmsg(Message.REG_DEFECT_READER, (String) reqMap.get("title"), user_id);
-//			}
+			;
 		}
 		else {
 			reqMap.put("reg_user", "admin" );
 			reqMap.put("defect_code", "B001_02" ); //배정완료 로직입니다.
-			result = sqlSession.insert("DefectDAO.insertDefectHistory", reqMap);   //결함이력테이블 데이터 등록
+			 result = sqlSession.insert("DefectDAO.insertDefectHistory", reqMap);   //결함이력테이블 데이터 등록
 			if(result != 1) {
 				return response;
 			}
 //			pushService.insertPushmsg(Message.REG_DEFECT_DEV, (String) reqMap.get("title"), dev_id);
 		}
 		
+		//1. 결함 테이블 등록 	(itm_defect)
+		result = sqlSession.insert("DefectDAO.insertDefect", reqMap);			//결함테이블 데이터 등록
+		if(result != 1) {
+			return response;
+		}
+		
+		//결함 등록시 commnet에 자동으로 desc 남기는 로직 추가함
+//		#{type_code},
+//		#{case_id}::bigint,
+//		#{cookieUserId},
+//		#{comment},
+		
+		Map<String, Object> commentDao = new HashMap<String, Object>();
+		commentDao.put("type_code", "d");
+		commentDao.put("case_id", "0");
+		commentDao.put("defect_id", id);
+		commentDao.put("cookieUserId", reqMap.get("cookieUserId"));
+		
+		commentDao.put("comment", "<최초등록> " + reqMap.get("description"));
+		int result2 = sqlSession.update("ScenarioDAO.insertComment", commentDao);
+		
+		
+		
+		pushService.sendPushMessage_defect(id, (String) reqMap.get("cookieUserId"));
 		//결함 PUSH 발송함
-		pushService.insertPushDefect( id );
+//		pushService.insertPushDefect( id );
 		
 		//push evnet 발송합니다.
 //		pushService.insertPushmsg ( id );
@@ -151,7 +160,7 @@ public class DefectService {
 	/*
 	 * 테스터가 결함테이블 수정
 	 */
-	public Map<String, Object> updateDefect( Map<String, Object> reqMap ) {	
+	public Map<String, Object> updateDefectState( Map<String, Object> reqMap ) {	
 		
 //		case_code: "android_002"
 //		cookieUserId: "T002"
@@ -161,22 +170,83 @@ public class DefectService {
 //		imgkey: "42"
 //		scenario_code: "ANDROID"
 //		title: "test"
-		
-//		UPDATE  sftm.itm_defect
-//		SET title = #{title},
-//			description = #{description},
-//		
-//			imgkey = #{ imgkey }::bigint
-//			
-//		WHERE  id 	= #{id}::bigint
-				
-		
-//		"B001_06";"결함종료"
-//		"B001_07";"결함반려"
-		
-		
 		Map<String, Object> response = new HashMap<String, Object>();
+		String 	defect_code = (String) reqMap.get("defect_code");
+		String 	imgkey = (String) reqMap.get("imgkey");
+		String 	comment = (String) reqMap.get("comment");
+		String 	developer_id = (String) reqMap.get("developer_id");
+		int 	defect_id = (Integer) reqMap.get("defect_id");
+		System.out.println("defect_code -> " + defect_code + " : " + defect_code.isEmpty());
+		System.out.println("imgkey -> " + imgkey+ " : " + imgkey.isEmpty());
+		System.out.println("comment -> " + comment+ " : " + comment.isEmpty());
+		System.out.println("developer_id -> " + developer_id+ " : " + developer_id.isEmpty());
 		
+		//이력 업데이트 필요한 건인지 확인
+		boolean isHistoryUpdate = false;
+		
+		//주요로직 정리함
+		// 1. defect_id로 마지막 데이터 가져옵니다.
+		// 2. itm_defect table에 imgkey, developer_id, defect_type, defect_code update 진행
+		// 3. itm_defect_history table에 developer_id, defect_type, defect_code insert 진행
+		// 4. itm_comment table에 댓글 저장 함
+		
+		// 1. defect_id로 마지막 데이터 가져옵니다.
+		List<Object> list = sqlSession.selectList("DefectDAO.selectDefectById", reqMap);
+		if(list.size() != 1) {
+			return response;
+		}
+		Map<String, Object> preDefectData = (Map<String, Object>) list.get(0);
+		String pre_defect_type		= (String) preDefectData.get("defect_type");
+		String pre_defect_code 		= (String) preDefectData.get("defect_code");
+		String pre_dev_id           = (String) preDefectData.get("dev_id");
+		String pre_test_id          = (String) preDefectData.get("test_id");
+		
+		// 2. itm_defect table에 imgkey, developer_id update 진행
+		if( !developer_id.isEmpty() && !developer_id.equals(pre_dev_id)) {
+			reqMap.put("defect_code", "B001_02");
+			isHistoryUpdate = true;
+		}
+		if("B001_06".equals(defect_code) && "B001_04".equals(pre_defect_code)) {
+			reqMap.put("defect_type", "A001_03");
+			isHistoryUpdate = true;
+		}
+		else {
+			reqMap.put("defect_type", pre_defect_type);	
+		}
+		
+		int result = sqlSession.insert("DefectDAO.updateDefectState", reqMap);
+		if(result != 1) {
+			return response;
+		}
+
+		// 3. itm_defect_history table에 developer_id, defect_type, defect_code insert 진행
+		if( !defect_code.isEmpty() && !defect_code.equals(pre_defect_code)) {
+			isHistoryUpdate = true;
+		}
+		
+		if(isHistoryUpdate) {
+			
+			reqMap.put("dev_id", developer_id);	
+			reqMap.put("test_id", pre_test_id);	
+			int result2 = sqlSession.insert("DefectDAO.updateDefectHistory", reqMap);
+			if(result2 != 1) {
+				return response;
+			}
+		}
+		
+		if(!comment.isEmpty()) {
+			reqMap.put("type_code", "d");
+			reqMap.put("case_id", "0");
+			int result2 = sqlSession.update("ScenarioDAO.insertComment", reqMap);
+		}
+		
+		
+		pushService.sendPushMessage_defect(defect_id, (String) reqMap.get("cookieUserId"));
+		
+		
+		Message.SetSuccesMsg(response, "update");
+		
+		/*
 		//중요 로직 
 		//"B001_06";"결함종료", "B001_07";"결함반려"
 		String defect_code = (String) reqMap.get("defect_code");
@@ -218,6 +288,8 @@ public class DefectService {
 		if(result == 1) { 
 			Message.SetSuccesMsg(response, "update");
 		}
+		
+		*/
 		return response;
 	}
 	
@@ -281,7 +353,11 @@ public class DefectService {
 
 			//PUSH 발송하장
 			if(defect_id != null) {
-				pushService.insertPushDefect(Integer.parseInt(defect_id));
+				
+				//기존 결함 코드와 현재 결함 코드가 다른경우만 발송
+				if( !defect_code.equals(pre_defect_code)) {
+					pushService.insertPushDefect(Integer.parseInt(defect_id));
+				}
 			}
 			
 			
@@ -306,33 +382,6 @@ public class DefectService {
 	}
 	
 	
-	
-	public Map<String, Object> selectDefectDetail( Map<String, Object> reqMap ) {	
-
-		//1. image key로 이미지 조회 합니다. 
-		int imgkey = (Integer) reqMap.get("imgkey");
-		List<Object> list = sqlSession.selectList("ImgDAO.selectImgById", imgkey);
-		
-		Map<String, Object> response = new HashMap<String, Object>();
-		if(list.size() != -1) { 
-			Message.SetSuccesMsg(response, "select");
-			response.put("list", list);
-		}
-		return response;
-	}
-	
-	public Map<String, Object> selectDefectHistroty( Map<String, Object> reqMap ) {	
-
-		//1. image key로 이미지 조회 합니다. 
-		List<Object> list = sqlSession.selectList("DefectDAO.selectDefectHistroty", reqMap);
-		
-		Map<String, Object> response = new HashMap<String, Object>();
-		if(list.size() != -1) { 
-			Message.SetSuccesMsg(response, "select");
-			response.put("list", list);
-		}
-		return response;
-	}
 	
 	
 	/**
@@ -372,5 +421,100 @@ public class DefectService {
 		return response;
 	}
 	
+	
+	/**
+	 * 개발자 아이디 결함을 전부 조회. 결함(개발자) 화면에서 사용함
+	 *
+	 * @param Map (request)
+	 * @return Map (response)
+	 * @exception 예외사항한 라인에 하나씩
+	 */
+	public Map<String, Object> selectDefectListByCond( Map<String, Object> reqMap ) {	
+	
+		//{"dev_id":"D001","team_id":"1","cookieUserId":"D001"}
+		Map<String, Object> response = new HashMap<String, Object>();
+		
+		try {
+			
+			//defect_code_type
+			List<Object> list = sqlSession.selectList("DefectDAO.selectDefectListByCond", reqMap);
+			
+			if(list.size() != -1) {
+				Message.SetSuccesMsg(response, "select");
+				response.put("list", list);
+			}
+			
+		}
+		catch(Exception e) {
+//			Message.SetSuccesMsg(response, "select");
+		}
+		
+		return response;
+	}
+	
+	/**
+	 * 1건의 결함에 대한 상세조회
+	 * 결함 화면에서 사용함
+	 *
+	 * @param Map (request)
+	 * @return Map (response)
+	 * @exception 예외사항한 라인에 하나씩
+	 */
+	public Map<String, Object> selectDefectDetail( Map<String, Object> reqMap ) {	
+		
+
+		Map<String, Object> response = new HashMap<String, Object>();
+		//defect_id
+		List<Object> list = sqlSession.selectList("DefectDAO.selectDefectDetailByDefectId", reqMap);
+		
+		if(list.size() == 1) {
+				
+//			response.put("list", list);
+			
+			//1. image key로 이미지 조회 합니다. 
+			response = (Map<String, Object>) list.get(0);
+			Message.SetSuccesMsg(response, "select");
+			
+			if(response.get("imgkey") != null) {
+				int imgkey;
+				try {
+					long temp = (Long) response.get("imgkey");
+					imgkey = (int) temp;
+				}
+				catch(ClassCastException e) {
+					String temp = (String) response.get("imgkey");
+					imgkey = Integer.parseInt(temp);
+				}
+				
+				if(!"-1".equals(imgkey)) {
+					List<Object> imgList = sqlSession.selectList("ImgDAO.selectImgById", imgkey);
+					if(imgList.size() != -1) {
+						response.put("imgList", imgList);
+					}
+				}
+				
+
+				List<Object> commnetList = sqlSession.selectList("ScenarioDAO.selectComment", reqMap);
+				if(commnetList.size() != -1) {
+					response.put("commnetList", commnetList);
+				}
+			}
+		}
+		
+		return response;
+	}
+	
+	public Map<String, Object> selectDefectHistroty( Map<String, Object> reqMap ) {	
+
+		//1. image key로 이미지 조회 합니다. 
+		List<Object> list = sqlSession.selectList("DefectDAO.selectDefectHistroty", reqMap);
+		
+		Map<String, Object> response = new HashMap<String, Object>();
+		if(list.size() != -1) { 
+			Message.SetSuccesMsg(response, "select");
+			response.put("list", list);
+		}
+		return response;
+	}
 	
 }

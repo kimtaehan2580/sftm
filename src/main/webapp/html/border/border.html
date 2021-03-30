@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div id="panal_list">
+		<div class="row">
+			<div class="col-md-12">
+			 	<h6 id="grid-options" class="title">SFTM > 알림판</h6>
+			 	<table class="table table-select">
+					<thead>
+						<tr>
+							<td style="width:80px;">
+								 <label>분류</label>
+							</td>
+							<td>
+								<select  class="form-control" id="selectType" title="" style="width:200px;">
+									<option selected="selected" value="">전체</option>
+								</select> 
+							</td>
+							<td>
+							</td>
+							<td>
+								<button type="button" class="btn btn-dark" style="width: 100px; float: right; margin-right: 5px;" id="btnSelect">조회</button>
+							</td>
+						</tr>
+					</thead>
+				</table>
+				<table id="borderTable" class="table table-bordered" style="width:100%">
+			        <thead>
+			            <tr>
+			                <th style="width:15%">분류</th>
+			                <th style="width:40%">제목</th>
+			                <th style="width:15%">담당자</th>
+			                <th style="width:15%">등록자</th>
+			                <th style="width:15%">일자</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+			        </tbody>
+			    </table>
+		   </div>
+	   </div>
+	</div> 
+	<div id="panal_detail" style="display:none;">
+		<div class="row">
+			<div class="col-md-12">
+				<h6 id="grid-options" class="title">SFTM > 알림판 > 인프라</h6> 
+				<div>
+			    	<button type="button" class="btn btn-dark" style="width: 100px; float:left;  " id="btnPrePage">목록으로</button>
+			    	<button type="button" class="btn btn-outline-secondary" style="width: 100px; float:right; " id="btnAddFile">첨부파일</button>
+			    </div>
+			    <br/><br/>
+			    <table id="borderDetailTable" class="table table-bordered" style="">
+					<tbody>
+						<tr style="height:50px; border-top:0">
+							<td colspan="2">
+		       	 				<b style="font-size:20px; padding:5px;">인프라 전체 교육 안내 (2021년 3월 30일 화요일)</b>
+		       	 			</td>
+						</tr>
+						<tr style="border:0">
+							<td style="border:0">
+		       	 				<b style="font-size:13px; padding-left:15px;">kapyins070 (이성준)</b>
+							</td>
+							<td style="border:0; float: right;">
+		       	 				<label style="font-size:13px; padding-right:15px;">2021-03-05 19:23</label>
+							</td>
+						</tr>
+						<tr style="border:0">
+							<td colspan="2" style="border:0">
+		       	 				<textarea  id="ta_comment_history" rows="20" 
+		       	 					style="width:100%; font-size:15px; padding:15px; border:0px; background-color: white;" readonly="readonly" disabled >
+안녕하세요. 
+
+ 
+
+개발자 분들 빌드오류 확인을 위해 아래 URL 과 계정이 생성 되었습니다. 
+
+ 
+
+젠킨스 URL :   https://deploy.kakaoinsure.net/
+
+ 
+
+공용 계정 : pay_dev
+
+공용 비번 : developer
+
+ 
+
+감사합니다. 
+
+
+
+		       	 				</textarea>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	
+	
+</body>
+</html>

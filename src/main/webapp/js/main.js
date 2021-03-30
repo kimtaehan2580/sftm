@@ -51,8 +51,6 @@ var initDoucument = function(){
 	}
 	//USER 정보 설정 
 	
-//	$("#titleMain").text(name + "(" + team_name + ")님 환영합니다.");
-	
 	
 	if( getCookie("role_code") == "ADMIN" || getCookie("role_code") == "ETC"){
 		
@@ -61,7 +59,7 @@ var initDoucument = function(){
 		
 		ajaxTranCall("stat/selectMainDataForAdmin.do", { 
 			
-			project_id:$("#selectProject").val(), base_date:new Date().toISOString().substring(0, 10).replace(/-/gi, "") }, callbackS, callBackE);
+			project_id:$("#selectProject").val(), base_date:new Date().toISOString().substring(0, 10).replace(/-/gi, "") }, callbackS, callbackE);
 		
 	}
 	else{
@@ -70,7 +68,7 @@ var initDoucument = function(){
 		
 		
 		//1. push 이력 조회 서비스 호출
-		ajaxTranCall("push/selectPushListByUser.do", {}, callbackS, callBackE);
+		ajaxTranCall("push/selectPushListByUser.do", {}, callbackS, callbackE);
 		
 		
 		//2. 개발자/Admin 구분하여 처리진행
@@ -80,11 +78,11 @@ var initDoucument = function(){
 			
 			ajaxTranCall("stat/selectMainDataForTester.do", 
 				{
-					reg_user : user_id, 
+					test_user : user_id, 
 					team_id:team_id,
 					project_id:$("#selectProject").val()
 				}, 
-			callbackS, callBackE);
+			callbackS, callbackE);
 		
 		}
 		else if(getCookie('role_code') == "DEV"){
@@ -93,11 +91,11 @@ var initDoucument = function(){
 			
 			ajaxTranCall("stat/selectMainDataForDeveloper.do", 
 				{
-					defect_user : user_id, 
+					dev_user : user_id, 
 					team_id:team_id,
 					project_id:$("#selectProject").val()
 				}, 
-			callbackS, callBackE);
+			callbackS, callbackE);
 		}
 		else{
 			
@@ -117,29 +115,34 @@ var initDoucument = function(){
 					location.href="/ntm?path=defect/excute&state=C001_01";
 				}
 				else if(getCookie('role_code') == "DEV"){
-					location.href="/ntm?path=defect/defect&selectDefectCode=2";
+					location.href="/ntm?path=defect/defect&selectDefectCode=1&dev_id="+user_id; //개인 미처리 내용 확인
 				}
 				break;
 				
 			case "btnQuick2":
 				if(getCookie('role_code') == "TEST"){
-					location.href="/ntm?path=defect/excute&state=C001_02";
+					location.href="/ntm?path=defect/defect&selectDefectCode=3&test_id="+user_id //개발지연건
 				}
 				else if(getCookie('role_code') == "DEV"){
-					location.href="/ntm?path=defect/defect&selectDefectCode=3";
+					location.href="/ntm?path=defect/defect&selectDefectCode=3&dev_id="+user_id //개발지연건
 				}
 				
 				break;
 				
 			case "btnQuick3":
 				if(getCookie('role_code') == "TEST"){
-					location.href="/ntm?path=defect/excute&state=C001_02&isCheckTest=1";
+					location.href="/ntm?path=defect/defect&selectDefectCode=2&test_id="+user_id; //개인 미처리 내용 확인
 				}
 				
 				else if(getCookie('role_code') == "DEV"){
-					location.href="/ntm?path=defect/defect&selectDefectCode=1";
+					location.href="/ntm?path=defect/defect&team_id="+team_id+"&selectDefectCode=4"; //미배정건
 				}
 				
+				break;
+				
+				
+			case "btnGo": //'바로가기' 버튼
+				location.href="/ntm?" + $("#event").val(); //개인 미처리 내용 확인
 				break;
 			}
 		});
@@ -156,6 +159,15 @@ var initDoucument = function(){
 						$("#whatday").html(dataJson.reg_date_str);
 						$("#pushMsg").html(msg.replace(/\n/gi, "<br/>"));
 						
+						
+						if(dataJson.event == null){
+							$("#btnGo").hide();
+						}
+						else{
+							$("#btnGo").show();
+						}
+						
+						$("#event").val(dataJson.event);
 						$('#modalPush').modal();
 					}
 				});
@@ -176,12 +188,9 @@ var callbackS = function(tran, data){
 		var listDf = data["listDf"];
 		var listChart1 = new Array();
 		var listChart2 = new Array();
-//		debugger;
-
-
-		$("#btnQuick1").text((Number(listDf[1].user) + Number(listDf[6].user)) + "건의 미처리된 결함");
-		$("#btnQuick2").text(listDf[4].user + "건의 개발지연중인 결");
-		$("#btnQuick3").text((Number(listDf[0].team) ) + "건의 배정대기중인 결함");
+		$("#btnQuick1").text("미처리 결함(개인) : " + (Number(listDf[1].user) + Number(listDf[6].user)) + "건");
+		$("#btnQuick2").text("지연된 결함(개인) : " + listDf[4].user + "건");
+		$("#btnQuick3").text("미배정된 결함(팀) : " + (Number(listDf[0].team) ) + "건");
 		//labels: ['프로젝트', team_name, name ]
 		listChart1.push(
 			(
@@ -279,9 +288,9 @@ var callbackS = function(tran, data){
 		var listChart2 = new Array();
 				
 		
-		$("#btnQuick1").text(listSc[0].user + "건의 수행대기중인 테스트 케이스");
-		$("#btnQuick2").text(listSc[1].user + "건의 수행중인 테스트 케이스");
-		$("#btnQuick3").text((Number(listDf[2].user) + Number(listDf[3].user)) + "건의 현업확인이 필요한 결함");
+		$("#btnQuick1").text("미수행 케이스(개인) : " + listSc[0].user + "건");
+		$("#btnQuick2").text("지연된 결함(개인) : " + listDf[4].user + "건");
+		$("#btnQuick3").text("미처리 결함(개인) : " + (Number(listDf[2].user) + Number(listDf[3].user)) + "건");
 		
 		 
 		listChart1.push( (Number(listSc[2].project)/(Number(listSc[0].project) + Number(listSc[1].project) + Number(listSc[2].project)) *100).toFixed(2));
@@ -319,7 +328,7 @@ var callbackS = function(tran, data){
 	
 	
 		var chDonutData1 = {
-			labels: ['수행대기', '수행중', '수행완료'], 
+			labels: ['수행전', 'PASS', 'FAIL', 'NE'], 
 			datasets: [ 
 				{ 
 					backgroundColor: colors.slice(0,3), 
@@ -352,7 +361,7 @@ var callbackS = function(tran, data){
 			    { "targets": 2, "className": "text-center" } 
 			],
 	        "language": {
-		        "emptyTable": "데이터가 없어요." , "search": ""
+		        "emptyTable": "데이터가 존재하지 않습니다." , "search": ""
 		    },
 		    
 			lengthChange: false, 	// 표시 건수기능 숨기기
@@ -371,7 +380,7 @@ var callbackS = function(tran, data){
 //	             {
 //	                text: '재조회',
 //	                action: function ( e, dt, node, config ) {
-//						ajaxTranCall("push/selectPushListByUser.do", {}, callbackS, callBackE);
+//						ajaxTranCall("push/selectPushListByUser.do", {}, callbackS, callbackE);
 //	                }
 //	            } 
 	        ]
@@ -502,7 +511,7 @@ common.tableMappingAfterProcess();
 	}
 }
 
-var callBackE = function(tran, data){
+var callbackE = function(tran, data){
 	 
 }
 

@@ -16,7 +16,7 @@ var projectTable;
 function initDoucument(){
 	
 	//단위/통합테스트 리스트 조회
-	ajaxTranCall("code/selectProjectList.do", {}, callbackS, callBackE);
+	ajaxTranCall("code/selectProjectList.do", {}, callbackS, callbackE);
 	
 	
 	//팝업 저장 button click event handler
@@ -26,7 +26,7 @@ function initDoucument(){
 		if(!checkProjectDate(dataJson)){
 			return;
 		}
-		ajaxTranCall("code/insertProject.do", dataJson, callbackS, callBackE);
+		ajaxTranCall("code/insertProject.do", dataJson, callbackS, callbackE);
 	});
 	
 	//팝업 수정 button click event handler
@@ -35,7 +35,7 @@ function initDoucument(){
 		if(!checkProjectDate(dataJson)){
 			return;
 		}
-		ajaxTranCall("code/updateProject.do", dataJson, callbackS, callBackE);
+		ajaxTranCall("code/updateProject.do", dataJson, callbackS, callbackE);
 	});
 	
 }
@@ -84,7 +84,7 @@ var callbackS = function(tran, data){
 	            { "mDataProp" : 'reg_date' } 
 	        ],
 	        "language": {
-		        "emptyTable": "데이터가 없어요." , "search": ""
+		        "emptyTable": "데이터가 존재하지 않습니다." , "search": ""
 		    },
 		    'columnDefs': [
 			    { "targets": 1, "className": "text-center" },
@@ -111,7 +111,7 @@ var callbackS = function(tran, data){
 //	                text: '조회',
 //	                className: 'btn btn-outline-info all',
 //	                action: function ( e, dt, node, config ) {
-//						ajaxTranCall("code/selectProjectList.do", {}, callbackS, callBackE);
+//						ajaxTranCall("code/selectProjectList.do", {}, callbackS, callbackE);
 //	                }
 //	            },
 	            {
@@ -152,7 +152,7 @@ var callbackS = function(tran, data){
 		alert(data["message"])
 		
 		//단위/통합테스트 리스트 조회
-		ajaxTranCall("code/selectProjectList.do", {}, callbackS, callBackE);
+		ajaxTranCall("code/selectProjectList.do", {}, callbackS, callbackE);
 	
 	
 		break;
@@ -166,7 +166,7 @@ var callbackS = function(tran, data){
  * @param {data} 결과 Json 데이터
  * @returns {} 
  */ 
-var callBackE = function(tran, data){
+var callbackE = function(tran, data){
 	
 }
 
@@ -307,7 +307,7 @@ var projectModalOpen = function(type){
 			return;
 		}
 		
-		ajaxTranCall("code/deleteProject.do", selectedJsonData, callbackS, callBackE);
+		ajaxTranCall("code/deleteProject.do", selectedJsonData, callbackS, callbackE);
 		return;	
 	}
 	

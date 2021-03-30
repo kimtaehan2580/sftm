@@ -16,11 +16,11 @@ var userTableModal ;
 var initDoucument = function(){
 	
 	//teat list 전체 조회
-//	ajaxTranCall("user/selectTeamList.do", {}, callbackS, callBackE);
+//	ajaxTranCall("user/selectTeamList.do", {}, callbackS, callbackE);
 	basicInquiry();
 	
 	//role list 조회
-	ajaxTranCall("user/searchRoleList.do", {}, callbackS, callBackE);
+	ajaxTranCall("user/searchRoleList.do", {}, callbackS, callbackE);
 	
 	//신규 저장버튼 click event
 	$("#btnSave").click(function(e){
@@ -28,7 +28,7 @@ var initDoucument = function(){
 		if(modal.modalCheckInputData("teamTableModal")){
 			
 			var dataJson = modal.convertModalToJsonObj("teamTableModal" );
-			ajaxTranCall("user/insertNewTeam.do", dataJson, callbackS, callBackE);
+			ajaxTranCall("user/insertNewTeam.do", dataJson, callbackS, callbackE);
 		}
 		
 	});
@@ -45,13 +45,13 @@ var initDoucument = function(){
 			});
 			var dataJson = modal.convertModalToJsonObj("teamTableModal" );
 			dataJson["id"] = id;
-			ajaxTranCall("user/updateTeamInfo.do", dataJson, callbackS, callBackE);
+			ajaxTranCall("user/updateTeamInfo.do", dataJson, callbackS, callbackE);
 		}
 	});
 	
 	//전체역할 select box 값 체인지
 	$("#role_code_main").on('change', function(){
-//		ajaxTranCall("user/selectTeamList.do", {role_code : $(this).val()}, callbackS, callBackE);
+//		ajaxTranCall("user/selectTeamList.do", {role_code : $(this).val()}, callbackS, callbackE);
 		basicInquiry();
 	});
 	
@@ -64,7 +64,7 @@ var initDoucument = function(){
 				if($(this).hasClass('selected') ){
 					var dataJson = teamTable.row($(this)).data();
 					
-					ajaxTranCall("user/selectTeamUserList.do", dataJson, callbackS, callBackE);
+					ajaxTranCall("user/selectTeamUserList.do", dataJson, callbackS, callbackE);
 					$("#team_id").val(dataJson.id);
 					$("#team_code_main").val(dataJson.id);
 					$("#team_id_select").val(dataJson.id);
@@ -88,7 +88,7 @@ var initDoucument = function(){
 								"team_id" : $("#team_id").val(),
 								"user_id" : dataJson.user_id
 						};
-						ajaxTranCall("user/updateTeamReader.do", jsonObj, callbackS, callBackE);
+						ajaxTranCall("user/updateTeamReader.do", jsonObj, callbackS, callbackE);
 					}
 				}
 			});
@@ -105,7 +105,7 @@ var initDoucument = function(){
 		var json = {
 			team_id : $("#team_id_select").val()		
 		};
-		ajaxTranCall("user/selectUserList.do", json, callbackS, callBackE);
+		ajaxTranCall("user/selectUserList.do", json, callbackS, callbackE);
 	});
 	
 	
@@ -122,7 +122,7 @@ var basicInquiry = function(){
 		{
 			role_code : $("#role_code_main").val()
 		}, 
-	callbackS, callBackE);
+	callbackS, callbackE);
 }
 
 
@@ -135,12 +135,12 @@ var callbackS = function(tran, data){
 		alert(data["message"]);
 		if(data["resultCode"] == "0000" ){
 			$('#modalTeamReader').modal("hide"); //닫기 
-			ajaxTranCall("user/selectTeamList.do", {}, callbackS, callBackE);
+			ajaxTranCall("user/selectTeamList.do", {}, callbackS, callbackE);
 			
 			var jsonObj = {
 					"id" : $("#team_id").val() 
 			};
-			ajaxTranCall("user/selectTeamUserList.do", jsonObj, callbackS, callBackE);
+			ajaxTranCall("user/selectTeamUserList.do", jsonObj, callbackS, callbackE);
 			
 		}
 		
@@ -329,12 +329,15 @@ var callbackS = function(tran, data){
 	                    $('#teamTable tr').each(function(){
 	           			 if ( $(this).hasClass('selected') ){
 	           				 isSelected = true;
-	           				 if(confirm(teamTable.row($(this)).data().name + " 을(를) 삭제하시겠습니까? \n 등록된 사용자도 같이 삭제됩니다.")){
-	           					var dataJson = {
-           							id : teamTable.row($(this)).data().id
-           						};
-           						ajaxTranCall("user/deleteTeamInfo.do", dataJson, callbackS, callBackE);
+	           				 
+	           				 if(teamTable.row($(this)).data().user_cnt > 0){
+	           				 	alert("팀에 소속된 사용자가 있는 경우 삭제가 불가합니다.");
+	           				 	return;
 	           				 }
+           					var dataJson = {
+       							id : teamTable.row($(this)).data().id
+       						};
+       						ajaxTranCall("user/deleteTeamInfo.do", dataJson, callbackS, callbackE);
 	           			 }
 	           			 
 	           			
@@ -362,10 +365,8 @@ var callbackS = function(tran, data){
 			if( list[i].code == 'ADMIN' &&  !common.isAdmin() ){
 				continue;
 			}
-			
 			appendSelectBox("role_code", list[i].code, list[i].name);
 			appendSelectBox("role_code_main", list[i].code, list[i].name);
-			
 		}
 		
 		
@@ -377,7 +378,7 @@ var callbackS = function(tran, data){
 		alert(data["message"]);
 		if(data["resultCode"] == "0000" ){
 			$('#modalTeam').modal("hide"); //닫기 
-			ajaxTranCall("user/selectTeamList.do", {}, callbackS, callBackE);
+			basicInquiry();
 		}
 		break;
 	}
@@ -432,6 +433,6 @@ var modalOpen = function(type, e, dt, node, config ) {
 	
 }
 
-function callBackE(tran,data){
-//	alert("callBackE");
+function callbackE(tran,data){
+//	alert("callbackE");
 }

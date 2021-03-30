@@ -19,18 +19,18 @@ function initDoucument(){
 	$("#selected_type_group_id").val();
 	$("#selected_type_group").val();
 		
-	ajaxTranCall("code/selectTypeGroupList.do", {}, callbackS, callBackE);
+	ajaxTranCall("code/selectTypeGroupList.do", {}, callbackS, callbackE);
 	
 	//테스트 케이스 유형 팝업 버튼 
 	$("#btnSave").click(function(e){
 		var dataJson = modal.convertModalToJsonObj("modalGroupTable" );
-		ajaxTranCall("code/insertTypeGroup.do", dataJson, callbackS, callBackE);
+		ajaxTranCall("code/insertTypeGroup.do", dataJson, callbackS, callbackE);
 	});
 	
 	$("#btnUpdate").click(function(e){
 		var dataJson = modal.convertModalToJsonObj("modalGroupTable" );
 		dataJson.id = $("#type_group_id").val();
-		ajaxTranCall("code/updateTypeGroup.do", dataJson, callbackS, callBackE);
+		ajaxTranCall("code/updateTypeGroup.do", dataJson, callbackS, callbackE);
 	});
 	
 	//테스트 케이스 유형 테이블 클릭시 
@@ -39,7 +39,7 @@ function initDoucument(){
 			$('#groupTable tr').each(function(){
 				if($(this).hasClass('selected') ){
 					var dataJson = groupTable.row($(this)).data(); // modal.convertModalToJsonObj("groupTable" );
-					ajaxTranCall("code/selectTypeList.do", dataJson, callbackS, callBackE);
+					ajaxTranCall("code/selectTypeList.do", dataJson, callbackS, callbackE);
 					
 					$("#selected_type_group_id").val(dataJson.id);
 					$("#selected_type_group").val(dataJson.type_group);
@@ -54,13 +54,13 @@ function initDoucument(){
 	$("#btnSave2").click(function(e){
 		var dataJson = modal.convertModalToJsonObj("modalTypeTable" );
 		dataJson.type_group_id = $("#selected_type_group_id").val();
-		ajaxTranCall("code/insertType.do", dataJson, callbackS, callBackE);
+		ajaxTranCall("code/insertType.do", dataJson, callbackS, callbackE);
 	});
 	
 	$("#btnUpdate2").click(function(e){
 		var dataJson = modal.convertModalToJsonObj("modalTypeTable" );
 		dataJson.type_group_id = $("#selected_type_group_id").val();
-		ajaxTranCall("code/updateType.do", dataJson, callbackS, callBackE);
+		ajaxTranCall("code/updateType.do", dataJson, callbackS, callbackE);
 	});
 }
 
@@ -85,7 +85,7 @@ var callbackS = function(tran, data){
 		alert(data["message"]);
 		if(data["resultCode"] == "0000" ){
 			$('div.modal').modal("hide"); //닫기 
-			ajaxTranCall("code/selectTypeGroupList.do", {}, callbackS, callBackE);
+			ajaxTranCall("code/selectTypeGroupList.do", {}, callbackS, callbackE);
 		}
 		break;
 		
@@ -98,8 +98,8 @@ var callbackS = function(tran, data){
 		alert(data["message"]);
 		if(data["resultCode"] == "0000" ){
 			$('div.modal').modal("hide"); //닫기 
-			ajaxTranCall("code/selectTypeGroupList.do", {}, callbackS, callBackE);
-			ajaxTranCall("code/selectTypeList.do", {"id": $("#selected_type_group_id").val() }, callbackS, callBackE);
+			ajaxTranCall("code/selectTypeGroupList.do", {}, callbackS, callbackE);
+			ajaxTranCall("code/selectTypeList.do", {"id": $("#selected_type_group_id").val() }, callbackS, callbackE);
 		}
 		
 		
@@ -127,7 +127,7 @@ var callbackS = function(tran, data){
 			    { "targets": 2, "className": "text-center" }
 			],
 	        "language": {
-		        "emptyTable": "데이터가 없어요." , "search": ""
+		        "emptyTable": "데이터가 존재하지 않습니다." , "search": ""
 		    },
 		    
 			lengthChange: false, 	// 표시 건수기능 숨기기
@@ -147,7 +147,7 @@ var callbackS = function(tran, data){
 //	                text: '조회',
 //	                className: 'btn btn-outline-info all',
 //	                action: function ( e, dt, node, config ) {
-//						ajaxTranCall("code/selectTypeGroupList.do", {}, callbackS, callBackE);
+//						ajaxTranCall("code/selectTypeGroupList.do", {}, callbackS, callbackE);
 //	                }
 //	            },
 				{
@@ -175,7 +175,7 @@ var callbackS = function(tran, data){
 								isSelected = true;
 								var dataJson = groupTable.row($(this)).data();
 								if(confirm(dataJson.type_group + " 을(를) 삭제하시겠습니까?\n삭제시에 상세내용도 전부 삭제됩니다.")){
-									ajaxTranCall("code/deleteTypeGroup.do", dataJson, callbackS, callBackE);
+									ajaxTranCall("code/deleteTypeGroup.do", dataJson, callbackS, callbackE);
 								}
 								
 								
@@ -192,7 +192,7 @@ var callbackS = function(tran, data){
 		common.tableMappingAfterProcess();
 		
 		callbackS("code/selectTypeList.do", {"list":[]});
-//		ajaxTranCall("code/selectTypeList.do", {}, callbackS, callBackE);
+//		ajaxTranCall("code/selectTypeList.do", {}, callbackS, callbackE);
 		break;
 		
 		
@@ -226,7 +226,7 @@ var callbackS = function(tran, data){
 			    { "targets": 3, "className": "text-center" }
 			],
 	        "language": {
-		        "emptyTable": "데이터가 없어요." , "search": ""
+		        "emptyTable": "데이터가 존재하지 않습니다." , "search": ""
 		    },
 		    
 			lengthChange: false, 	// 표시 건수기능 숨기기
@@ -247,7 +247,7 @@ var callbackS = function(tran, data){
 //					className: 'btn btn-outline-secondary',
 //	                action: function ( e, dt, node, config ) {
 //		
-//						ajaxTranCall("code/selectTypeList.do", {"id": $("#selected_type_group_id").val() }, callbackS, callBackE);
+//						ajaxTranCall("code/selectTypeList.do", {"id": $("#selected_type_group_id").val() }, callbackS, callbackE);
 //	                }
 //	            },
 	            {
@@ -274,7 +274,7 @@ var callbackS = function(tran, data){
 								isSelected = true;
 								var dataJson = typeTable.row($(this)).data();
 								if(confirm(dataJson.case_name + " 을(를) 삭제하시겠습니까?\n삭제시에 상세내용도 전부 삭제됩니다.")){
-									ajaxTranCall("code/deleteType.do", dataJson, callbackS, callBackE);
+									ajaxTranCall("code/deleteType.do", dataJson, callbackS, callbackE);
 								}
 								
 								
@@ -305,7 +305,7 @@ var callbackS = function(tran, data){
  * @param {data} 결과 Json 데이터
  * @returns {} 
  */ 
-var callBackE = function(tran, data){
+var callbackE = function(tran, data){
 	
 }
 

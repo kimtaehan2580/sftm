@@ -12,7 +12,7 @@ var groupTable, codeTable;
  */
 var initDoucument = function(){
 	//팀정보 조회합니다.
-	ajaxTranCall("code/selectCodeGroupList.do", {}, callbackS, callBackE);
+	ajaxTranCall("code/selectCodeGroupList.do", {}, callbackS, callbackE);
 	
 	//서브시스템 Table click event
 	$('#groupTable').on('click', function(){
@@ -21,7 +21,7 @@ var initDoucument = function(){
 			$('#groupTable tr').each(function(){
 				if($(this).hasClass('selected') ){
 					var dataJson = groupTable.row($(this)).data(); 
-					ajaxTranCall("code/selectCodeList.do", dataJson, callbackS, callBackE);
+					ajaxTranCall("code/selectCodeList.do", dataJson, callbackS, callbackE);
 				}
 			});
 		}, 100);
@@ -31,11 +31,11 @@ var initDoucument = function(){
 	//신규 저장버튼 click event
 	$("#btnSave").click(function(e){
 		var dataJson = modal.convertModalToJsonObj("modalGroupTable" );
-		ajaxTranCall("code/insertCodeGroup.do", dataJson, callbackS, callBackE);
+		ajaxTranCall("code/insertCodeGroup.do", dataJson, callbackS, callbackE);
 	});
 	$("#btnUpdate").click(function(e){
 		var dataJson = modal.convertModalToJsonObj("modalGroupTable" );
-		ajaxTranCall("code/updateCodeGroup.do", dataJson, callbackS, callBackE);
+		ajaxTranCall("code/updateCodeGroup.do", dataJson, callbackS, callbackE);
 	});
 	//Group modal event
 	//신규 저장버튼 click event
@@ -51,7 +51,7 @@ var initDoucument = function(){
 			}
 		});
 		
-		ajaxTranCall("code/insertCode.do", dataJson, callbackS, callBackE);
+		ajaxTranCall("code/insertCode.do", dataJson, callbackS, callbackE);
 	});
 	$("#btnUpdateCode").click(function(e){
 		var dataJson = modal.convertModalToJsonObj("modalCodeTable" );
@@ -64,7 +64,7 @@ var initDoucument = function(){
 				dataJson["code_group"] = dataJson2.code_group;
 			}
 		});
-		ajaxTranCall("code/updateCode.do", dataJson, callbackS, callBackE);
+		ajaxTranCall("code/updateCode.do", dataJson, callbackS, callbackE);
 	});
 	
 	
@@ -80,7 +80,7 @@ var callbackS = function(tran, data){
 		alert(data["message"]);
 		if(data["resultCode"] == "0000" ){
 			$('div.modal').modal("hide"); //닫기 
-			ajaxTranCall("code/selectCodeGroupList.do", {}, callbackS, callBackE);
+			ajaxTranCall("code/selectCodeGroupList.do", {}, callbackS, callbackE);
 		}
 		break;
 		
@@ -92,7 +92,7 @@ var callbackS = function(tran, data){
 			$('#groupTable tr').each(function(){
 				if($(this).hasClass('selected') ){
 					var dataJson = groupTable.row($(this)).data(); 
-					ajaxTranCall("code/selectCodeList.do", dataJson, callbackS, callBackE);
+					ajaxTranCall("code/selectCodeList.do", dataJson, callbackS, callbackE);
 				}
 			});
 		}
@@ -120,7 +120,7 @@ var callbackS = function(tran, data){
 			    { "targets": 5, "className": "text-center" }
 			],
 	        "language": {
-		        "emptyTable": "데이터가 없어요." , "search": ""
+		        "emptyTable": "데이터가 존재하지 않습니다." , "search": ""
 		    },
 		    
 			lengthChange: false, 	// 표시 건수기능 숨기기
@@ -143,7 +143,7 @@ var callbackS = function(tran, data){
 //						$('#groupTable tr').each(function(){
 //							if($(this).hasClass('selected') ){
 //								var dataJson = groupTable.row($(this)).data(); 
-//								ajaxTranCall("code/selectCodeList.do", dataJson, callbackS, callBackE);
+//								ajaxTranCall("code/selectCodeList.do", dataJson, callbackS, callbackE);
 //							}
 //						});
 //	                }
@@ -181,7 +181,7 @@ var callbackS = function(tran, data){
 			    { "targets": 3, "className": "text-center" }
 			],
 	        "language": {
-		        "emptyTable": "데이터가 없어요." , "search": ""
+		        "emptyTable": "데이터가 존재하지 않습니다." , "search": ""
 		    },
 		    
 			lengthChange: false, 	// 표시 건수기능 숨기기
@@ -202,7 +202,7 @@ var callbackS = function(tran, data){
 //	                text: '조회',
 //					className: 'btn btn-outline-secondary',
 //	                action: function ( e, dt, node, config ) {
-//						ajaxTranCall("code/selectCodeGroupList.do", {}, callbackS, callBackE);
+//						ajaxTranCall("code/selectCodeGroupList.do", {}, callbackS, callbackE);
 //	                }
 //	            },
 	            
@@ -227,7 +227,7 @@ var callbackS = function(tran, data){
 	
 }
 
-var callBackE = function(tran, data){
+var callbackE = function(tran, data){
 	
 }
 

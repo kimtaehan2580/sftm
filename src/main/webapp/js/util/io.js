@@ -6,7 +6,6 @@
 function ajaxTranCall(tran, jsonBody, succeesCallback, errorCallback, progrssbar){
 	
 	jsonBody["cookieUserId"] = getCookie("user_id");
-	
 	if(progrssbar != false){
 		$("#loader").show();
 	}
@@ -65,13 +64,13 @@ var ajaxTranCallWithFile = function(tran, data,  succeesCallback, errorCallback)
         data: data,
         processData: false,
         contentType: false,
-//        cache: false,
         timeout: 600000,
         success: function (resData) {
         	$("#loader").hide();
+        	
     		var tempJson = {
     			"imgkey":	resData,
-    			"crud" : data["crud"]
+    			"crud"   : data["crud"]
     		}
     		succeesCallback(tran, tempJson);
         },
@@ -137,7 +136,7 @@ var ajaxFormExcel = function (tran , id, func){
  * @param {data} 결과 Json 데이터
  * @returns {} 
  */ 
-var jspCallbackS = function(tran, data){
+var jspcallbackS = function(tran, data){
 	 
 	if(tran == "code/selectProjectList.do"){
 		
@@ -175,7 +174,7 @@ var jspCallbackS = function(tran, data){
   * @param {data} 결과 Json 데이터
   * @returns {} 
   */ 
- var jspCallbackE = function(tran, data){
+ var jspcallbackE = function(tran, data){
  	 
  } 
 

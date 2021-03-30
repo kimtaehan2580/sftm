@@ -47,9 +47,6 @@ public class B_MakeStatInfo {
 		log.info("Batch Time : " + yesterday);
 		log.info("************************************************");
 		
-		
-	
-		
 		List<Map<String, Object>>  listUser = sqlSession.selectList("StatDAO.selectStatUserListBatch");
 		
 		Map<String, Object> deleteQueryMap = new HashMap<String, Object>();

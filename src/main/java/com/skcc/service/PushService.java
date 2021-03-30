@@ -170,8 +170,124 @@ public class PushService {
 		return true;
 	}
 	
+	
 	/**
-	 * Defect 신규등록 상태변경시 호출하도록 하였습니다. 
+	 * 결함상태에 따른 PUSH 메시지 설정
+	 *
+	 * @param defect_id : 결함 id
+	 * @param sender_id : 발송자 명
+	 * @return Map (response)
+	 * @exception 예외사항한 라인에 하나씩
+	 */
+	public boolean sendPushMessage_defect( int defect_id, String sender_id ) {
+
+		Map defectMap = sqlSession.selectOne("PushDAO.selectDefectInfoForPush", defect_id);
+		
+		if(defectMap != null) {
+			
+			String defectTitle  = (String) defectMap.get("title");
+			String defect_code 	= (String) defectMap.get("defect_code");
+			String reader_id 	= (String) defectMap.get("reader_id");
+			String dev_id 		= (String) defectMap.get("dev_id");
+			String test_id 		= (String) defectMap.get("test_id");
+			long team_id 		= (long) defectMap.get("team_id");
+			
+			
+			
+			Map<String, String> pushMap = new HashMap<String, String>();
+			StringBuffer sbEvent = new StringBuffer();
+			pushMap.put("push_code", "P001_01"); //push 코드 (결함)
+			sbEvent.append("path=defect/defect");
+			
+			// test_id/dev_id/defect_id
+			// &test_id=lance.m&defect_id=13
+			// &dev_id=lance.m&defect_id=13
+			//B001_01 결함등록시 담당업무 PL에서 PUSH 전송 
+			if("B001_01".equals(defect_code)) {
+				pushMap.put("title", "담당 개발자 없는 결함이 등록되었습니다.."); //Title
+				pushMap.put("recv_user", reader_id);   //수신자 팀리더
+				pushMap.put("reg_user",  sender_id);   //발신자 
+
+				sbEvent.append("&team_id=").append(team_id).append("&selectDefectCode=4");
+			}
+			//B001_02 배정완료시 당당개발자에게 PUSH 전송 
+			else if("B001_02".equals(defect_code)) {
+				pushMap.put("title", "결함이 배정되었습니다."); 
+				pushMap.put("recv_user", dev_id);      //수신자 개발자
+				pushMap.put("reg_user",  sender_id);   //발신자 
+
+				sbEvent.append("&dev_id=").append(dev_id).append("&defect_id=").append(defect_id);
+			}
+			//조치완료, 미조치건의 경우 담당 현업에게 PUSH 전송
+			else if("B001_03".equals(defect_code)) {
+				pushMap.put("title", "결함이 조치되었습니다."); 
+				pushMap.put("recv_user", test_id);      //수신자 현업
+				pushMap.put("reg_user",  sender_id);   //발신자 
+				
+
+				sbEvent.append("&test_id=").append(test_id).append("&defect_id=").append(defect_id);
+			}
+			else if("B001_04".equals(defect_code)) {
+				pushMap.put("title", "결함이 조치되었습니다."); 
+				pushMap.put("recv_user", test_id);      //수신자 현업
+				pushMap.put("reg_user",  sender_id);   //발신자 
+				
+
+				sbEvent.append("&test_id=").append(test_id).append("&defect_id=").append(defect_id);
+			}
+			//B001_07 결함반려시에 당당개발자에게 PUSH 전송 
+			else if("B001_07".equals(defect_code)) {
+				pushMap.put("title", "결함조치 내용이 반려되었습니다."); 
+				pushMap.put("recv_user", dev_id);      //수신자 개발자
+				pushMap.put("reg_user",  sender_id);   //발신자 
+
+				sbEvent.append("&dev_id=").append(dev_id).append("&defect_id=").append(defect_id);
+			}
+			
+			else {
+				
+				return true;
+			}
+			
+
+			String test_user_name 		= (String) defectMap.get("test_user_name");
+			String dev_user_name 		= (String) defectMap.get("dev_user_name");
+			String test_defect_name 	= (String) defectMap.get("test_defect_name");
+			String defect_code_name 	= (String) defectMap.get("defect_code_name");
+			
+			SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm");
+			Date time = new Date();
+			String time1 = format1.format(time);
+			
+			
+			StringBuffer sbMsg = new StringBuffer();
+			sbMsg.append("결함제목 : "); sbMsg.append(defectTitle);
+//			sbMsg.append("\n결함유형 : "); sbMsg.append(test_defect_name);
+			sbMsg.append("\n결함상태 : "); sbMsg.append(defect_code_name);
+//			sbMsg.append("\n담당현업 : "); sbMsg.append(test_user_name);
+//			sbMsg.append("\n담당개발 : "); sbMsg.append(dev_user_name);
+			sbMsg.append("\n발송시각 : "); sbMsg.append(time1);
+
+			pushMap.put("msg", sbMsg.toString());
+			pushMap.put("event", sbEvent.toString());
+			
+			
+			int result = sqlSession.insert("PushDAO.insertPush", pushMap);
+			
+			if(result != 1) {
+				return false;
+			}
+			return true;
+			
+		}
+		else {
+			return false;
+		}
+	}
+	
+	
+	/**
+	 * Defect 신규등록 상태변경시 호출하도록 하였습니다.  (미사용)
 	 *
 	 * @param Map (request)
 	 * @return Map (response)

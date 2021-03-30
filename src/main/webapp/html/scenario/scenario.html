@@ -5,7 +5,7 @@
 	
 	<div class="row">
 		<div class="col-md-7">
-			<h6 id="grid-options" class="title">SFTM 2020 > 사용자 > 시나리오</h6> 
+			<h6 id="grid-options" class="title">SFTM 2020 > 시나리오 > 시나리오</h6> 
 			<table class="table table-select">
 				<thead>
 					<tr>
@@ -51,7 +51,7 @@
 		</div>
 		<div class="col-md-5">
 		
-			 <h6 id="grid-options"  class="title">SFTM 2020 > 사용자 > 시나리오 > 테스트케이스 </h6> 
+			 <h6 id="grid-options"  class="title">SFTM 2020 > 시나리오 > 시나리오 > 테스트케이스 </h6> 
 			 <table class="table table-select">
 				<thead>
 					<tr>
@@ -70,10 +70,10 @@
 			<table id="tableTestcase" class="table table-bordered" style="width:100%">
 		        <thead>
 		            <tr>
-		                <th style="width:50%">케이스명</th>
-		                <th>테스터</th>
-		                <th>개발자</th>
-		                <th>상태</th>
+		                <th style="width:55%">테스트케이스</th>
+		                <th style="width:15%">현업</th>
+		                <th style="width:15%">개발자</th>
+		                <th style="width:15%">상태</th>
 		            </tr>
 		        </thead>
 		    </table>
@@ -96,8 +96,8 @@
 							<table id="seTableModal"  class="table table-bordered" style="width:100%">
 						       <tbody>
 		          				  <tr >
-						       	 		<th>* 서브시스템</th>
-						       	 		<td>
+						       	 		<th colspan="4">* 서브시스템</th>
+						       	 		<td colspan="8">
 						       	  			<select  class="form-control required" name="modalSelectA" id="modalSelectA" title="선택 구분" style="width:100%">
 													<option selected="selected"  value="">선택해주세요.</option>
 											</select>
@@ -105,16 +105,16 @@
 						       	  		
 						       	  </tr>	
 						       	  <tr >
-						       	 		<th>* 업무구분</th>
-						       	  		<td>
+						       	 		<th colspan="4">* 업무구분</th>
+						       	  		<td colspan="8">
 						       	  			<select  class="form-control required" name="modalSelectB" id="modalSelectB" title="선택 구분" style="width:100%">
 													<option selected="selected" value="">선택해주세요.</option>
 											</select>
 										</td>	
 						       	  </tr>	
 						       	  <tr >
-						       	 		<th>* 대상업무</th>
-						       	  		<td>
+						       	 		<th colspan="4">* 대상업무</th>
+						       	  		<td colspan="8">
 						       	  			<select  class="form-control required" name="modalSelectC" id="modalSelectC" title="선택 구분" style="width:100%">
 													<option selected="selected" value="">선택해주세요.</option>
 											</select>
@@ -122,20 +122,20 @@
 						       	  </tr>	
 						       	  
 						       	  <tr>
-						       	 		<th>* 시나리오명</th>
-						       	  		<td>
+						       	 		<th colspan="4">* 시나리오명</th>
+						       	  		<td colspan="8">
 						       	  			<input id="scenario_name" class="form-control required" style="width:100%" maxlength="30"/>
 						       	  			<input id="scenario_id" style="display:none"/>
 						       	  		</td>	
 						       	  </tr>	
 						       	  
 						       	   <tr>
-						       	 		<th>설명</th>
-						       	  		<td><textarea id="description" class="form-control"  rows="5" style="width:100%"   ></textarea></td>	
+						       	 		<th colspan="4">설명</th>
+						       	  		<td colspan="8"><textarea id="description" class="form-control"  rows="5" style="width:100%"   ></textarea></td>	
 						       	  </tr>		
 						       	   <tr>
-						       	 		<th>* 타입</th>
-						       	  		<td>
+						       	 		<th colspan="4">* 타입</th>
+						       	  		<td colspan="8">
 						       	  			<select  class="form-control required" name="is_batch" id="is_batch" title="선택 구분" style="width:100%">
 													<option selected="selected"  value="N">온라인</option>
 													<option value="Y">배치</option>
@@ -143,29 +143,29 @@
 										</td>	
 						       	  </tr>	
 						       	  <tr>
-						       	 		<th>화면명/배치아이디</th>
-						       	  		<td><input id="scenario_code" class="form-control" style="width:100%" maxlength="20"  /></td>	
+						       	 		<th colspan="4">화면명/배치아이디</th>
+						       	  		<td colspan="8"><input id="scenario_code" class="form-control" style="width:100%" maxlength="20"  /></td>	
 						       	  </tr>	
 						       	  
 						       	  <tr id="trCasetype">
-						       	 		<th>케이스 유형</th>
-						       	  		<td>
+						       	 		<th colspan="4">케이스 유형</th>
+						       	  		<td colspan="8">
 						       	  			<select  class="form-control" name="case_pattern" id="case_pattern" title="선택 구분" style="width:100%">
 													<option selected="selected"  value="">직접입력</option>
 											</select>
 										</td>	
 						       	  </tr>	
 						       	  <tr id="trTest">
-						       	 		<th>테스터</th>
-						       	 		<td>
+						       	 		<th colspan="4">테스터</th>
+						       	 		<td colspan="8">
 											<input id="sc_tester" class="form-control" style="display:none;"   />
 				       	 					<input id="sc_tester_nm" class="form-control" readonly="true"/>
 						       	  			* 우측 화면에서 선택해주세요
 						       	  		</td>	
 						       	  </tr>	
 						       	  <tr id="trDev">
-						       	 		<th>개발자</th>
-						       	 		<td>
+						       	 		<th colspan="4">개발자</th>
+						       	 		<td colspan="8">
 											<input id="sc_developer" class="form-control" style="display:none;"  />
 					       	 				<input id="sc_developer_nm" class="form-control" readonly="true"/>
 						       	  			* 우측 화면에서 선택해주세요
@@ -178,7 +178,6 @@
 							<label>* 선택한 케이스유형 option 값</label>
 							<textarea id="sc_desc" class="form-control"  rows="5" readonly="true"></textarea>	
 							</br>
-							
 							<label>* 담당 개발자/테스트 선택</label>
 							<table class="table table-select">
 								<thead>
@@ -242,12 +241,12 @@
 				<div class="modal-body">
 				
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-md-7">
 							<table id="tcTableModal" class="table table-bordered" style="width:100%">
 						       <tbody>
 		          				  <tr>
-						       	 		<th>*시나리오명</th>
-						       	 		<td>
+						       	 		<th colspan="4">*시나리오명</th>
+						       	 		<td colspan="8">
 						       	 			<input id="tc_scenario_code" class="" style="display:none;"   />
 						       	 			<input id="tc_scenario_id" class="" style="display:none;"   />
 						       	 			<input id="tc_scenario_name" class="form-control required" readonly="true" style="width:100%"/>
@@ -255,38 +254,38 @@
 						       	  </tr>	
 						       
 						       	  <tr>
-						       	 		<th>*테스트케이스 명</th>
-						       	 		<td>
+						       	 		<th colspan="4">*테스트케이스 명</th>
+						       	 		<td colspan="8">
 						       	 			<input id="testcase_id" class="" style="display:none;"   />
 						       	 			<input id="testcase_name" class="form-control required" style="width:100%"/>
 						       	  		</td>	
 						       	  </tr>	
 						       	  <tr>
-						       	 		<th>테스터</th>
-						       	 		<td>
+						       	 		<th colspan="4">테스터</th>
+						       	 		<td colspan="8">
 											<input id="tester" class="form-control" style="display:none;"   />
 				       	 					<input id="tester_nm" class="form-control" readonly="true"/>
 				       	 					* 우측 화면에서 선택해주세요
 						       	  		</td>	
 						       	  </tr>	
 						       	  <tr>
-						       	 		<th>개발자</th>
-						       	 		<td>
+						       	 		<th colspan="4">개발자</th>
+						       	 		<td colspan="8">
 											<input id="developer" class="form-control" style="display:none;"  />
 					       	 				<input id="developer_nm" class="form-control" readonly="true"/>
 					       	 				* 우측 화면에서 선택해주세요
 						       	  		</td>	
 						       	  </tr>		
 				       	  		 <tr>
-						       	 		<th>설명</th>
-						       	  		<td>
+						       	 		<th colspan="4">설명</th>
+						       	 		<td colspan="8">
 						       	  			<textarea id="tc_description" class="form-control"  rows="10" style="width:100%"   ></textarea>	
 						       	  		</td>	
 						       	  </tr>		 
 						       </tbody>
 						    </table>
 				    	</div>	
-						<div class="col-md-6">
+						<div class="col-md-5">
 							<label>* 담당 개발자/테스트 선택</label>
 							
 							<table class="table table-select">

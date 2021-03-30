@@ -24,9 +24,9 @@ function initDoucument (){
 	$("#case_id").val(preJson.case_id);
 	
 	//test case 상태코드 조회 
-	ajaxTranCall("code/selectCodeList.do", {"code_group":"C001"}, callBackS, callBackE);
-	ajaxTranCall("code/selectCodeList.do", {"code_group":"A001"}, callBackS, callBackE);
-	ajaxTranCall("code/selectCodeList.do", {"code_group":"B001"}, callBackS, callBackE);
+	ajaxTranCall("code/selectCodeList.do", {"code_group":"C001"}, callbackS, callbackE);
+	ajaxTranCall("code/selectCodeList.do", {"code_group":"A001"}, callbackS, callbackE);
+	ajaxTranCall("code/selectCodeList.do", {"code_group":"B001"}, callbackS, callbackE);
 	
 	
 	//btnStateUpdate : event
@@ -58,7 +58,7 @@ function initDoucument (){
 				return;
 			} 
 		}
-		ajaxTranCall("scenario/updateTestCaseOnlyState.do", jsonObject, callBackS, callBackE);
+		ajaxTranCall("scenario/updateTestCaseOnlyState.do", jsonObject, callbackS, callbackE);
 	});
 	//http://localhost:8080/ntm/?path=defect/excuteDefect&scenario=ANDROID&case=android_002&
 	
@@ -124,7 +124,7 @@ function initDoucument (){
 			crud = "I";
 			data.append("crud", crud);
 			
-			ajaxTranCallWithFile ("common/uploadFile.file", data,  callBackS, callBackE);
+			ajaxTranCallWithFile ("common/uploadFile.file", data,  callbackS, callbackE);
 		}
 		
 		
@@ -154,13 +154,13 @@ function initDoucument (){
 					
 					$("#imgkey").val(dataJson.imgkey);
 					//저장된 이미지 조회 
-					ajaxTranCall("defect/selectDefectDetail.do", dataJson, callBackS, callBackE);
+					ajaxTranCall("defect/selectDefectDetail.do", dataJson, callbackS, callbackE);
 					
 					//결함이력 조회 
-					ajaxTranCall("defect/selectDefectHistory.do", {"defect_id": dataJson["defect_id"]}, callBackS, callBackE);
+					ajaxTranCall("defect/selectDefectHistory.do", {"defect_id": dataJson["defect_id"]}, callbackS, callbackE);
 					
 					//테스트자동화 List 조회
-					ajaxTranCall("auto/selectAutoList.do", {"defect_id": dataJson["defect_id"]}, callBackS, callBackE);
+					ajaxTranCall("auto/selectAutoList.do", {"defect_id": dataJson["defect_id"]}, callbackS, callbackE);
 					
 					if($("#state").val() == "C001_03"){
 						$("#btnUpdate").hide();
@@ -281,7 +281,7 @@ function initDoucument (){
 			data.append("imgkey", 	$("#imgkey").val());
 			data.append("crud", crud);
 			
-			ajaxTranCallWithFile ("common/uploadFile.file", data,  callBackS, callBackE);
+			ajaxTranCallWithFile ("common/uploadFile.file", data,  callbackS, callbackE);
 		}
 	});
 	
@@ -296,7 +296,6 @@ function initDoucument (){
 		else{
 			
 		}
-		
 	});
 	
 	
@@ -306,7 +305,7 @@ function initDoucument (){
 			$('#modalTableautoTest tr').each(function(){
 				if($(this).hasClass('selected'	) ){
 					var dataJson = modalTableautoTest.row($(this)).data(); 
-					ajaxTranCall("auto/selectAutoDetail.do", {"id": dataJson["id"]}, callBackS, callBackE);
+					ajaxTranCall("auto/selectAutoDetail.do", {"id": dataJson["id"]}, callbackS, callbackE);
 				}
 			});
 		}, 100);
@@ -350,7 +349,7 @@ function initDoucument (){
 
  
 
-var callBackS = function(tran, data){
+var callbackS = function(tran, data){
 	
 	switch(tran){
 		
@@ -378,8 +377,8 @@ var callBackS = function(tran, data){
 		
 		alert(data["message"]);
 		if(data["resultCode"] == "0000" ){
-//			ajaxTranCall("defect/selectDefectList.do", 		preJson, callBackS, callBackE);
-			ajaxTranCall("scenario/selectTestCaseList.do", 	preJson, callBackS, callBackE);
+//			ajaxTranCall("defect/selectDefectList.do", 		preJson, callbackS, callbackE);
+			ajaxTranCall("scenario/selectTestCaseList.do", 	preJson, callbackS, callbackE);
 		}
 		break;
 	
@@ -399,7 +398,7 @@ var callBackS = function(tran, data){
 			    { "targets": 1, "className": "text-center" } 
 			],
 	        "language": {
-		        "emptyTable": "데이터가 없어요." , "search": ""
+		        "emptyTable": "데이터가 존재하지 않습니다." , "search": ""
 		    },
 		    pageLength:5, //기본 데이터건수
 			lengthChange: false, 	// 표시 건수기능 숨기기
@@ -437,7 +436,7 @@ var callBackS = function(tran, data){
 
 			],
 	        "language": {
-		        "emptyTable": "데이터가 없어요." , "search": ""
+		        "emptyTable": "데이터가 존재하지 않습니다." , "search": ""
 		    },
 		    pageLength:5, //기본 데이터건수
 			lengthChange: false, 	// 표시 건수기능 숨기기
@@ -464,7 +463,7 @@ var callBackS = function(tran, data){
 		            { "mDataProp" : 'what_day' } 
 		        ],
 		        "language": {
-			        "emptyTable": "데이터가 없어요." , "search": ""
+			        "emptyTable": "데이터가 존재하지 않습니다." , "search": ""
 			    },
 // 			
 			lengthChange: false, 	// 표시 건수기능 숨기기
@@ -566,7 +565,7 @@ var callBackS = function(tran, data){
 			
 			
 			
-			ajaxTranCall("scenario/selectTestCaseList.do", 	preJson, callBackS, callBackE);
+			ajaxTranCall("scenario/selectTestCaseList.do", 	preJson, callbackS, callbackE);
 		}
 		
 		
@@ -598,7 +597,7 @@ var callBackS = function(tran, data){
 
 			],
 	        "language": {
-		        "emptyTable": "데이터가 없어요." , "search": ""
+		        "emptyTable": "데이터가 존재하지 않습니다." , "search": ""
 		    },
 		    
 			lengthChange: false, 	// 표시 건수기능 숨기기
@@ -670,7 +669,7 @@ var callBackS = function(tran, data){
 		$("#dev_name").val(list["dev_name"]);
 		$("#test_name").val(list["test_name"]);
 		$("#case_name").val(list["case_name"]);
-		$("#scenario_name").val(list["scenario_name"]);
+		$("#scenario_name").val(list["scenario_name"] + "("+list["scenario_code"] +")");
 		$("#descriptionT").val(list["description"]);
 		$("#state").val(list["state"]);
 		
@@ -685,7 +684,7 @@ var callBackS = function(tran, data){
 		}
 		
 		
-		ajaxTranCall("defect/selectDefectList.do", 		preJson, callBackS, callBackE);
+		ajaxTranCall("defect/selectDefectList.do", 		preJson, callbackS, callbackE);
 		break;
 		
 	/*
@@ -707,14 +706,14 @@ var callBackS = function(tran, data){
 		alert(data["message"]);
 		if(data["resultCode"] == "0000" ){
 			
-			ajaxTranCall("defect/selectDefectList.do", 		preJson, callBackS, callBackE);
-			ajaxTranCall("scenario/selectTestCaseList.do", 	preJson, callBackS, callBackE);
+			ajaxTranCall("defect/selectDefectList.do", 		preJson, callbackS, callbackE);
+			ajaxTranCall("scenario/selectTestCaseList.do", 	preJson, callbackS, callbackE);
 			$('#modalNewDefect').modal("hide"); 
 		}
 	}
 };
 
-var callBackE = function(tran, data){
+var callbackE = function(tran, data){
 	
 };
 
@@ -741,7 +740,7 @@ var updateDefectCall = function(_imgkey){
 		data["defect_code"] = "B001_07";
 	}
 	
-	ajaxTranCall ("defect/updateDefect.do", data,  callBackS, callBackE);
+	ajaxTranCall ("defect/updateDefect.do", data,  callbackS, callbackE);
 	
 }
 var insertDefectCall= function(_imgkey){
@@ -757,7 +756,7 @@ var insertDefectCall= function(_imgkey){
 		"imgkey": _imgkey,
 		"state" : $("#state").val()
 	};
-	ajaxTranCall ("defect/insertDefect.do", data,  callBackS, callBackE);
+	ajaxTranCall ("defect/insertDefect.do", data,  callbackS, callbackE);
 }
 
 

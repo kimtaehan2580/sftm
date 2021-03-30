@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <header>
-	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 </header>
 <body> 
 	
@@ -37,13 +36,13 @@
 			<div class="col-md-7">
 				<div class="row">
 					<div class="col-md-4">
-	       	 			<button type="button" class="btn btn-outline-dark" id="btnQuick1" style="width:100%; height:60px; font-size: 14px; white-space: normal;" >0건의 수행대기중인 테스트 케이스</button>
+	       	 			<button type="button" class="btn btn-outline-dark" id="btnQuick1" style="width:100%; height:60px; font-size: 14px; white-space: normal;" ></button>
 			    	</div>
 			    	<div class="col-md-4">
-	       	 			<button type="button" class="btn btn-outline-info" id="btnQuick2" style="width:100%; height:60px; font-size: 14px">0건의 수행중인 테스트 케이스</button>
+	       	 			<button type="button" class="btn btn-outline-info" id="btnQuick2" style="width:100%; height:60px; font-size: 14px"></button>
 			    	</div>
 			    	<div class="col-md-4">
-	       	 			<button type="button" class="btn btn-outline-danger" id="btnQuick3"  style="width:100%; height:60px; font-size: 14px">0건의 개발자가 처리한 결함</button>
+	       	 			<button type="button" class="btn btn-outline-danger" id="btnQuick3"  style="width:100%; height:60px; font-size: 14px"></button>
 			    	</div>
 				</div>
 				<br/>
@@ -100,11 +99,17 @@
 						<span aria-hidden="true">&times;</span></button>
 					
 				</div>
+				
 				<span id= "whatday" style="text-align: right;  padding-right: 8px;  font-size: 15px;">3일전</span>
-				<div id = "pushMsg" class="modal-body" style="font-size: 15px; padding-top: 0.1rem;">
-					
+				<div id = "pushMsg" class="modal-body" style="font-size: 15px; padding-top: 0.1rem;"></div>
+				<input id ="event" style="display:none;">
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-dark" style="width:80px;" id="btnGo">바로가기</button>
+					<button type="button" class="btn btn-dark" data-dismiss="modal" style="width:80px;">닫기</button>
 				</div>
 			</div>
+			
 		</div>
 	</div>
 </body>

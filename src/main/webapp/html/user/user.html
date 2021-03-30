@@ -4,16 +4,15 @@
 	<div class="row">
 		<div class="col-md-12">
 		 	<h6 id="grid-options" class="title">SFTM > 사용자  > 사용자관리</h6>
-		 	
 		 	<table class="table table-select">
 				<thead>
 					<tr>
 						<td style="width:80px;">
-							 <label>팀 구분</label>
+							 <label>프로젝트 팀</label>
 						</td>
 						<td>
 							<select  class="form-control" id="team_id_main" title="" style="width:200px;">
-								<option selected="selected" value="">전체 팀</option>
+								<option selected="selected" value="">전체</option>
 							</select> 
 						</td>
 						<td>
@@ -24,28 +23,23 @@
 					</tr>
 				</thead>
 			</table>
-		 	
-			
 			<table id="userTable" class="table table-bordered" style="width:100%">
 		        <thead>
 		            <tr>
-						<th >No</th> 
-		                <th >사번</th>
+		                <th>ID</th>
 		                <th>이름</th>
-		                <th>팀명</th>
-		                <th>조직</th>
-		                <th >직급</th>
+		                <th>프로젝트 팀</th>
+		                <th>회사</th>
+		                <th>직급</th>
 		                <th>전화번호</th>
-		                <th >성별</th>
+		                <th>성별</th>
 		                <th>생년월일</th>
-		                <th >나이</th>
+		                <th>나이</th>
 		            </tr>
 		        </thead>
 		    </table>
 	   </div>
    </div>
-	
-	
 	<div class="modal fade" id="modalExcel">
 		<div class="modal-dialog modal-xl">
 			<div class="modal-content">
@@ -61,11 +55,11 @@
 				        <thead>
 				            <tr>
 				             	<th style="width:5%">순번 </th>
-				                <th>사번</th>
+				                <th>ID</th>
 				                <th>비밀번호</th>
 				                <th>이름</th>
-				                <th>팀명</th>
-				                <th>조직</th>
+				                <th>프로젝트 팀</th>
+				                <th>회사</th>
 				                <th>직급</th>
 				                <th>전화번호</th>
 				                <th>성별</th>
@@ -99,7 +93,7 @@
 				   			
 					       <tbody>
 				        	    <tr>
-					       	 		<th colspan="4" style="width:30%">*사번</th>
+					       	 		<th colspan="4" style="width:30%">* ID</th>
 					       	 		<td colspan="8">
 					       	 			<input id="user_id" maxlength="20" class="form-control required" style="width:100%" /> 
 					       	  		</td>
@@ -108,7 +102,7 @@
 					       	 		<th colspan="4">비밀번호</th>
 					       	 		<td colspan="8">
 					       	 			<input id="password" type="password" maxlength="20" class="form-control" style="width:100%" /> 
-					       	 			*미입력시 사번과 동일하게 등록됩니다.
+					       	 			* 미입력시 ID과 동일하게 등록됩니다.
 					       	  		</td>
 					       	  	</tr>
 					       	  	<tr>
@@ -119,10 +113,10 @@
 					       	  		</td>
 					       	  	</tr>	
 					       	   	<tr>
-					       	 		<th colspan="4">* 팀선택</th>
+					       	 		<th colspan="4">* 프로젝트 팀</th>
 					       	 		<td colspan="8">
 					       	 			<select  class="form-control required" id="team_id" title="" >
-											<option selected="selected" value="">전체 팀</option>
+											<option selected="selected" value="">전체</option>
 										</select>
 					       	  		</td>
 					       	  	</tr>	

@@ -33,8 +33,6 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		 */
 		if(authMap == null) {
 			log.error("login session info is null");
-			// TODO: Project Exception 생성
-//			throw new RuntimeException("Auth Exception");
 			response.setStatus(999);
 			return false;
 		}

@@ -55,7 +55,7 @@
 
 	<!-- properties -->
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations" value="classpath:/config.properties" />
+        <property name="locations" value="classpath:/config_local.properties" />
         <property name="fileEncoding" value="UTF-8" />
     </bean>
 
@@ -93,15 +93,15 @@
     </bean>
      
     <!-- login check interceptor -->
-    <bean id="authInterceptor" class="com.skcc.interceptor.AuthInterceptor"/>
-    <mvc:interceptors>
-    	<mvc:interceptor>
-    		<mvc:mapping path="/**/*.do"/>
-    		<mvc:mapping path="/**/*.file"/>
-    		<mvc:exclude-mapping path="/**/login.do"/>
-    		<ref bean="authInterceptor"/> 
-    	</mvc:interceptor> 
-    </mvc:interceptors>
+<!--     <bean id="authInterceptor" class="com.skcc.interceptor.AuthInterceptor"/> -->
+<!--     <mvc:interceptors> -->
+<!--     	<mvc:interceptor> -->
+<!--     		<mvc:mapping path="/**/*.do"/> -->
+<!--     		<mvc:mapping path="/**/*.file"/> -->
+<!--     		<mvc:exclude-mapping path="/**/login.do"/> -->
+<!--     		<ref bean="authInterceptor"/>  -->
+<!--     	</mvc:interceptor>  -->
+<!--     </mvc:interceptors> -->
 
      <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"></property>

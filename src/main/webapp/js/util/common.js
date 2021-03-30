@@ -187,6 +187,115 @@ function phoneFomatter(num,type){
 
 }
 
+
+function setEdmsModalOnlyPopup(imgList){
+	
+	modalTableImg = $('#modalTableImg').DataTable ({
+			destroy: true,
+	        "aaData" : imgList,
+	        "columns" : [
+	            { "mDataProp" : 'originfilename' },
+	            { "mDataProp" : 'what_day' } 
+	        ],
+	        "columnDefs": [
+				    { "targets": 0, "width": "80%", "className": "text-left" },
+				    { "targets": 1, "width": "20%", "className": "text-right"},
+			    ],
+	        "language": {
+		        "emptyTable": "데이터가 존재하지 않습니다." , "search": ""
+		    },
+		    
+		lengthChange: false, 	// 표시 건수기능 숨기기
+		searching:false,  		// 검색 기능 숨기기
+		ordering: false,  		// 정렬 기능 숨기기
+		info: false,			// 정보 표시 숨기기
+			pageLength:7, //기본 데이터건수
+		paging: true, 			// 페이징 기능 숨기기
+		select: {
+            style: 'single' //single, multi
+		}
+    });
+}
+
+function setEdmsModal(imgList, existImgs){
+
+	var gubun = $("#existingMainImgs").attr("id");
+	existImgs.html("");
+	
+	// 팝업에 이미지목록 테이블 설정
+	modalTableImg = $('#modalTableImg').DataTable ({
+			destroy: true,
+	        "aaData" : imgList,
+	        "columns" : [
+	            { "mDataProp" : 'originfilename' },
+	            { "mDataProp" : 'what_day' } 
+	        ],
+	        "columnDefs": [
+				    { "targets": 0, "width": "80%", "className": "text-left" },
+				    { "targets": 1, "width": "20%", "className": "text-right"},
+			    ],
+	        "language": {
+		        "emptyTable": "데이터가 존재하지 않습니다." , "search": ""
+		    },
+		    
+		lengthChange: false, 	// 표시 건수기능 숨기기
+		searching:false,  		// 검색 기능 숨기기
+		ordering: false,  		// 정렬 기능 숨기기
+		info: false,			// 정보 표시 숨기기
+			pageLength:7, //기본 데이터건수
+		paging: true, 			// 페이징 기능 숨기기
+		select: {
+            style: 'single' //single, multi
+		}
+    });
+    
+    if(imgList == null) return;
+    for(var i=0 ; i<imgList.length; i++){
+		var originfilename = imgList[i].originfilename;
+		var htmlStr = '<img id="' + gubun+i+'" alt="'+originfilename+'"; title="'+originfilename+'"; style="height:80px; padding:5px; max-width:100px;"/>';
+		existImgs.append(htmlStr);
+		
+		var ext = imgList[i].ext;
+		$("#"+gubun+i).attr("tag", imgList[i].seq );
+		$("#"+gubun+i).attr("src", getimgUrl(originfilename, getFileUrl( imgList[i].id, imgList[i].seq)) );
+		
+		
+		//click 이벤트 
+		$("#"+gubun+i).on('click', function(e){
+		
+			var seq = $(this).attr("tag");
+			
+			$('#modalTableImg tbody tr').each(function(){
+
+				var selectedJson = modalTableImg.row($(this)).data(); 
+				$(this).removeClass('selected');
+				
+				if(seq == selectedJson.seq){
+				
+					var dataJson = modalTableImg.row($(this)).data(); 
+					var ext = dataJson.ext.toLocaleLowerCase();
+					$("#selectedImg").attr("src", getimgUrl(dataJson.originfilename, getFileUrl( dataJson.id, dataJson.seq)) );
+					
+					$("#selectedImg").attr("tag", getFileUrl( dataJson.id, dataJson.seq));
+					$("#selectedFileName").text(dataJson.originfilename);
+					$("#selectedName").text(dataJson.name);
+					$("#selectedDate").text(dataJson.reg_date_str);
+					
+					var filesize = Number(dataJson.filelength);
+					$("#selectedSize").text(bytesToSize(filesize));
+				
+				} //if(seq == dataJson.seq){
+			});
+			$("#modalImg").modal();
+		});
+		
+		
+		
+	}
+	
+}
+
+
 //이미지 섬네일 관련 URL 다운로드 
 //Img (png, jpg) 는 자체 URl 그대로 
 //나머지는 샘플이미지로 대체 합니다.
@@ -204,13 +313,13 @@ function getimgUrl(fileName, fileObj){
 	switch(ext){
 		
 		case "xls":
+		case "xlsx":
 			result = "img/thumbnail/xlsx.png";
 			break;
-//		case "png":
-//		case "jpg":
-//			result = fileObj;
+		case "png":
+		case "jpg":
+			result = fileObj;
 			break;
-		case "xlsx":
 		case "docx":
 		case "html":
 		case "m4a":
@@ -222,7 +331,6 @@ function getimgUrl(fileName, fileObj){
 		case "zip":
 			result = "img/thumbnail/"+ext+".png";
 			break;
-			
 		default:
 			result = "img/thumbnail/etc.png";
 			break;
@@ -276,7 +384,21 @@ common.tableMappingAfterProcess = function(){
 //	    border: none;
 //    border-bottom: 1px solid;
 	
+}
+
+
+
+common.showCommnetShape = function(commnetList){
 	
-	
-	
+	var comment = "";
+	for(var i=0; i<commnetList.length; i++){
+		
+		var commentJson = commnetList[i];
+		
+		comment = comment.concat('>>> ', commentJson.name);
+		comment = comment.concat(' (', commentJson.reg_date_str);
+		comment = comment.concat(')\n', commentJson.msg);
+		comment = comment.concat('\n\n');
+	}
+	return comment;
 }

@@ -11,10 +11,6 @@ CREATE SCHEMA sftm;
 ALTER SCHEMA sftm OWNER TO sftm_admin;
 --SET search_path = sftm, pg_catalog;
  
-
-
-
-
 ---------------------------------------------------------------------
 -- 1. 사용자 테이블 (sftm.itm_user) 
 ---------------------------------------------------------------------
@@ -33,7 +29,8 @@ CREATE TABLE sftm.itm_user
   reg_date timestamp without time zone DEFAULT now(),
   modify_user character varying(256),
   modify_date timestamp without time zone,
-  admin boolean DEFAULT false
+  admin boolean DEFAULT false,
+  use_yn character varying(1)
 )
 WITH (
   OIDS=FALSE
@@ -181,6 +178,7 @@ CREATE TABLE sftm.itm_test_case
   description text, -- 설명
   reg_user character varying(64), -- 등록자
   reg_date timestamp with time zone, -- 등록일자
+  imgkey bigint,
   modify_user character varying(64), -- 수정자
   modify_date timestamp with time zone -- 수정일자
 )
@@ -211,20 +209,18 @@ CREATE TABLE sftm.itm_defect
   project_id bigint NOT NULL, -- 프로젝트ID
   scenario_id bigint NOT NULL NOT NULL, -- 시나리오ID
   case_id bigint NOT NULL, -- 케이스코드
-  --test_type character varying(10) NOT NULL, -- 테스트유형ID
-  --defect_code character varying(10), -- 결함코드
   title character varying(200), -- 결함명
   description text, -- 설명
-  defect_user character varying(64), -- 결함담당자
+  defect_type character varying(10) NOT NULL, -- 결함유형
+  defect_code character varying(10) NOT NULL, -- 결함코드
+  test_id character varying(64), -- 담당현업
+  dev_id character varying(64),  -- 담당개발자 
+  resolve_date timestamp with time zone, -- 조치해결일자
+  imgkey bigint,
   reg_user character varying(64), -- 등록자
   reg_date timestamp with time zone, -- 등록일자
-  due_date timestamp with time zone, -- 조치완료일자
-  plan_date timestamp with time zone, -- 조치예정일자
-  defect_result text,
-  requestor bigint, -- 요청자
-  resolve_date timestamp with time zone, -- 조치해결일자
-  imgkey bigint
- 
+  modify_user character varying(64), -- 수정자
+  modify_date timestamp with time zone -- 수정일자 
 )
 WITH (
   OIDS=FALSE
@@ -239,8 +235,10 @@ CREATE TABLE sftm.itm_defect_history
 (
   defect_id bigint  NOT NULL,
   seq bigint  NOT NULL,
-  test_type character varying(10) NOT NULL, -- 테스트유형ID
-  defect_code character varying(10), -- 결함코드
+  defect_type character varying(10) NOT NULL, -- 결함유형
+  defect_code character varying(10) NOT NULL, -- 결함코드
+  test_id character varying(64), -- 담당현업
+  dev_id character varying(64),  -- 담당개발자 
   reg_user character varying(64), -- 등록자
   reg_date timestamp with time zone -- 등록일자
 )
@@ -379,6 +377,7 @@ CREATE TABLE sftm.itm_push
   	  push_code character varying(30) NOT NULL,
   	  title character varying(200) ,
   	  msg text, 
+  	  event  character varying(256) ,
   	  recv_user character varying(256) NOT NULL, --수신자
   	  recv_yn character varying(1),
   	  recv_date timestamp with time zone, 		-- 수신일자
@@ -414,8 +413,11 @@ CREATE SEQUENCE sftm.itm_auto_id_seq
 CREATE TABLE sftm.itm_auto 
 (
 	  id bigint DEFAULT nextval('sftm.itm_auto_id_seq'::regclass) NOT NULL,
+	  title character varying(256), -- 제목 
+	  case_id bigint NOT NULL,
 	  defect_id bigint NOT NULL,
   	  html text NOT NULL,
+  	  use_yn character varying(1) NOT NULL,
 	  reg_user character varying(64), 			-- 등록자
 	  reg_date timestamp with time zone 		-- 등록일자
 )
@@ -499,8 +501,6 @@ CREATE SEQUENCE sftm.itm_project_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
-    
-    
 
 --2 TABLE
 CREATE TABLE sftm.itm_project
@@ -524,7 +524,9 @@ ALTER SEQUENCE sftm.itm_project_id_seq OWNED BY sftm.itm_project.id;
 ALTER TABLE sftm.itm_project ADD PRIMARY KEY(id);
 
 
-
+---------------------------------------------------------------------
+-- 14. 통계 테이블  (sftm.itm_stat)-------------------------------- 
+---------------------------------------------------------------------     
 CREATE TABLE sftm.itm_stat
 (
   base_date 	character varying(8) NOT NULL,
@@ -542,11 +544,78 @@ CREATE TABLE sftm.itm_stat
    reject_cnt bigint,
   reg_user character varying(256) NOT NULL,
   reg_date timestamp without time zone DEFAULT now()
-  
 )
 WITH (
   OIDS=FALSE
 );
 ALTER TABLE sftm.itm_stat OWNER TO sftm_admin;
 ALTER TABLE sftm.itm_stat ADD PRIMARY KEY(base_date,user_id,project_id ); 
-		
+
+---------------------------------------------------------------------
+-- 14. 댓글 테이블  (sftm.itm_comment)  -------------------------------- 
+---------------------------------------------------------------------     
+CREATE SEQUENCE sftm.itm_comment_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE TABLE sftm.itm_comment
+(
+	  id bigint DEFAULT nextval('sftm.itm_comment_id_seq'::regclass) NOT NULL,
+	  project_id bigint NOT NULL, -- 프로젝트ID
+	  type_code character varying(1) NOT NULL,  -- t(testcase comment)/d(defect comment) 
+	  case_id bigint,
+	  defect_id bigint,
+	  user_id character varying(30) NOT NULL,
+	  msg text,  
+	  use_yn character varying(1) NOT NULL,
+	  reg_user character varying(64), 			-- 등록자
+	  reg_date timestamp with time zone, 		-- 등록일자
+      modify_user character varying(64),
+      modify_date timestamp without time zone
+)
+WITH (
+  OIDS=FALSE
+);    
+
+ALTER TABLE sftm.itm_comment OWNER TO sftm_admin;
+ALTER TABLE sftm.itm_comment_id_seq OWNER TO sftm_admin;
+ALTER SEQUENCE sftm.itm_comment_id_seq OWNED BY sftm.itm_comment.id;
+ALTER TABLE sftm.itm_comment ADD PRIMARY KEY(id);
+
+
+
+---------------------------------------------------------------------
+-- 15. 게시판 테이블  (sftm.itm_border)  -------------------------------- 
+---------------------------------------------------------------------     
+CREATE SEQUENCE sftm.itm_border_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE TABLE sftm.itm_border
+(
+	  id bigint DEFAULT nextval('sftm.itm_border_id_seq'::regclass) NOT NULL,
+	  type_code character varying(10) NOT NULL,  -- 1 공지, 2 인프라, 3 개발가이드 
+	  title character varying(100) NOT NULL,
+	  msg text,  
+	  manager_user character varying(30) NOT NULL, -- 담당자
+	  imgkey bigint,
+	  use_yn character varying(1),
+	  reg_user character varying(64), 			-- 등록자
+	  reg_date timestamp with time zone, 		-- 등록일자
+      modify_user character varying(64),
+      modify_date timestamp without time zone
+)
+WITH (
+  OIDS=FALSE
+);    
+
+ALTER TABLE sftm.itm_border OWNER TO sftm_admin;
+ALTER TABLE sftm.itm_border_id_seq OWNER TO sftm_admin;
+ALTER SEQUENCE sftm.itm_border_id_seq OWNED BY sftm.itm_border.id;
+ALTER TABLE sftm.itm_border ADD PRIMARY KEY(id);

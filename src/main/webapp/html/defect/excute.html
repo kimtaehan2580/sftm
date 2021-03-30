@@ -12,65 +12,351 @@
 </style>
 </head>
 <body>
-	<h6 id="grid-options" class="title">SFTM 2020 > 테스트 수행(현업) > 테스트케이스 목록</h6> 
-			
-	<table class="table table-select">
-		<thead>
-			<tr>
-				<td style="width:100px;">
-					 <label>팀 구분</label>
-				</td>
-				<td  style="width:200px;">
-					<select class="form-control" id="selectTeam" name="selectTeam" title="">
-						<option selected="selected" value="">전체</option>
-					</select>
-				</td>
-				<td style="width:100px;">
-					<label>테스터</label>
-				</td>
-				<td  style="width:200px;">
-					<select class="form-control" id="selectUser" name="selectUser" title="">
-						<option selected="selected" value="">전체</option>
-					</select>
-				</td>
-				<td style="width:120px;">
-					<label>케이스상태</label>
-				</td>
-				<td  style="width:200px;">
-					<select class="form-control" id="selectState" name="selectState" title="">
-						<option selected="selected" value="">전체</option>
-					</select>
-				</td>
-				<td></td>
-				<td>
-					<button type="button" class="btn btn-dark" style="width: 100px; float: right; margin-right: 5px;" id="btnSelect">조회</button>
-				</td>
-			</tr>
-		</thead>
-	</table>
-			
-	<table id="caseTable" class="table table-bordered" style="width:100%">
-		<thead>
-			<tr>
-				<th style="width:3%">No</th>
-				<th>업무구분</th>
+	<div id="panal_list">
+		<h6 id="grid-options" class="title">SFTM 2020 > 테스트 수행 > 테스트케이스 목록</h6> 
+		<table class="table table-select">
+			<thead>
+				<tr>	
+					<td style="width:100px;">
+						 <label>업무분류</label>
+					</td>
+					
+					<td  style="width:180px;">
+						<select class="form-control" id="selectA" name="selectA" title="" >
+							<option selected="selected" value="">전체</option>
+						</select>
+					</td>
+					
+					<td  style="width:180px;">
+						<select  class="form-control" id="selectB" name="selectB" title="" >
+							<option selected="selected" value="">전체</option>
+						</select>
+					</td>
+					
+					<td  style="width:180px;">
+						<select  class="form-control" id="selectC" name="selectC" title="" >
+							<option selected="selected" value="">전체</option>
+						</select>
+					</td>
+					<td style="width:30px;">
+					</td>
+					<td style="width:100px;">
+						 <label>현업 팀</label>
+					</td>
+					<td  style="width:180px;">
+						<select class="form-control" id="selectTeam" name="selectTeam" title="">
+							<option selected="selected" value="">전체</option>
+						</select>
+					</td>
+					<td style="width:100px;">
+						<label>현업</label>
+					</td>
+					<td  style="width:180px;">
+						<select class="form-control" id="selectUser" name="selectUser" title="">
+							<option selected="selected" value="">전체</option>
+						</select>
+					</td>
+					<td style="width:120px;">
+						<label>케이스상태</label>
+					</td>
+					<td  style="width:180px;">
+						<select class="form-control" id="selectState" name="selectState" title="">
+							<option selected="selected" value="">전체</option>
+						</select>
+					</td>
+					<td></td>
+					<td>
+						<button type="button" class="btn btn-dark" style="width: 100px; float: right; margin-right: 5px;" id="btnSelect">조회</button>
+					</td>
+				</tr>
+			</thead>
+		</table>
 				
-				<th>시나리오명</th>
-				<th>케이스명</th>
-				<th>현업</th>
-				<th>개발자</th>
-				<th>상태</th>
+		<table id="caseTable" class="table table-bordered" style="width:100%">
+			<thead>
+				<tr>
+					<th style="width:20%">업무구분</th>
+					<th style="width:15%">시나리오</th>
+					<th style="width:20%">테스트케이스</th>
+					<th style="width:10%">현업</th>
+					<th style="width:10%">개발자</th>
+					<th style="width:10%">상태</th>
+					<th style="width:15%">결함(미완료)</th>
+					<th style="width:0%">화면명</th>
+					<th style="width:0%">화면명</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+	<div id="panal_detail" style="display:none; width:100%;">
+		<div class="row">
+			<div class="col-md-12">
+				<h6 id="grid-options" class="title">SFTM 2020 > 테스트 수행 > 테스트케이스 상세</h6> 
+			    <div>
+			    	<b id="testcase_info" style="width: 70%; float: left;"></b>
+			    	<button type="button" class="btn btn-outline-secondary" style="width: 120px; float:right;  margin-right: 10px;" id="btnDetail">케이스 상세보기</button>
+			    </div>
+			    <br/><br/>
+			    <div>
+					<select class="form-control" id="selectState_choice" name="selectState_choice" title="" style="width: 200px; float: left;  margin-right: 15px;">
+					</select>
+					<button type="button" class="btn btn-dark" style="width: 100px; float: left;  margin-right: 10px;" id="btnRegDefect">결함등록</button>
+					<button type="button" class="btn btn-dark" style="width: 100px; float: left;  margin-right: 5px;" id="btnAutoTest">테스트수행</button>
+				</div>
+				<br/><br/>
+				<table id="testCaseAddTable" class="table table-bordered"
+					style="width: 100%">
+					<tbody>
+						<tr>
+							<th colspan="2" style="width: 16.6%">수행결과</th>
+							<td colspan="10">
+		       	 				<textarea  id="ta_comment_history" rows="10" style="width:100%" readonly="readonly" disabled style="font-size: 13px;"></textarea>
+							</td>
+						</tr>
+						<tr>
+							<th colspan="2" style="width: 16.6%">수행결과(추가)</th>
+							<td colspan="10">
+		       	 				<textarea  id="comment" rows="4" style="width:100%"></textarea>
+		       	 			</td>	
+		       	 		</tr>
+		       	 		<tr style="height:100px;">
+							<th colspan="2" style="width: 16.6%">첨부파일</th>
+							<td colspan="10">
+			       	 			<div id="existingMainImgs" >
+			       	 				<img id="img1" />
+			       	 				<img id="img2" />
+			       	  			</div>
+		       	 			</td>	
+		       	 		</tr>
+		       	 		<tr>
+			       	 		<th colspan="2" rowspan="2">첨부파일(추가)</th>
+			       	  		<td colspan="10">
+			       	  			<input multiple="multiple" type="file" id="fileMain" name="filename[]" />
+							</td>	
+			       	    </tr>	
+			       	 	<tr style="height:100px;">
+			       	 		<td colspan="10">
+			       	 			<div id="NewMainImgs" >
+			       	 				<img id="img1" />
+			       	  			</div>
+		       	  			</td>
+			       	  	</tr>	
+					</tbody>
+				</table>
+				<div>
+					<button type="button" class="btn btn-dark" style="width: 100px; float: right;  margin-right: 5px;" id="btnCancle">취소</button>
+					<button type="button" class="btn btn-dark" style="width: 100px; float: right;  margin-right: 10px;" id="btnSave">저장</button>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<b>테스트케이스와 연결된 결함</b>
+				<br/>	
+				<h7 class="title">* 결함을 선택시 해당 결함의 화면으로 이동합니다.</h7>
+				<table id="defectSubTable" class="table table-bordered" style="width: 100%">
+					<thead>
+						<tr>
+							<th>제목</th>
+							<th>결함유형</th>
+							<th>결함상태</th>
+							<th>등록일</th>
+							<th>조치일</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div class="col-md-6">
+				<b>테스트케이스와 연결된 UI 테스트 녹화</b>
+				<br/>	
+				<h7 class="title">* UI 테스트한 내용을 재수행할 수 있습니다.</h7>
+				<table id="testSubTable" class="table table-bordered" style="width: 100%">
+					<thead>
+						<tr>
+							<th>제목</th>
+							<th>등록자</th>
+							<th>등록일자</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+		<br/>
+	</div>
+	
+	<!-- 상세보기 (테스트케이스 상세내용 표시) -->
+	<div class="modal fade" id="modalTestDetail"  >
+		<div class="modal-dialog modal-lg" >
+			<div class="modal-content">
+				<div class="modal-header bg-ntm">
+					<h6 id="hearderTitle" class="modal-title color-white">테스트케이스 상세내용</h6>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span></button>
+				</div>
 				
-				<th style="width:5%">전체</th>
-				<th style="width:5%">현업</th>
-				<th style="width:5%">조치</th>
-				<th style="width:5%">종료</th>
-				<th style="width:5%">지연</th>
+				<div class="modal-body">
+					<table id="userDetailTable" class="table table-bordered" style="width:100%">
+				       <tbody>
+			        	    <tr>
+				       	 		<th colspan="2">업무분류</th>
+				       	 		<td colspan="10" id="td_div_name"></td>
+				       	  	</tr>
+				       	  	<tr>
+				       	 		<th colspan="2">시나리오</th>
+				       	 		<td colspan="10" id="td_scenario"></td>
+				       	  	</tr>
+				       	  	<tr>
+				       	 		<th colspan="2">테스트케이스</th>
+				       	 		<td colspan="10" id="td_testcase"></td>
+				       	  	</tr>
+				       	  	<tr>
+				       	 		<th colspan="2">상세내용</th>
+				       	 		<td colspan="10">
+				       	 			<textarea rows="5" id="td_desc" style="width:100%; border:0;" readonly="readonly"></textarea>
+				       	 		</td>
+				       	  	</tr>
+				       	  	<tr>
+				       	 		<th colspan="2">현업</th>
+				       	 		<td colspan="4" id="td_test"></td>
+				       	 		<th colspan="2">개발자</th>
+				       	 		<td colspan="4" id="td_dev"></td>
+				       	  	</tr>
+				       	  	
+				       	</tbody>
+			       	 </table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-dark" data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div> <!-- 상세보기 (테스트케이스 상세내용 표시) -->
+	
+	<!-- 결함등록 (신규결함 등록 할 수 있게 함) -->
+	<div class="modal fade" id="modalRegDefect"  >
+		<div class="modal-dialog modal-lg" >
+			<div class="modal-content">
+				<div class="modal-header bg-ntm">
+					<h6 id="hearderTitle" class="modal-title color-white">신규 결함 등록</h6>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span></button>
+				</div>
 				
-			</tr>
-		</thead>
-	</table>
-
-
+				<div class="modal-body">
+					<table id="userDetailTable" class="table table-bordered" style="width:100%">
+				       <tbody>
+			        	    <tr>
+				       	 		<th colspan="2">* 결함명</th>
+				       	 		<td colspan="10">
+				       	 			<input id="titleU" class="form-control required" style="width:100%" />
+				       	 		</td> 
+				       	  	</tr>
+				       	  	<tr>
+				       	 		<th colspan="2">* 결함설명</th>
+				       	 		<td colspan="10">
+				       	 			<textarea  id="descriptionU" rows="5" style="width:100%" ></textarea>
+				       	  		</td>	
+				       	  	</tr>	
+				       	  	<tr>
+				       	 		<th colspan="2">* 결함유형 </th>
+				       	  		<td colspan="10">
+				       	  			<select  class="form-control" id="defect_typeU" title="선택 구분" style="width:200px;"  >
+									</select>
+								</td>	
+				       	  	</tr>
+				       	  	<tr>
+		       	 		  		<th colspan="2" rowspan="2">첨부파일</th>
+			       	  			<td colspan="10">
+			       	  				<input multiple="multiple" type="file" id="fileSub" name="filename[]" />
+								</td>	
+	       	  			  	</tr>
+				       	 	<tr style="height:100px;">
+				       	 		<td colspan="10">
+				       	 			<div id="existingSubImgs" >
+				       	 				<img id="img1" />
+				       	  			</div>
+			       	  			</td>
+				       	  	</tr>	
+				       	  	
+	       	  			  	<tr>
+		       	 		  		<th colspan="2">테스트수행 연결</th>
+			       	  			<td colspan="10">
+			       	  				<label style="font-weight: normal;">
+										<input type="radio" id="sc_select_test" name="sc_select" value="TEST" checked="checked" >
+										연결하지 않음
+									</label>
+									<label style="font-weight: normal;">
+										<input type="radio" id="sc_select_dev" name="sc_select" value="DEV"  >
+										연결함
+									</label>
+									<br/>
+									* 녹화한 테스트 내용과 연결할 수 있습니다.
+								</td>	
+								
+	       	  			  	</tr>
+				       	</tbody>
+			       	 </table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-dark" id="btnSubSave" >저장</button>
+					<button type="button" class="btn btn-dark" data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div> <!-- 결함등록 (신규결함 등록 할 수 있게 함) -->
+	
+	<!-- 테스트녹화 모달 -->
+	<div class="modal fade" id="modalAuto">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header bg-ntm">
+					<h6 id="modalUserTitle" class="modal-title color-white">테스트 녹화 확인</h6>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+				</div>
+				<div class="modal-body">
+					<table id="userDetailTable" class="table table-bordered" style="width:100%">
+				       <tbody>
+			        	    <tr>
+				       	 		<th colspan="4">UI 테스트 녹화</th>
+				       	 		<td colspan="8" id="auto_title"></td> 
+				       	 		
+				       	  	</tr>
+				       	  	<tr>
+				       	 		<th colspan="4">등록자</th>
+				       	 		<td colspan="8" id="auto_reg_user">
+				       	  		</td>	
+				       	  	</tr>
+				       	  	<tr>
+				       	 		<th colspan="4">등록시각</th>
+				       	 		<td colspan="8" id="auto_reg_time">
+				       	  		</td>	
+				       	  	</tr>	
+				       	  	<tr>
+				       	 		<th colspan="4">재테스트 방법</th>
+				       	  		<td colspan="8">
+				       	  			<input id="auto_id" style="display:none;">
+				       	  			<select  class="form-control" id="selectViewType" title="선택 구분" style="width:200px;">
+						        		<option selected="selected" value="manual">수동실행</option>
+						        		<option  value="auto">3초 주기로 자동수행</option>
+									</select>
+								</td>	
+				       	  	</tr>
+				       	</tbody>
+			       	 </table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-dark" style="width:80px;" id="btnExcute">실행</button>
+					<button type="button" class="btn btn-dark" data-dismiss="modal" style="width:80px;">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div><!-- 테스트녹화 모달 -->
+	
+	<div style="display:none;">
+		<input id="scenario_id"> 
+		<input id="case_id"> 
+		<input id="imgkey"> 
+	</div>
 </body>
 </html>

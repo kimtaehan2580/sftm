@@ -17,7 +17,7 @@ var initDoucument = function(){
 	
 	
 	serchDivList("A");
-	ajaxTranCall("user/selectTeamList.do", {role_code:"DEV"}, callBackS, callBackE);
+	ajaxTranCall("user/selectTeamList.do", {role_code:"DEV"}, callbackS, callbackE);
 	
 	//modalType
 	//신규 저장버튼 click event
@@ -27,7 +27,7 @@ var initDoucument = function(){
 		dataJson["depth"] = modalType; 
 		dataJson["team_id"] = $("#selectTeam").val(); 
 		
-		ajaxTranCall("scenario/insertDivision.do", dataJson, callBackS, callBackE);
+		ajaxTranCall("scenario/insertDivision.do", dataJson, callbackS, callbackE);
 	});
 	
 	
@@ -62,7 +62,7 @@ var initDoucument = function(){
 			});
 		}
 		
-		ajaxTranCall("scenario/updateDivision.do", dataJson, callBackS, callBackE);
+		ajaxTranCall("scenario/updateDivision.do", dataJson, callbackS, callbackE);
 	});
 	
 	//서브시스템 Table click event
@@ -93,7 +93,7 @@ var initDoucument = function(){
 	
 	$("#selectA").on('change', function(){
 		if(modalType == "C"){
-			ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"B", "upcode": $(this).val()}, callBackS, callBackE);
+			ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"B", "upcode": $(this).val()}, callbackS, callbackE);
 		}
 	});
 	
@@ -114,7 +114,7 @@ var initDoucument = function(){
             }
         });
 	        
-        ajaxFormExcel("excel/uploadExcelDivision.excel", "file1", callBackS);
+        ajaxFormExcel("excel/uploadExcelDivision.excel", "file1", callbackS);
 
 	});
 	
@@ -134,11 +134,11 @@ var serchDivList = function(type, upcode, upupcode){
 		json["upcode"] = upcode;
 	}
 	
-	ajaxTranCall("scenario/searchDivList.do", json, callBackS, callBackE);
+	ajaxTranCall("scenario/searchDivList.do", json, callbackS, callbackE);
 	
 }
 
-var callBackS = function(tran, data){
+var callbackS = function(tran, data){
 	
 	switch(tran){
 	
@@ -180,7 +180,7 @@ var callBackS = function(tran, data){
 							if($(this).hasClass('selected') ){
 								var dataJson = tableC.row($(this)).data();
 								$('#selectA').val(dataJson.upupcode);
-								ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"B", "upcode":dataJson.upupcode}, callBackS, callBackE);
+								ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"B", "upcode":dataJson.upupcode}, callbackS, callbackE);
 							}
 						});
 					}
@@ -194,7 +194,7 @@ var callBackS = function(tran, data){
 								if(modalType == "C"){
 									
 									debugger;
-									ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"B", "upcode":dataJson.div_id}, callBackS, callBackE);
+									ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"B", "upcode":dataJson.div_id}, callbackS, callbackE);
 								}
 							}
 						});
@@ -341,7 +341,7 @@ var callBackS = function(tran, data){
 				arrayJson.push(tempJson);
 			}
 			
-			ajaxTranCall("excel/downloadDivExcel.do", {"list":arrayJson} ,callBackS, callBackE);
+			ajaxTranCall("excel/downloadDivExcel.do", {"list":arrayJson} ,callbackS, callbackE);
 		}
 		alert(msg);
 		
@@ -387,7 +387,7 @@ var searchDivListSetTable = function ( detpth, list){
 			    { "targets": 0, "className": "text-center" },
 			],
 	        "language": {
-		        "emptyTable": "데이터가 없어요." , "search": ""
+		        "emptyTable": "데이터가 존재하지 않습니다." , "search": ""
 		    },
 		    
 			lengthChange: false, 	// 표시 건수기능 숨기기
@@ -433,7 +433,7 @@ var searchDivListSetTable = function ( detpth, list){
 								if($(this).hasClass('selected') ){
 									var dataJson = tableB.row($(this)).data();
 									isSelected = true;
-									ajaxTranCall("scenario/deleteDivision.do", {"depth":"B", "div_id":dataJson.div_id}, callBackS, callBackE);
+									ajaxTranCall("scenario/deleteDivision.do", {"depth":"B", "div_id":dataJson.div_id}, callbackS, callbackE);
 								}
 							});
 	                	}
@@ -442,7 +442,7 @@ var searchDivListSetTable = function ( detpth, list){
 								if($(this).hasClass('selected') ){
 									var dataJson = tableA.row($(this)).data();
 									isSelected = true;
-									ajaxTranCall("scenario/deleteDivision.do", {"depth":"B", "div_id":dataJson.div_id}, callBackS, callBackE);
+									ajaxTranCall("scenario/deleteDivision.do", {"depth":"B", "div_id":dataJson.div_id}, callbackS, callbackE);
 								}
 							});
 	                	}
@@ -476,7 +476,7 @@ var searchDivListSetTable = function ( detpth, list){
 			    { "targets": 2, "width":"25%", "className": "text-center" },
 			],
 	        "language": {
-		        "emptyTable": "데이터가 없어요." , "search": ""
+		        "emptyTable": "데이터가 존재하지 않습니다." , "search": ""
 		    },
 		    
 			lengthChange: false, 	// 표시 건수기능 숨기기
@@ -521,7 +521,7 @@ var searchDivListSetTable = function ( detpth, list){
 							if($(this).hasClass('selected') ){
 								var dataJson = tableC.row($(this)).data();
 								isSelected = true;
-								ajaxTranCall("scenario/deleteDivision.do", {"depth":"C", "div_id":dataJson.div_id}, callBackS, callBackE);
+								ajaxTranCall("scenario/deleteDivision.do", {"depth":"C", "div_id":dataJson.div_id}, callbackS, callbackE);
 							}
 						});
                 
@@ -564,8 +564,8 @@ var searchDivListSetTable = function ( detpth, list){
 							
 						}
 				    	
-						//ajaxTranCall("common/downloadUserExcel.do", {"list": list} ,calBackS, callBackE);
-						ajaxTranCall("excel/downloadDivExcel.do", jsonData ,callBackS, callBackE);
+						//ajaxTranCall("common/downloadUserExcel.do", {"list": list} ,calBackS, callbackE);
+						ajaxTranCall("excel/downloadDivExcel.do", jsonData ,callbackS, callbackE);
 	                }
 	            }
 	        ]
@@ -580,7 +580,7 @@ var searchDivListSetTable = function ( detpth, list){
 	return obj;
 }
 
-var callBackE = function(tran, data){
+var callbackE = function(tran, data){
 	
 }
 
@@ -628,7 +628,7 @@ var modalOpen = function( crType, divType, e, dt, node, config ) {
 		$("#thName").text("업무구분 명");
 		
 		//서브시스템 콘보 데이터 조회
-		ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"A"}, callBackS, callBackE);
+		ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"A"}, callbackS, callbackE);
 		
 		if(crType == "2"){
 			
@@ -657,7 +657,7 @@ var modalOpen = function( crType, divType, e, dt, node, config ) {
 		$("#hearderTitle").text("대상업무 등록");
 		$("#thName").text("대상업무 명");
 		
-		ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"A"}, callBackS, callBackE);
+		ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"A"}, callbackS, callbackE);
 		
 		$('#tableC tr').each(function(){
 			if($(this).hasClass('selected') ){
@@ -689,6 +689,6 @@ var modalOpen = function( crType, divType, e, dt, node, config ) {
 		$('#btnUpdate').show();
 	}
 	
-	$('div.modal').modal();
+	$('#layerpop').modal();
 	
 }

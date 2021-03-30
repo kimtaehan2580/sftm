@@ -17,7 +17,7 @@ var initDoucument = function(){
 	$("#base_date").val(new Date().toISOString().substring(0, 10));
 	
 	//개발팀 조회 selectbox 
-	ajaxTranCall("user/selectTeamList.do", {"role_code" : "DEV"}, callBackS, callBackE);
+	ajaxTranCall("user/selectTeamList.do", {"role_code" : "DEV"}, callbackS, callbackE);
 	
 	//단위/통합테스트 select box 값 세팅
 	var selectProjectHtml = $("#selectProject").html();
@@ -91,10 +91,10 @@ var selectStatUserList = function(){
 		team_id : $("#selectTeam").val(),
 		project_id: $("#selectProject2").val(),
 		base_date : $("#base_date").val().replace(/-/gi, "")
-	}, callBackS, callBackE);
+	}, callbackS, callbackE);
 }
 
-var callBackS = function(tran, data){
+var callbackS = function(tran, data){
 	
 	var list = data["list"];
 	
@@ -240,7 +240,7 @@ var callBackS = function(tran, data){
 
 			
 	        "language": {
-		        "emptyTable": "데이터가 없어요." , "search": ""
+		        "emptyTable": "데이터가 존재하지 않습니다." , "search": ""
 		    },
 		    pageLength:15, //기본 데이터건수
 			lengthChange: false, 	// 표시 건수기능 숨기기
@@ -257,7 +257,13 @@ var callBackS = function(tran, data){
 		    
 		    dom : 'Bfrtip',
 	        buttons: [
-				
+				{
+		                text: '갱신',
+	                	className: 'btn btn-outline-secondary test',
+		                action: function ( e, dt, node, config ) {
+		                	ajaxTranCall("stat/replaceUserStat.do", { }, callbackS, callbackE);
+		                }
+		            },
 	        	{
 	        		extend:'excel',
 	        		text:'다운로드',
@@ -283,6 +289,6 @@ var callBackS = function(tran, data){
 
 
 
-var callBackE = function(tran, data){
-//	alert("callBackE");
+var callbackE = function(tran, data){
+//	alert("callbackE");
 }

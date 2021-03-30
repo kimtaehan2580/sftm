@@ -106,6 +106,7 @@ public class CommonService {
 			String tbname = mtfRequest.getParameter("tbname");
 			response.put("imgkey", resImgKey);
 			response.put("crud", crud);
+			response.put("tbname", tbname);
 			for (int i = 0; i < count; i++) {
 				
 				Map<String, Object> reqMap = new HashMap<String, Object>();
@@ -175,17 +176,38 @@ public class CommonService {
 	}
 	
 	
-
+	/*
+	 * insertAutoRecording -> chrom extention에서 전송한 데이터
+	 */
 	public HashMap<String, Object> insertAutoRecording(Map<String, Object> reqMap) {
 		// TODO Auto-generated method stub
 		
 		
 		String htmlFileStr = (String) reqMap.get("htmlFileStr");
+
+//		int sftm_case_id = Integer.parseInt((String) reqMap.get("sftm_case_id"));
+//		int sftm_defect_id = Integer.parseInt((String) reqMap.get("sftm_defect_id"));
+
+		String sftm_case_id   = (String) reqMap.get("sftm_case_id");
+		String sftm_defect_id = (String) reqMap.get("sftm_defect_id");
 		
-		int defect_id = Integer.parseInt((String) reqMap.get("sftm_id"));
-		reqMap.put("defect_id",defect_id);
+		
+		if(!sftm_defect_id.isEmpty()) {
+			reqMap.put("defect_id",  Integer.parseInt(sftm_defect_id));
+		}
+		else {
+			reqMap.put("defect_id", -1);
+		}
+		if(!sftm_case_id.isEmpty()) {
+			reqMap.put("case_id",  Integer.parseInt(sftm_case_id));
+		}
+		else {
+			reqMap.put("case_id", -1);
+		}
+		
 		reqMap.put("reg_user", reqMap.get("sftm_user_id"));
 		reqMap.put("html", reqMap.get("htmlFileStr"));
+		reqMap.put("title", reqMap.get("sftm_title"));
 		
 		
 		
@@ -195,8 +217,7 @@ public class CommonService {
 		
 		if(result == 1) {
 			Message.SetSuccesMsg(response, "insert");
-			
-			pushService.insertPushDefectAutoTest((int) defect_id, (String)reqMap.get("sftm_user_id"));
+//			pushService.insertPushDefectAutoTest((int) defect_id, (String)reqMap.get("sftm_user_id"));
 		}
 		
 		return response;

@@ -19,7 +19,7 @@ var isTester = "TEST";
 var initDoucument = function(){
 	
 	//업무구분 A 조회
-	ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"A"}, callBackS, callBackE);
+	ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"A"}, callbackS, callbackE);
 	
 	selectScenario();
 	
@@ -29,7 +29,7 @@ var initDoucument = function(){
 		$('#tableScenario tr').each(function(){
 			if($(this).hasClass('selected') ){
 				var dataJson = tableScenario.row($(this)).data(); 
-				ajaxTranCall("scenario/selectTestCaseList.do", dataJson, callBackS, callBackE);
+				ajaxTranCall("scenario/selectTestCaseList.do", dataJson, callbackS, callbackE);
 			}
 		});
 	});
@@ -50,14 +50,14 @@ var initDoucument = function(){
 			return;
 		}
 		
-		ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"B", "upcode": $(this).val()}, callBackS, callBackE);
+		ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"B", "upcode": $(this).val()}, callbackS, callbackE);
 		selectScenario();
 	});
 	
 	$("select[name=selectB]").on('change', function(){
 		$("select[name=selectB]").val($(this).val());
 		htmlSelectBox2($("select[name=selectC]"), "", "소분류");
-		ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"C", "upcode": $(this).val()}, callBackS, callBackE);
+		ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"C", "upcode": $(this).val()}, callbackS, callbackE);
 		selectScenario();
 	});
 	
@@ -67,7 +67,7 @@ var initDoucument = function(){
 	});
 	
 	$("select[name=is_batch]").on('change', function(){
-		ajaxTranCall("code/selectTypeGroupList.do", {is_batch : $("#is_batch").val()}, callbackModalS, callBackE);
+		ajaxTranCall("code/selectTypeGroupList.do", {is_batch : $("#is_batch").val()}, callbackModalS, callbackE);
 	
 	});
 	
@@ -84,13 +84,13 @@ var initDoucument = function(){
 		}
 		
 		
-		ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"B", "upcode": $(this).val()}, callbackModalS, callBackE);
+		ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"B", "upcode": $(this).val()}, callbackModalS, callbackE);
 	});
 	
 	$("select[name=modalSelectB]").on('change', function(){
 		$("select[name=modalSelectB]").val($(this).val());
 		htmlSelectBox2($("select[name=modalSelectC]"), "", "선택해주세요.");
-		ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"C", "upcode": $(this).val()}, callbackModalS, callBackE);
+		ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"C", "upcode": $(this).val()}, callbackModalS, callbackE);
 	});
 	
 	
@@ -103,7 +103,7 @@ var initDoucument = function(){
 			dataJson.tester_id = $("#sc_tester").val();
 			dataJson.dev_id= $("#sc_developer").val();
 			dataJson.project_id = $("#selectProject").val();
-			ajaxTranCall("scenario/insertScenario.do", dataJson, callBackS, callBackE);
+			ajaxTranCall("scenario/insertScenario.do", dataJson, callbackS, callbackE);
 		}
 		
 	});
@@ -116,7 +116,7 @@ var initDoucument = function(){
 		if(!modal.modalCheckInputData("seTableModal")) 
 			return;
 		var dataJson = modal.convertModalToJsonObj("seTableModal");
-		ajaxTranCall("scenario/updateScenario.do", dataJson, callBackS, callBackE);
+		ajaxTranCall("scenario/updateScenario.do", dataJson, callbackS, callbackE);
 	});
 	
 	
@@ -128,7 +128,7 @@ var initDoucument = function(){
 				if($(this).hasClass('selected') ){
 					var dataJson = tableScenario.row($(this)).data(); 
 					
-					ajaxTranCall("scenario/selectTestCaseList.do", dataJson, callBackS, callBackE);
+					ajaxTranCall("scenario/selectTestCaseList.do", dataJson, callbackS, callbackE);
 					$("#spanTCName").text(dataJson.scenario_name);
 					$("#tc_scenario_name").val(dataJson.scenario_name);
 					$("#tc_scenario_code").val(dataJson.scenario_code);
@@ -182,14 +182,14 @@ var initDoucument = function(){
 		var dataJson = modal.convertModalToJsonObj("tcTableModal" );
 		
 		if(modal.modalCheckInputData("tcTableModal")){
-			ajaxTranCall("scenario/insertTestcase.do", dataJson, callBackS, callBackE);
+			ajaxTranCall("scenario/insertTestcase.do", dataJson, callbackS, callbackE);
 		}
 		
 	});
 	$('#btnUpdateTc').on('click', function(){
 		var dataJson = modal.convertModalToJsonObj("tcTableModal" );
 		if(modal.modalCheckInputData("tcTableModal")){
-			ajaxTranCall("scenario/updateTestcase.do", dataJson, callBackS, callBackE);
+			ajaxTranCall("scenario/updateTestcase.do", dataJson, callbackS, callbackE);
 		}
 		
 	});
@@ -211,7 +211,7 @@ var initDoucument = function(){
             }
         });
 	        
-        ajaxFormExcel("excel/uploadExcelScenario.excel", "file1", callBackS);
+        ajaxFormExcel("excel/uploadExcelScenario.excel", "file1", callbackS);
 
 	});
 	
@@ -219,24 +219,24 @@ var initDoucument = function(){
 	$("input[name=sc_select]").on('change', function(){
 		
 		var sc_select = $("input[name=sc_select]:checked").val();
-		ajaxTranCall("user/selectTeamList.do", {role_code:sc_select}, callBackS, callBackE);
-		ajaxTranCall("user/selectUserList.do", {role_code:sc_select}, callBackS, callBackE);
+		ajaxTranCall("user/selectTeamList.do", {role_code:sc_select}, callbackS, callbackE);
+		ajaxTranCall("user/selectUserList.do", {role_code:sc_select}, callbackS, callbackE);
 	});
 	
 	
 	$("input[name=tc_select]").on('change', function(){
 		var tc_select = $("input[name=tc_select]:checked").val();
-		ajaxTranCall("user/selectTeamList.do", {role_code:tc_select}, callBackS, callBackE);
-		ajaxTranCall("user/selectUserList.do", {role_code:tc_select}, callBackS, callBackE);
+		ajaxTranCall("user/selectTeamList.do", {role_code:tc_select}, callbackS, callbackE);
+		ajaxTranCall("user/selectUserList.do", {role_code:tc_select}, callbackS, callbackE);
 	});
 	
 	
 	
 	$("select[name=sc_team]").on('change', function(){
-		ajaxTranCall("user/selectUserList.do", {role_code:$("input[name=sc_select]:checked").val(), team_id:$("#sc_team").val()}, callBackS, callBackE);
+		ajaxTranCall("user/selectUserList.do", {role_code:$("input[name=sc_select]:checked").val(), team_id:$("#sc_team").val()}, callbackS, callbackE);
 	});
 	$("select[name=tc_team]").on('change', function(){
-		ajaxTranCall("user/selectUserList.do", {role_code:$("input[name=tc_select]:checked").val(), team_id:$("#tc_team").val()}, callBackS, callBackE);
+		ajaxTranCall("user/selectUserList.do", {role_code:$("input[name=tc_select]:checked").val(), team_id:$("#tc_team").val()}, callbackS, callbackE);
 	});
 	
 	//케이스유형 Select change event 
@@ -246,9 +246,10 @@ var initDoucument = function(){
 		var case_pattern = $("#case_pattern").val();
 		if(case_pattern == ""){
 			$( '#layerModalScenarioDlg' ).removeClass( 'modal-xl' );
+			$( '#layerModalScenarioDlg' ).addClass( 'modal-lg' );
 			$( '#layerModalScenarioDiv1' ).addClass( 'col-md-12' );
-			$( '#layerModalScenarioDiv1' ).removeClass( 'col-md-6' );
-			$( '#layerModalScenarioDiv2' ).removeClass( 'col-md-6' );
+			$( '#layerModalScenarioDiv1' ).removeClass( 'col-md-7' );
+			$( '#layerModalScenarioDiv2' ).removeClass( 'col-md-5' );
 			$( '#layerModalScenarioDiv2' ).hide();
 			
 			$( '#trTest' ).hide();
@@ -256,10 +257,11 @@ var initDoucument = function(){
 			
 		}
 		else{
+			$( '#layerModalScenarioDlg' ).removeClass( 'modal-lg' );
 			$( '#layerModalScenarioDlg' ).addClass( 'modal-xl' );
 			$( '#layerModalScenarioDiv1' ).removeClass( 'col-md-12' );
-			$( '#layerModalScenarioDiv1' ).addClass( 'col-md-6' );
-			$( '#layerModalScenarioDiv2' ).addClass( 'col-md-6' );
+			$( '#layerModalScenarioDiv1' ).addClass( 'col-md-7' );
+			$( '#layerModalScenarioDiv2' ).addClass( 'col-md-5' );
 			$( '#layerModalScenarioDiv2' ).show();
 			
 			$( '#trTest' ).show();
@@ -268,7 +270,7 @@ var initDoucument = function(){
 			
 			//test case text 조회하기
 //			sc_desc
-			ajaxTranCall("code/selectTypeList.do", {id:case_pattern}, callBackS, callBackE);
+			ajaxTranCall("code/selectTypeList.do", {id:case_pattern}, callbackS, callbackE);
 //			sc_select
 			
 		}
@@ -332,7 +334,7 @@ var selectProjectChageEvent = function(project_id){
 	
 }
 
-//ajaxTranCall("scenario/selectScenario.do", {}, callBackS, callBackE);
+//ajaxTranCall("scenario/selectScenario.do", {}, callbackS, callbackE);
 
 var selectScenario = function (){
 	var jsonObj = {
@@ -343,7 +345,7 @@ var selectScenario = function (){
 	}
 	
 	
-	ajaxTranCall("scenario/selectScenario.do", jsonObj, callBackS, callBackE);
+	ajaxTranCall("scenario/selectScenario.do", jsonObj, callbackS, callbackE);
 }
 
 var detpth1 = "";
@@ -404,8 +406,8 @@ var callbackModalS = function(tran, data){
 			$('#modalSelectA').val(detpth1);
 			
 
-			ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"B", "upcode": detpth1 }, callbackModalS, callBackE);
-			ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"C", "upcode": detpth2 }, callbackModalS, callBackE);
+			ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"B", "upcode": detpth1 }, callbackModalS, callbackE);
+			ajaxTranCall("scenario/searchDivListWithCombo.do", {"depth":"C", "upcode": detpth2 }, callbackModalS, callbackE);
 			$("#layerModalScenario").modal();
 		}
 		
@@ -413,7 +415,7 @@ var callbackModalS = function(tran, data){
 	}
 }
 
-var callBackS = function(tran, data){
+var callbackS = function(tran, data){
 	
 	var list = data["list"];
 	switch(tran){
@@ -451,12 +453,12 @@ var callBackS = function(tran, data){
 				arrayJson.push(tempJson);
 			}
 			
-			ajaxTranCall("excel/downloadScenarioExcel.do", {"list":arrayJson} ,callBackS, callBackE);
+			ajaxTranCall("excel/downloadScenarioExcel.do", {"list":arrayJson} ,callbackS, callbackE);
 		}
 		
 		alert(msg);
 		selectScenario();
-		callBackS("scenario/selectTestCaseList.do", {list:[], "resultCode" : "0000"});
+		callbackS("scenario/selectTestCaseList.do", {list:[], "resultCode" : "0000"});
 		
 		break;
 		
@@ -477,7 +479,7 @@ var callBackS = function(tran, data){
 	
 	case "scenario/deleteScenario.do":
 	case "scenario/insertScenario.do":
-		callBackS("scenario/selectTestCaseList.do", {"list":[], "resultCode":"0000"});
+		callbackS("scenario/selectTestCaseList.do", {"list":[], "resultCode":"0000"});
 
 	case "scenario/updateScenario.do":
 		
@@ -487,7 +489,7 @@ var callBackS = function(tran, data){
 			
 			alert(data["message"]);
 			selectScenario();
-			callBackS("scenario/selectTestCaseList.do", {list:[], "resultCode" : "0000"});
+			callbackS("scenario/selectTestCaseList.do", {list:[], "resultCode" : "0000"});
 		}
 		break;
 		
@@ -503,7 +505,7 @@ var callBackS = function(tran, data){
 			$('#tableScenario tr').each(function(){
 				if($(this).hasClass('selected') ){
 					var dataJson = tableScenario.row($(this)).data(); 
-					ajaxTranCall("scenario/selectTestCaseList.do", dataJson, callBackS, callBackE);
+					ajaxTranCall("scenario/selectTestCaseList.do", dataJson, callbackS, callbackE);
 				}
 			});
 		}
@@ -536,7 +538,7 @@ var callBackS = function(tran, data){
 	            { "mDataProp" : 'name' } 
 	        ],
 	        "language": {
-		        "emptyTable": "데이터가 없어요." , "search": ""
+		        "emptyTable": "데이터가 존재하지 않습니다." , "search": ""
 		    },
 		    pageLength:5, //기본 데이터건수
 			lengthChange: false, 	// 표시 건수기능 숨기기
@@ -557,7 +559,7 @@ var callBackS = function(tran, data){
 	            { "mDataProp" : 'name' } 
 	        ],
 	        "language": {
-		        "emptyTable": "데이터가 없어요." , "search": ""
+		        "emptyTable": "데이터가 존재하지 않습니다." , "search": ""
 		    },
 		    pageLength:5, //기본 데이터건수
 			lengthChange: false, 	// 표시 건수기능 숨기기
@@ -571,7 +573,7 @@ var callBackS = function(tran, data){
 			
 	    });
 		break;
-//	ajaxTranCall("scenario/selectTestCaseList.do", dataJson, callBackS, callBackE);
+//	ajaxTranCall("scenario/selectTestCaseList.do", dataJson, callbackS, callbackE);
 //	tableScenario
 	//testCase list 조회완료 
 	case "scenario/selectTestCaseList.do":
@@ -589,13 +591,13 @@ var callBackS = function(tran, data){
 		            { "mDataProp" : 'statestr' }
 		        ],
 				'columnDefs': [
-//				    { "targets": 0, "className": "text-center" },
-				    { "targets": 1, "className": "text-center" },
-				    { "targets": 2, "className": "text-center" },
-				    { "targets": 3, "className": "text-center" }
+//				    { "targets": 0, "width":"55%", "className": "text-center" },
+				    { "targets": 1, "width":"15%", "className": "text-center" },
+				    { "targets": 2, "width":"15%", "className": "text-center" },
+				    { "targets": 3, "width":"15%", "className": "text-center" }
 				],
 		        "language": {
-			        "emptyTable": "데이터가 없어요." , "search": ""
+			        "emptyTable": "데이터가 존재하지 않습니다." , "search": ""
 			    },
 
 			    pageLength:15, //기본 데이터건수
@@ -640,7 +642,7 @@ var callBackS = function(tran, data){
 		        					isSelected = true;
 		        					if(confirm("선택된 테스트 케이스를 삭제하시겠습니까?")){
 		        						var dataJson = tableTestcase.row($(this)).data(); 
-			        					ajaxTranCall("scenario/deleteTestcase.do", dataJson, callBackS, callBackE);
+			        					ajaxTranCall("scenario/deleteTestcase.do", dataJson, callbackS, callbackE);
 		        					}
 		        				}
 		        			});
@@ -674,7 +676,7 @@ var callBackS = function(tran, data){
 								}
 							}
 					    	
-							ajaxTranCall("excel/downloadScenarioExcel.do", jsonData ,callBackS, callBackE);
+							ajaxTranCall("excel/downloadScenarioExcel.do", jsonData ,callbackS, callbackE);
 		                	
 		                }
 		            },
@@ -754,7 +756,7 @@ var callBackS = function(tran, data){
 				    { "targets": 3, "className": "text-center" }
 				],
 	        "language": {
-		        "emptyTable": "데이터가 없어요." , "search": ""
+		        "emptyTable": "데이터가 존재하지 않습니다." , "search": ""
 		    },
 		    
 			pageLength:15, //기본 데이터건수
@@ -801,7 +803,7 @@ var callBackS = function(tran, data){
 	        				if($(this).hasClass('selected') ){
 	        					var dataJson = tableScenario.row($(this)).data(); 
 	        					isSelected = true;
-	        					ajaxTranCall("scenario/deleteScenario.do", dataJson, callBackS, callBackE);
+	        					ajaxTranCall("scenario/deleteScenario.do", dataJson, callbackS, callbackE);
 	        				}
 	        			});
 	                	
@@ -815,7 +817,7 @@ var callBackS = function(tran, data){
 			
 	    });
 
-		callBackS("scenario/selectTestCaseList.do", {"list":[], "resultCode":"0000"});
+		callbackS("scenario/selectTestCaseList.do", {"list":[], "resultCode":"0000"});
 		common.tableMappingAfterProcess();
 //		$('.dt-button').attr("type", "button");
 //		$('.dt-button').removeClass('dt-button');
@@ -835,7 +837,7 @@ var callBackS = function(tran, data){
 	}
 }
 
-var callBackE = function(tran, data){
+var callbackE = function(tran, data){
 	
 	if(data["message"] != null && data["message"] != "")
 	alert(data["message"]);
@@ -846,9 +848,10 @@ var callBackE = function(tran, data){
 var modalOpen = function( crType , e, dt, node, config ) {
 	
 	$( '#layerModalScenarioDlg' ).removeClass( 'modal-xl' );
+	$( '#layerModalScenarioDlg' ).addClass( 'modal-lg' );
 	$( '#layerModalScenarioDiv1' ).addClass( 'col-md-12' );
-	$( '#layerModalScenarioDiv1' ).removeClass( 'col-md-6' );
-	$( '#layerModalScenarioDiv2' ).removeClass( 'col-md-6' );
+	$( '#layerModalScenarioDiv1' ).removeClass( 'col-md-7' );
+	$( '#layerModalScenarioDiv2' ).removeClass( 'col-md-5' );
 	$( '#layerModalScenarioDiv2' ).hide();
 	
 	$( '#trTest' ).hide();
@@ -858,11 +861,11 @@ var modalOpen = function( crType , e, dt, node, config ) {
 	//1. 시나리오 추가
 	if(crType == "1"){
 		//테스트케이스 유형 조회 
-		ajaxTranCall("code/selectTypeGroupList.do", {is_batch : $("#is_batch").val()}, callbackModalS, callBackE);
+		ajaxTranCall("code/selectTypeGroupList.do", {is_batch : $("#is_batch").val()}, callbackModalS, callbackE);
 		
 		var sc_select = $("input[name=sc_select]:checked").val();
-		ajaxTranCall("user/selectTeamList.do", {role_code:sc_select}, callBackS, callBackE);
-		ajaxTranCall("user/selectUserList.do", {role_code:sc_select}, callBackS, callBackE);
+		ajaxTranCall("user/selectTeamList.do", {role_code:sc_select}, callbackS, callbackE);
+		ajaxTranCall("user/selectUserList.do", {role_code:sc_select}, callbackS, callbackE);
 	
 		$("#modalTitle").text("시나리오 추가");
 		$("#trCasetype").show();
@@ -930,7 +933,7 @@ var modalOpen = function( crType , e, dt, node, config ) {
 			}
 			else{
 				
-				ajaxTranCall("scenario/selectDivDepth.do", {div_id:div_id}, callbackModalS, callBackE);
+				ajaxTranCall("scenario/selectDivDepth.do", {div_id:div_id}, callbackModalS, callbackE);
 			}
 			
 		}
@@ -942,8 +945,8 @@ var modalOpen = function( crType , e, dt, node, config ) {
 	else if(crType == "3"){
 		
 		var tc_select = $("input[name=tc_select]:checked").val();
-		ajaxTranCall("user/selectTeamList.do", {role_code:tc_select}, callBackS, callBackE);
-		ajaxTranCall("user/selectUserList.do", {role_code:tc_select}, callBackS, callBackE);
+		ajaxTranCall("user/selectTeamList.do", {role_code:tc_select}, callbackS, callbackE);
+		ajaxTranCall("user/selectUserList.do", {role_code:tc_select}, callbackS, callbackE);
 		
 		$('#developer').val("");
 		$('#developer_nm').val("");
@@ -1000,8 +1003,8 @@ var modalOpen = function( crType , e, dt, node, config ) {
     	if(isSelected){
 			
 			var tc_select = $("input[name=tc_select]:checked").val();
-		ajaxTranCall("user/selectTeamList.do", {role_code:tc_select}, callBackS, callBackE);
-		ajaxTranCall("user/selectUserList.do", {role_code:tc_select}, callBackS, callBackE);
+		ajaxTranCall("user/selectTeamList.do", {role_code:tc_select}, callbackS, callbackE);
+		ajaxTranCall("user/selectUserList.do", {role_code:tc_select}, callbackS, callbackE);
     		$("#modalTitleTc").text("테스트케이스 수정");
         	$("#layerModalTestCase").modal();
         	
