@@ -356,7 +356,7 @@ public class DefectService {
 				
 				//기존 결함 코드와 현재 결함 코드가 다른경우만 발송
 				if( !defect_code.equals(pre_defect_code)) {
-					pushService.insertPushDefect(Integer.parseInt(defect_id));
+//					pushService.insertPushDefect(Integer.parseInt(defect_id));
 				}
 			}
 			
@@ -416,7 +416,7 @@ public class DefectService {
 		
 		Message.SetSuccesMsg(response, "update");
 		
-		pushService.insertPushDefect(Integer.parseInt(defect_id));
+//		pushService.insertPushDefect(Integer.parseInt(defect_id));
 		
 		return response;
 	}

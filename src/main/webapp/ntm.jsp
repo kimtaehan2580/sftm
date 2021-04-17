@@ -203,7 +203,7 @@ window.onpopstate = function () {
 	else if(location.href.indexOf("defect/defect") != -1 && $('#panal_detail').is(':visible')){
 		$("#btnCancle2").trigger("click");
 	}
-	else if(location.href.indexOf("border/border") != -1 && $('#panal_detail').is(':visible')){
+	else if(location.href.indexOf("border/border") != -1 && ( $('#panal_detail').is(':visible') || $('#panal_update').is(':visible') )){
 		$("#btnPrePage").trigger("click");
 	}
 	else{

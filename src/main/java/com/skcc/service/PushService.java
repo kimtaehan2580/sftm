@@ -190,7 +190,7 @@ public class PushService {
 			String reader_id 	= (String) defectMap.get("reader_id");
 			String dev_id 		= (String) defectMap.get("dev_id");
 			String test_id 		= (String) defectMap.get("test_id");
-			long team_id 		= (long) defectMap.get("team_id");
+			long team_id 		= Long.parseLong((String) defectMap.get("team_id"));
 			
 			
 			
@@ -245,10 +245,8 @@ public class PushService {
 			}
 			
 			else {
-				
 				return true;
 			}
-			
 
 			String test_user_name 		= (String) defectMap.get("test_user_name");
 			String dev_user_name 		= (String) defectMap.get("dev_user_name");
@@ -285,130 +283,77 @@ public class PushService {
 		}
 	}
 	
-	
 	/**
-	 * Defect 신규등록 상태변경시 호출하도록 하였습니다.  (미사용)
+	 * 게시글 등록 따른 PUSH 메시지 설정
 	 *
-	 * @param Map (request)
+	 * @param border_id : 게시글 id
+	 * @param sender_id : 발송자 명
+	 * @param push_receive : 발송대상
 	 * @return Map (response)
 	 * @exception 예외사항한 라인에 하나씩
 	 */
-	public boolean insertPushDefect( int defect_id ) {
+	public boolean sendPushMessage_border( int border_id, String sender_id, String push_receive  ) {
+			
 		
-		Map responseMap = sqlSession.selectOne("PushDAO.selectDefectInfoForPush", defect_id);
-		String title = (String) responseMap.get("title");
-		String reg_user_name = (String) responseMap.get("reg_user_name"); 					//결함등록자
-		String reg_user_name2 = (String) responseMap.get("reg_user_name2"); 	//결함방금 수정자
+		log.debug("푸쉬 등록 요청>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		log.debug("border_id : " + border_id);
+		log.debug("sender_id : " + sender_id);
+		log.debug("push_receive " + push_receive);
+		log.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>푸쉬 등록 요청");
 		
-		
-		String reg_user = (String) responseMap.get("reg_user");		//최초 등록자 테스터 
-		String reg_user2 = (String) responseMap.get("reg_user2");   //상태변경한 사람
+		Map borderMap = sqlSession.selectOne("BorderDAO.selectBorderDetail", border_id);
+		if(borderMap == null ) return false;
 
-		String defect_user = (String) responseMap.get("defect_user");
-//		log.debug("김태한 테스트 : " + responseMap.get("reader_id"));
+		String type_name = (String) borderMap.get("type_name");
+		String type_code = (String) borderMap.get("type_code");
+		String title = (String) borderMap.get("title");
+		String reg_date = (String) borderMap.get("reg_date");
+		String reg_user_name = (String) borderMap.get("reg_user_name");
 		
-		String defect_code = (String) responseMap.get("defect_code");
-		Map<String, Object> queryMap = new HashMap<String, Object>();
-		String msg = "";
-//		B001_03	조치완료	Y	20	admin	2020-08-11
-//		B001_04	미조치건	Y	30	admin	2020-08-11
-//		B001_05	개발지연	Y	40	admin	2020-08-11
-//		B001_07	결함반려	Y	60	admin	2020-08-11
-		
-//		P001_01	결함배정안내	Y	0	admin	2020-08-27
-//		P001_02	결함배정요청	Y	10	admin	2020-08-27
-//		P001_03	결함상태변경	Y	20	admin	2020-08-27
-//		P001_04	결함종료안내	Y	30	admin	2020-08-27
-		
-		//B001_01	결함등록	Y	0	admin	2020-08-11
-		if("B001_01".equals(defect_code)) {
-
-			String reader_id = (String) responseMap.get("reader_id");
-			
-			//배정되지 않은 건으로 팀 리더에게 PUSH 발송함
-			//P001_02	결함배정요청	Y	10	admin	2020-08-27
-			queryMap.put("push_code", "P001_02");
-//			queryMap.put("title", "[결함배정요청] " +  title);
-			queryMap.put("title", title);
-			msg = "신규결함이 배정대기중입니다.\n"
-					+ "결함명 : " + title + "\n"
-					+ "등록자 : " + reg_user_name + "\n";
-			queryMap.put("recv_user", reader_id); //수신자 팀리더
-			queryMap.put("reg_user", reg_user2);   //등록자
-			
-		}
-		//B001_02	배정완료	Y	10	admin	2020-08-11
-		else if("B001_02".equals(defect_code)) {
-			
-			//P001_01	결함배정안내	Y	0	admin	2020-08-27
-			queryMap.put("push_code", "P001_01");
-//			queryMap.put("title", "[결함배정안내] " +  title);
-			queryMap.put("title", title);
-			msg = "결함이 배정되었습니다.\n"
-					+ "결함명 : " + title + "\n"
-					+ "등록자 : " + reg_user_name + "\n";
-			queryMap.put("recv_user", defect_user); //개발자
-			queryMap.put("reg_user", reg_user);   //등록자
-			
-		}
-		//B001_06	결함종료	Y	50	admin	2020-08-11
-		else if("B001_06".equals(defect_code)) {
-			//P001_04	결함종료안내	Y	30	admin	2020-08-27
-			queryMap.put("push_code", "P001_04");
-			
-//			queryMap.put("title", "[결함종료안내] " +  title);
-			queryMap.put("title", title);
-			msg = "결함이 종료되었습니다.\n"
-					+ "결함명 : " + title + "\n"
-					+ "등록자 : " + reg_user_name + "\n";
-			queryMap.put("recv_user", defect_user); //개발자
-			queryMap.put("reg_user", reg_user);   //등록자
+		if(title.length() > 10) {
+			title = title.substring(0, 8) + "...";
 		}
 		
-//		B001_03	조치완료	Y	20	admin	2020-08-11
-//		B001_04	미조치건	Y	30	admin	2020-08-11
-//		B001_05	개발지연	Y	40	admin	2020-08-11
-//		B001_07	결함반려	Y	60	admin	2020-08-11
-		else {
-			String defect_code_name = (String)responseMap.get("defect_code_name");
-			
-			//P001_03	결함상태변경	Y	20	admin	2020-08-27
-			queryMap.put("push_code", "P001_03");
-//			queryMap.put("title", "[결함상태변경] " +  title);
-			queryMap.put("title", title);
-			msg = "결함상태가 [" + defect_code_name + "]로 변경되었습니다.\n"
-					+ "결함명 : " + title + "\n"
-					+ "등록자 : " + reg_user_name2 + "\n";
-			
-			//조치완료, 미조치건은 현업에게 보냅니다.
-			if("B001_03".equals(defect_code) || "B001_04".equals(defect_code)) {
-				queryMap.put("recv_user", reg_user); //개발자
+		Map<String, String> pushMap = new HashMap<String, String>();
+		StringBuffer sbEvent = new StringBuffer();
+		pushMap.put("push_code", "P001_02"); //push 코드 (결함)
+		pushMap.put("title", "["+type_name+"] " + title); 
+		
+		pushMap.put("reg_user",  sender_id);   //발신자 
+		
+		StringBuffer sbMsg = new StringBuffer();
+		sbMsg.append("제목 : "); sbMsg.append(title);
+		sbMsg.append("\n유형 : "); sbMsg.append(type_name);
+		sbMsg.append("\n등록자 : "); sbMsg.append(reg_user_name);
+		sbMsg.append("\n발송시각 : "); sbMsg.append(reg_date);
+		
+		sbEvent.append("path=border/border");
+		sbEvent.append("&type_code=").append(type_code).append("&border_id=").append(border_id);
+		
+		
+		pushMap.put("msg", sbMsg.toString());
+		pushMap.put("event", sbEvent.toString());
+		
+		
+		List<Object> userList = sqlSession.selectList("UserDAO.selectUser",  new HashMap<String, String>());
+//		Map<String, Object> response = new HashMap<String, Object>();
+		
+		for(int i=0; i<userList.size();i++) {
+			Map tempMap = (HashMap) userList.get(i);
+			String user_id = (String) tempMap.get("user_id");
+			String role_code = (String) tempMap.get("role_code");
+			if( !"ALL".equals(push_receive) && role_code.equals(push_receive) ) {
+				continue;	
 			}
-
-			//조치완료, 미조치건이 아닌경우 개발자에게 보냅니다.
-			else {
-				queryMap.put("recv_user", defect_user); //개발자
-			}
-			queryMap.put("reg_user", reg_user2);   //등록자
+			pushMap.put("recv_user", user_id);
+			
+			sqlSession.insert("PushDAO.insertPush", pushMap);
 		}
 		
-		
-		SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm");
-		Date time = new Date();
-		String time1 = format1.format(time);
-		
-		
-		msg+="보낸시각 : " + time1;
-		queryMap.put("msg", msg);
-		
-		int result = sqlSession.insert("PushDAO.insertPush", queryMap);
-		
-		if(result != 1) {
-			return false;
-		}
 		return true;
 		
 	}
+	 
 
 	
 	

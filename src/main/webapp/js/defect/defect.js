@@ -363,7 +363,6 @@ var callbackS = function(tran, data){
 		ajaxTranCall("auto/selectAutoList.do", 		{ "defect_id" : data.defect_id }, callbackS, callbackE, false);
 		ajaxTranCall("defect/selectDefectHistory.do", {"defect_id": data.defect_id}, callbackS, callbackE, false);
 		
-		
 		//초기화
 		$("#fileMain").val("");
 		$("#existingMainImgs").html("");
@@ -375,7 +374,7 @@ var callbackS = function(tran, data){
 		
 		
 		var imgList = data["imgList"];
-		setEdmsModal( imgList, $("#existingMainImgs") )
+		setEdmsModal( imgList, $("#existingMainImgs") );
 		
 		if(data.imgkey == null || data.imgkey == "")
 			 data.imgkey = "-1";

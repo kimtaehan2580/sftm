@@ -53,10 +53,14 @@
 		where bd.id = #{id}
   	</select>
   	
+  	<!-- 게시판 seq -->
+	<select id="selectBorderId" resultType="java.lang.Integer">
+		select nextval('sftm.itm_border_id_seq'::regclass);
+		
+	</select>
 	
-	<insert id="insertBorder" parameterType="map"
-		useGeneratedKeys="true">
-		INSERT INTO sftm.itm_comment
+	<insert id="insertBorder" parameterType="map" useGeneratedKeys="true">
+		insert into sftm.itm_border
 		(
 			id , 
 			type_code,
@@ -71,20 +75,34 @@
 			modify_date
 		)
 		VALUES (
-			nextval('sftm.itm_border_id_seq'::REGCLASS),
-			{type_code},
-			{title},
-			{msg},
-			{manager_user}, 
-			{imgkey}::bigint, 
+			#{border_id}::bigint, 
+			#{type_code},
+			#{title},
+			#{msg},
+			#{manager_user}, 
+			#{imgkey}::bigint, 
 			'Y', 
-			{cookieUserId} , 
+			#{cookieUserId} , 
 			now(),	
-			{cookieUserId} , 
+			#{cookieUserId} , 
 			now()
 		)
 	</insert>
-    
+	
+	<update id="updateBorder" parameterType="map" useGeneratedKeys="true">
+	update sftm.itm_border
+		set type_code=#{type_code}
+			, title=#{title}
+			, msg=#{msg}
+			, manager_user=#{manager_user}
+			, imgkey=#{imgkey}::bigint
+	   		<if test="use_yn != null and use_yn != ''"> 
+				, use_yn=#{use_yn}
+			</if>
+			, modify_user=  #{cookieUserId}
+			, modify_date=now()
+	where id = #{border_id}::bigint
+    </update>
     
     
 </mapper>

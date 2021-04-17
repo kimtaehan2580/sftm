@@ -74,9 +74,12 @@ modal.modalClear = function(obj){
 	$('#' +obj +' select').each(function(){
 		$(this).val("");
 	});
+	$('#' +obj +' textarea').each(function(){
+		$(this).val("");
+	});
 }
 
-modal.convertModalToJsonObj= function(obj){
+modal.convertModalToJsonObj = function(obj){
 	
 	var resultJson = {};
 	$('#' +obj +' input').each(function(){
@@ -92,23 +95,37 @@ modal.convertModalToJsonObj= function(obj){
 }
 
 
+/*
+ * json data 를 테이블에 각 필드값에 넣기
+ */
 modal.convertJsonObjToModal = function(obj, jsonObj){
 	
 	$('#' +obj +' input').each(function(){
 		$(this).val(jsonObj[$(this).attr('id')]);
 	});
+	
 	$('#' +obj +' select').each(function(){
 		if(jsonObj[$(this).attr('id')] != null)
 			$(this).val(jsonObj[$(this).attr('id')]);
 	});
+	
 	$('#' +obj +' textarea').each(function(){
 		$(this).val(jsonObj[$(this).attr('id')]);
 	});
-	
-	
+
 	$('#' +obj +' td').each(function(){
 		$(this).text(jsonObj[$(this).attr('id')]);
 	});
+	
+	$('#' +obj +' b').each(function(){
+		$(this).text(jsonObj[$(this).attr('id')]);
+	});
+	
+	$('#' +obj +' label').each(function(){
+		$(this).text(jsonObj[$(this).attr('id')]);
+	});
+	
+	
 }
 
 
@@ -187,7 +204,9 @@ function phoneFomatter(num,type){
 
 }
 
-
+/*
+ * setEdmsModalOnlyPopup -> edms 등록2 
+ */
 function setEdmsModalOnlyPopup(imgList){
 	
 	modalTableImg = $('#modalTableImg').DataTable ({
@@ -217,6 +236,10 @@ function setEdmsModalOnlyPopup(imgList){
     });
 }
 
+
+/*
+ * setEdmsModal -> edms 등록1
+ */
 function setEdmsModal(imgList, existImgs){
 
 	var gubun = $("#existingMainImgs").attr("id");

@@ -3,12 +3,51 @@
 	SET standard_conforming_strings = on;
 	SET check_function_bodies = false;
 	SET client_min_messages = warning;
-	 
-	
 	
 	INSERT INTO sftm.itm_role  VALUES ( 0, 'ADMIN', 	'관리자', '', 'admin',  now(), 'admin',now() );
 	INSERT INTO sftm.itm_role  VALUES ( 0, 'TEST', 	    '현업', '', 'admin',  now(), 'admin',now() );
 	INSERT INTO sftm.itm_role  VALUES ( 0, 'DEV', 		'개발자', '', 'admin',  now(), 'admin',now() );
+	
+	INSERT INTO sftm.itm_team (
+            id,
+            project_id,
+            role_code,
+            name,
+            description,
+            reg_user,
+            reg_date,
+            modify_user,
+            modify_date
+        ) VALUES (
+           0,
+            0,
+            'ADMIN',
+            '관리자',
+            '관리자들',
+            'admin',
+            NOW(),
+            'admin',
+            NOW()
+        )
+	
+	 INSERT INTO sftm.itm_user
+		( user_id, password, "name", phone_num, birth, organization, "position", sex, team_id,  reg_user, reg_date, modify_user, modify_date, admin)
+		VALUES(  
+			'admin', 
+			'admin', 
+			'관리자', 
+			'01000000000', 
+			'000101', 
+			'SK', 
+			'관리자', 
+			'M', 
+			0,
+			'amdin', 
+			now(), 
+			'amdin', 
+			now(),
+			'FALSE'
+		);
 	
 	
 	--itm_code_group

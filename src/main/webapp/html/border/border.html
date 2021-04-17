@@ -4,7 +4,7 @@
 	<div id="panal_list">
 		<div class="row">
 			<div class="col-md-12">
-			 	<h6 id="grid-options" class="title">SFTM > 알림판</h6>
+			 	<h6 id="grid-options" class="title">SFTM > 게시판</h6>
 			 	<table class="table table-select">
 					<thead>
 						<tr>
@@ -28,7 +28,8 @@
 			        <thead>
 			            <tr>
 			                <th style="width:15%">분류</th>
-			                <th style="width:40%">제목</th>
+			                <th style="width:30%">제목</th>
+			                <th style="width:10%">첨부파일</th>
 			                <th style="width:15%">담당자</th>
 			                <th style="width:15%">등록자</th>
 			                <th style="width:15%">일자</th>
@@ -53,44 +54,109 @@
 					<tbody>
 						<tr style="height:50px; border-top:0">
 							<td colspan="2">
-		       	 				<b style="font-size:20px; padding:5px;">인프라 전체 교육 안내 (2021년 3월 30일 화요일)</b>
+		       	 				<b style="font-size:18px; padding:5px;" id="title"></b>
 		       	 			</td>
 						</tr>
 						<tr style="border:0">
 							<td style="border:0">
-		       	 				<b style="font-size:13px; padding-left:15px;">kapyins070 (이성준)</b>
+		       	 				<b style="font-size:13px; padding-left:15px;" id="manager"></b>
 							</td>
 							<td style="border:0; float: right;">
-		       	 				<label style="font-size:13px; padding-right:15px;">2021-03-05 19:23</label>
+		       	 				<label style="font-size:13px; padding-right:15px;" id="reg_date"></label>
 							</td>
 						</tr>
 						<tr style="border:0">
 							<td colspan="2" style="border:0">
-		       	 				<textarea  id="ta_comment_history" rows="20" 
-		       	 					style="width:100%; font-size:15px; padding:15px; border:0px; background-color: white;" readonly="readonly" disabled >
-안녕하세요. 
-
- 
-
-개발자 분들 빌드오류 확인을 위해 아래 URL 과 계정이 생성 되었습니다. 
-
- 
-
-젠킨스 URL :   https://deploy.kakaoinsure.net/
-
- 
-
-공용 계정 : pay_dev
-
-공용 비번 : developer
-
- 
-
-감사합니다. 
-
-
-
+		       	 				<textarea  id="msg" rows="20" 
+		       	 					style="width:100%; font-size:15px; padding:15px; border:0px; background-color: white;" readonly="readonly" disabled > 
 		       	 				</textarea>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	
+	<div id="panal_update" style="display:none;">
+		<div class="row">
+			<div class="col-md-12">
+				<h6 id="grid-options" class="title">SFTM 2020 > 게시판 > 게시글 등록/수정</h6> 
+				<div>
+					<button type="button" class="btn btn-dark" style="width: 100px; float: right;  margin-right: 5px;" id="btnCancle">취소</button>
+					<button type="button" class="btn btn-dark" style="width: 100px; float: right;  margin-right: 10px;" id="btnSave">저장</button>
+				</div>
+				<br/>
+				<br/>
+				<table id="borderUpdateTable" class="table table-bordered"
+					style="width: 100%">
+					<tbody>
+						<tr>
+							<th colspan="2" style="width: 16.6%">* 제목</th>
+							<td colspan="10">
+		       	 				<input  id="title" style="width:100%; font-size: 13px;" class="form-control required"></input>
+		       	 				<input  id="border_id" style="display:none;"></input>
+							</td>
+						</tr>
+						<tr>
+							<th colspan="2" style="width: 16.6%">* 분류</th>
+							<td colspan="4">
+		       	 				<select  class="form-control" id="type_code" title="" style="width:200px;">
+								</select> 
+							</td>
+							<th colspan="2" style="width: 16.6%"> 담당자</th>
+							<td colspan="4">
+								<input  id="manager_user" style="width:100%" style="font-size: 13px;" class="form-control"></input>
+							</td>
+						</tr>
+						<tr>
+							<th colspan="2" style="width: 16.6%">* 내용</th>
+							<td colspan="10">
+		       	 				<textarea  id="msg" rows="15" class="required"  style="width:100%; font-size:15px; padding:15px;  background-color: white;"></textarea>
+							</td>
+						</tr>
+						<tr style="height:100px; display:none;" id="trExistingMainImgs">
+							<th colspan="2" style="width: 16.6%">첨부파일 (기존)</th>
+							<td colspan="10">
+								<label id="imgkey" style="display:none;"></label>
+			       	 			<div id="existingMainImgs" >
+			       	 				<img id="img1" />
+			       	 				<img id="img2" />
+			       	  			</div>
+		       	 			</td>	
+		       	 		</tr>
+						<tr>
+			       	 		<th colspan="2" rowspan="2">첨부파일</th>
+			       	  		<td colspan="10">
+			       	  			<input multiple="multiple" type="file" id="fileMain" name="filename[]" />
+							</td>	
+			       	    </tr>	
+			       	 	<tr style="height:100px;">
+			       	 		<td colspan="10">
+			       	 			<div id="NewMainImgs" >
+			       	 				<img id="img1" />
+			       	  			</div>
+		       	  			</td>
+			       	  	</tr>
+						<tr>
+							<th colspan="2" style="width: 16.6%">알림 발송</th>
+							<td colspan="10">
+		       	 				<label style="font-weight: normal;  padding-top: 10px;  padding-left: 10px;">
+									<input type="radio" name="radio_push" value="NOT" checked="checked" >
+									미발송
+								</label>
+								<label style="font-weight: normal;  padding-top: 10px;  padding-left: 10px;">
+									<input type="radio"name="radio_push" value="ALL"  >
+									전체
+								</label>
+								<label style="font-weight: normal;  padding-top: 10px;  padding-left: 10px;">
+									<input type="radio" name="radio_push" value="DEV"  >
+									개발자
+								</label>
+								<label style="font-weight: normal;  padding-top: 10px;  padding-left: 10px;">
+									<input type="radio" name="radio_push" value="TEST"  >
+									현업
+								</label>
 							</td>
 						</tr>
 					</tbody>

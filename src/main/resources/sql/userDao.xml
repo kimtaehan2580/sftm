@@ -16,8 +16,9 @@
 				, tm.id as team_id
 				, tm.role_code
 		FROM sftm.itm_user us
-			, sftm.itm_team tm
-		where us.team_id = tm.id
+			left outer join sftm.itm_team tm
+				on us.team_id = tm.id
+		where 1=1
         <if test="password != null and password != ''"> 
         	AND us.password = #{password}
         </if>
