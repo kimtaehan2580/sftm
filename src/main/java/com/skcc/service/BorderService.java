@@ -105,7 +105,7 @@ public class BorderService {
 		}
 		
 		String push_receive = (String) reqMap.get("push_receive");
-		if( push_receive != null && !"not".equals(push_receive)) {
+		if( push_receive != null && !"NOT".equals(push_receive)) {
 			pushService.sendPushMessage_border(id, (String) reqMap.get("cookieUserId"), push_receive);
 		}
 				
@@ -142,4 +142,57 @@ public class BorderService {
 	}
 	
 	
+	
+	/**
+	 * 사이트맵 조회 (리스트)
+	 * @param     Map<String, Object>  요청 Request
+	 * @return    Map<String, Object>  응답 Response
+	 */
+	public Map<String, Object> selectSitemapList( Map<String, Object> reqMap ) {	
+		Map<String, Object> response = new HashMap<String, Object>();
+		List<Object> list = sqlSession.selectList("BorderDAO.selectSitemapList", reqMap);
+		
+		if(list.size() != -1) { 
+			Message.SetSuccesMsg(response, "select");
+			response.put("list", list);
+		}
+		return response;
+	}
+	
+	/**
+	 * 사이트맵 등록
+	 * @param     Map<String, Object>  요청 Request
+	 * @return    Map<String, Object>  응답 Response
+	 */
+	@Transactional 
+	public Map<String, Object> insertSitemap( Map<String, Object> reqMap ) {	
+			
+		Map<String, Object> response = new HashMap<String, Object>();
+		
+		int result = sqlSession.insert("BorderDAO.insertSitemap", reqMap);   //결함이력테이블 데이터 등록
+		if(result != 1) {
+			return response;
+		}
+
+		Message.SetSuccesMsg(response, "insert");
+		return response;
+	}
+	
+	/**
+	 * 사이트맵 수정
+	 * @param     Map<String, Object>  요청 Request
+	 * @return    Map<String, Object>  응답 Response
+	 */
+	@Transactional 
+	public Map<String, Object> updateSitemap( Map<String, Object> reqMap ) {	
+		
+		Map<String, Object> response = new HashMap<String, Object>();
+		
+		int result = sqlSession.update("BorderDAO.updateSitemap", reqMap);   //결함이력테이블 데이터 등록
+		if(result != 1) {
+			return response;
+		}
+		Message.SetSuccesMsg(response, "update");
+		return response;
+	}
 }

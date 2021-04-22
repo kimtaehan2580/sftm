@@ -165,7 +165,7 @@ var initDoucument = function(){
 		
 			//test 이력 재 확인
 			if(typeof skInterface != "undefined"){
-				ajaxTranCall("auto/selectAutoDetail.do", {"id": $("#auto_id").val()}, callbackS, callbackE);
+				ajaxTranCall("push/selectAutoDetail.do", {"id": Number($("#auto_id").val())}, callbackS, callbackE);
 			}
 			else{
 				;
@@ -520,9 +520,9 @@ var callbackS = function(tran, data){
 		break;	
 		
 	/*
-	 * auto/selectAutoList.do -> 테스트케이스에 연결된 UI 테스트 
+	 * push/selectAutoList.do -> 테스트케이스에 연결된 UI 테스트 
 	 */
-	 case "auto/selectAutoList.do":
+	 case "push/selectAutoList.do":
 	 	
 	 	var list = data["list"];
 	 	
@@ -616,14 +616,14 @@ var callbackS = function(tran, data){
 		ajaxTranCall("scenario/selectTestCaseDetail.do", jsonObj, callbackS, callbackE);
 		break;
 	
-	case "auto/selectAutoDetail.do":
+	case "push/selectAutoDetail.do":
 	
 	
-	 	var list = data["list"];
+//	 	var list = data["list"];
 	 	
 		c_window.autoTestShow(
 			$("#auto_title").text()					//결함제목
-			, list[0].html						//html json list
+			, data.html						//html json list
 			, $("#selectViewType").val()  		//녹화재생 유형 (auto : 자동수행, manual : 수동수행)
 			, $("#auto_reg_user").text()	
 			, $("#auto_reg_time").text()
@@ -666,7 +666,7 @@ var showTestCaseDetail = function(data){
 	
 	//선택된 테스트 케이스의 결함리스트를 조회 
 	ajaxTranCall("defect/selectDefectList.do", 	{ "case_id" : $("#case_id").val() }, callbackS, callbackE, false);
-	ajaxTranCall("auto/selectAutoList.do", 		{ "case_id" : $("#case_id").val() }, callbackS, callbackE, false);
+	ajaxTranCall("push/selectAutoList.do", 		{ "case_id" : $("#case_id").val() }, callbackS, callbackE, false);
 
 	//초기화 
 	$("#panal_list").hide();

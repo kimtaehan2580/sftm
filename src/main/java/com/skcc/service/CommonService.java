@@ -223,31 +223,5 @@ public class CommonService {
 		return response;
 	}
 	
-	//
-	public Map<String, Object> selectAutoList( Map<String, Object> reqMap ) {	
-		
-		List<Object> list = sqlSession.selectList("PushDAO.selectAutoList", reqMap);
-		Map<String, Object> response = new HashMap<String, Object>();
-		if(list.size() != -1) { 
-			Message.SetSuccesMsg(response, "select");
-			response.put("list", list);
-		}
-		return response;
-	}
-
-	public Map<String, Object> selectAutoDetail( Map<String, Object> reqMap ) {	
-		
-		List<Object> list = sqlSession.selectList("PushDAO.selectAutoDetail", reqMap);
-		Map<String, Object> response = new HashMap<String, Object>();
-		if(list.size() != -1) { 
-			Message.SetSuccesMsg(response, "select");
-			response.put("list", list);
-		}
-		return response;
-	}
-	
-	
-	
-	
 	
 }

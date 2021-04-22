@@ -160,7 +160,7 @@ function initDoucument (){
 					ajaxTranCall("defect/selectDefectHistory.do", {"defect_id": dataJson["defect_id"]}, callbackS, callbackE);
 					
 					//테스트자동화 List 조회
-					ajaxTranCall("auto/selectAutoList.do", {"defect_id": dataJson["defect_id"]}, callbackS, callbackE);
+					ajaxTranCall("push/selectAutoList.do", {"defect_id": dataJson["defect_id"]}, callbackS, callbackE);
 					
 					if($("#state").val() == "C001_03"){
 						$("#btnUpdate").hide();
@@ -383,7 +383,7 @@ var callbackS = function(tran, data){
 		break;
 	
 	//테스트 자동화 목록 조회시 (defect_id로 조회 가능)
-	case "auto/selectAutoList.do":
+	case "push/selectAutoList.do":
 		var list = data["list"];
 		$("#spanAutoTestCnt").text(list.length + "건");
 		modalTableautoTest = $('#modalTableautoTest').DataTable ({

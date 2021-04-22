@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div id="panal_list">
+		<div class="row">
+			<div class="col-md-12">
+			 	<h6 id="grid-options" class="title">SFTM > 사이트맵</h6>
+				<table id="sitemapTable" class="table table-bordered" style="width:100%">
+			        <thead>
+			            <tr>
+			                <th style="width:15%">분류</th>
+			                <th style="width:25%">사이트명</th>
+			                <th style="width:30%">URL</th>
+			                <th style="width:20%">접속정보</th>
+			                <th style="width:10%">우선순위</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+			        </tbody>
+			    </table>
+		   </div>
+	   </div>
+	</div> 
+	<div id="panal_detail" style="display:none;">
+		<div class="row">
+			<div class="col-md-12">
+				<h6 id="grid-options" class="title">SFTM > 알림판 > 인프라</h6> 
+				<div>
+			    	<button type="button" class="btn btn-dark" style="width: 100px; float:left;  " id="btnPrePage">목록으로</button>
+			    	<button type="button" class="btn btn-outline-secondary" style="width: 100px; float:right; " id="btnAddFile">첨부파일</button>
+			    </div>
+			    <br/><br/>
+			    <table id="borderDetailTable" class="table table-bordered" style="">
+					<tbody>
+						<tr style="height:50px; border-top:0">
+							<td colspan="2">
+		       	 				<b style="font-size:18px; padding:5px;" id="title"></b>
+		       	 			</td>
+						</tr>
+						<tr style="border:0">
+							<td style="border:0">
+		       	 				<b style="font-size:13px; padding-left:15px;" id="manager"></b>
+							</td>
+							<td style="border:0; float: right;">
+		       	 				<label style="font-size:13px; padding-right:15px;" id="reg_date"></label>
+							</td>
+						</tr>
+						<tr style="border:0">
+							<td colspan="2" style="border:0">
+		       	 				<textarea  id="msg" rows="20" 
+		       	 					style="width:100%; font-size:15px; padding:15px; border:0px; background-color: white;" readonly="readonly" disabled > 
+		       	 				</textarea>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 결함등록 (신규결함 등록 할 수 있게 함) -->
+	<div class="modal fade" id="modalSiteMap"  >
+		<div class="modal-dialog" >
+			<div class="modal-content">
+				<div class="modal-header bg-ntm">
+					<h6 id="hearderTitle" class="modal-title color-white">게시판 등록</h6>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span></button>
+				</div>
+				
+				<div class="modal-body">
+					<table id="modalSitemapTable" class="table table-bordered" style="width:100%">
+				       <tbody>
+			        	    <tr>
+				       	 		<th colspan="4">* 분류</th>
+				       	 		<td colspan="8">
+				       	 			<input id="id" style="display:none;" />
+				       	 			<input id="title" class="form-control required" style="width:100%" />
+				       	 		</td> 
+				       	  	</tr>
+				       	  	<tr>
+				       	 		<th colspan="4">* 사이트명</th>
+				       	 		<td colspan="8">
+				       	 			<input id="sub_title" class="form-control required" style="width:100%" />
+				       	  		</td>	
+				       	  	</tr>	
+				       	  	<tr>
+				       	 		<th colspan="4">* URL </th>
+				       	  		<td colspan="8">
+				       	  			<input id="url" class="form-control required" style="width:100%" />
+								</td>	
+				       	  	</tr>
+				       	  	<tr>
+				       	 		<th colspan="4">접속정보</th>
+				       	  		<td colspan="8">
+				       	  			<input id="login_info" class="form-control required" style="width:100%" />
+								</td>	
+				       	  	</tr>
+				       	  	<tr>
+				       	 		<th colspan="4">* 우선순위</th>
+				       	 		<td colspan="8">
+				       	 			<input id="priority" class="form-control required" style="width:100%" />
+				       	 		</td> 
+				       	  	</tr>
+				       	  	<tr>
+				       	 		<th colspan="4">* 사용여부</th>
+				       	 		<td colspan="8">
+				       	 			<select  class="form-control" id="use_yn" title="" style="width:100%; ">
+										<option selected="selected" value="y">사용</option>
+										<option	 value="n">미사용</option>
+									</select>
+				       	 		</td> 
+				       	  	</tr>
+				       	</tbody>
+			       	 </table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-dark" id="btnModalSave" >저장</button>
+					<button type="button" class="btn btn-dark" data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div> <!-- 결함등록 (신규결함 등록 할 수 있게 함) -->
+	
+</body>
+</html>

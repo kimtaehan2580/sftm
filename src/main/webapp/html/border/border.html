@@ -104,9 +104,14 @@
 		       	 				<select  class="form-control" id="type_code" title="" style="width:200px;">
 								</select> 
 							</td>
-							<th colspan="2" style="width: 16.6%"> 담당자</th>
-							<td colspan="4">
-								<input  id="manager_user" style="width:100%" style="font-size: 13px;" class="form-control"></input>
+							<th colspan="2" style="width: 16.6%">담당자</th>
+							<td colspan="2">
+								<input  id="manager_user_name" style="width:100%" readonly="readonly" disabled  class="form-control"></input>
+								<input  id="manager_user" style="width:100%; display:none;" class="form-control"></input>
+							</td>
+							<td colspan="2">
+								<button type="button" style="float:left;" 
+								class="btn btn-outline-primary" id="btnMgUpdate" >담당자 변경</button>
 							</td>
 						</tr>
 						<tr>
@@ -118,7 +123,6 @@
 						<tr style="height:100px; display:none;" id="trExistingMainImgs">
 							<th colspan="2" style="width: 16.6%">첨부파일 (기존)</th>
 							<td colspan="10">
-								<label id="imgkey" style="display:none;"></label>
 			       	 			<div id="existingMainImgs" >
 			       	 				<img id="img1" />
 			       	 				<img id="img2" />
@@ -145,16 +149,16 @@
 									<input type="radio" name="radio_push" value="NOT" checked="checked" >
 									미발송
 								</label>
-								<label style="font-weight: normal;  padding-top: 10px;  padding-left: 10px;">
-									<input type="radio"name="radio_push" value="ALL"  >
+								<label style="font-weight: normal;  padding-top: 10px;  padding-left: 10px;" >
+									<input type="radio" name="radio_push" value="ALL">
 									전체
 								</label>
-								<label style="font-weight: normal;  padding-top: 10px;  padding-left: 10px;">
-									<input type="radio" name="radio_push" value="DEV"  >
+								<label style="font-weight: normal;  padding-top: 10px;  padding-left: 10px;" >
+									<input type="radio" name="radio_push" value="DEV">
 									개발자
 								</label>
 								<label style="font-weight: normal;  padding-top: 10px;  padding-left: 10px;">
-									<input type="radio" name="radio_push" value="TEST"  >
+									<input type="radio" name="radio_push" value="TEST">
 									현업
 								</label>
 							</td>
@@ -165,6 +169,39 @@
 		</div>
 	</div>
 	
+	<!-- 담당자 모달 -->
+	<div class="modal fade" id="modalUser">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header bg-ntm">
+					<h6 id="modalUserTitle" class="modal-title color-white">게시글 담당자 변경하기</h6>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-6">
+							<label>프로젝트 팀</label>
+							<select  class="form-control" id="selectModalTeam" title="" style="width:100%; ">
+								<option selected="selected" value="">선택</option>
+							</select>
+						</div>
+						<div class="col-md-6">
+							<label>개발자</label>
+							<select  class="form-control" id="selectModalUser" title="" style="width:100%">
+								<option selected="selected" value="">선택</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-dark" style="width:80px;" id="btnModalSave">저장</button>
+					<button type="button" class="btn btn-dark" data-dismiss="modal" style="width:80px;">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div><!-- 담당자변경 모달 -->
+	<input id="imgkey" style="display:none;"></input>
 	
 </body>
 </html>

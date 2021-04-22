@@ -94,11 +94,14 @@ var ajaxExcelDownLoad = function (tran , data, succeesCallback, errorCallback){
 /*
  * 액셀 업로드만 
  */
-var ajaxFormExcel = function (tran , id, func){
+var ajaxFormExcel = function (tran , id, func, key){
+
+
 	$("#loader").show();
 	var data = new FormData();
+	
+	if(key != null) data.append("key", key);
 	data.append(id, $('#'+ id).prop('files')[0]);				
-	console.log(data);
 
 	$.ajax({
         type: "POST",

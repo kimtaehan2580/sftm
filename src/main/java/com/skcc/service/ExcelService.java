@@ -9,10 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.DVConstraint;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFDataValidation;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -21,7 +19,10 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.ss.util.CellRangeAddressList;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1321,5 +1322,432 @@ public class ExcelService {
 		
 	}
 	
+	/**
+     * 테스트자동화 화면에서 액셀 다운로드 기능
+     *
+     * @param     reqMap  화면에서 입력된 데이터 
+     * @return      응답 결과
+     * @exception Exception
+     *     액셀파일 쓰는 도중 애러 발생시 호출됨
+     */
+	public Map<String, Object> downloadAutoExcel(Map<String, Object> reqMap) {
+
+		Map<String, Object> response = new HashMap<String, Object>();
+
+		List<Object> list = (List<Object>) reqMap.get("list");
+
+		// 액셀파일 설정 하기
+		HSSFWorkbook writebook = new HSSFWorkbook();// 새 엑셀파일만들기
+		HSSFSheet mySheet = writebook.createSheet("사용자 목록");// 새 시트 만들기 (zone이라는 이름의 시트)
+
+		mySheet.setColumnWidth(0, 7500); // 팀명
+		mySheet.setColumnWidth(1, 5000); // 조직
+		mySheet.setColumnWidth(2, 8000); // 조직
+		mySheet.setColumnWidth(3, 8000); // 조직
+
+		int rowIndex = 4;
+		// 파일 생성
+		HSSFRow row;
+
+		try {
+
+			//////////////////// Title /////////////////////////
+			HSSFCell cell;
+			row = mySheet.createRow(1);// 행 생성
+			row.setHeightInPoints((2 * mySheet.getDefaultRowHeightInPoints()) + 10);
+			cell = row.createCell(0);
+			cell.setCellValue("Colume을 추가하여 다중 등록 가능합니다. \n 해더컬럼에 특정 데이터가 존재해야 합니다.");// 값넣기
+			mySheet.addMergedRegion(new CellRangeAddress(1, 1, 0, 9));
+
+			CellStyle cs = writebook.createCellStyle();
+			cs.setWrapText(true);
+			cell.setCellStyle(cs);
+
+			//////////////////// Header /////////////////////////
+			HSSFCellStyle headerStyle = writebook.createCellStyle();
+			headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex()); // 배경색
+			headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+			headerStyle.setBorderRight(BorderStyle.THIN);
+			headerStyle.setBorderLeft(BorderStyle.THIN);
+			headerStyle.setBorderTop(BorderStyle.THIN);
+			headerStyle.setBorderBottom(BorderStyle.THIN);
+
+			ExcelUtil.setCellData(mySheet, 4, 0, "이벤트", headerStyle);
+			ExcelUtil.setCellData(mySheet, 4, 1, "Object", headerStyle);
+			ExcelUtil.setCellData(mySheet, 4, 2, "sample action", headerStyle);
+			ExcelUtil.setCellData(mySheet, 4, 3, "Test action 1", headerStyle);
+			
+			
+ 
+
+			// 모든 팀 정보를 셀렉트 박스에 집어넣음
+
+			//////////////////// Body /////////////////////////
+			HSSFCellStyle bodyStyle = writebook.createCellStyle();
+
+			bodyStyle.setBorderRight(BorderStyle.THIN);
+			bodyStyle.setBorderLeft(BorderStyle.THIN);
+			bodyStyle.setBorderTop(BorderStyle.THIN);
+			bodyStyle.setBorderBottom(BorderStyle.THIN);
+			
+			System.out.println("list.size() : "  + list.size());
+
+			for (int i = 0; i < list.size(); i++) {
+
+				Map<String, String> tempMap = (Map<String, String>) list.get(i);
+
+				System.out.println("list.size() : "  + tempMap.get("0"));
+				row = mySheet.createRow(++rowIndex);// 행 생성
+
+				// 1열 아이디
+				cell = row.createCell(0);
+				cell.setCellValue(tempMap.get("0"));// 값넣기
+				cell.setCellStyle(bodyStyle);
+
+				// 2열 비밀번호
+				cell = row.createCell(1);// 해당 행의 2열
+				
+				Object obj = tempMap.get("1");
+				cell.setCellValue(obj.toString());// 값넣기
+				cell.setCellStyle(bodyStyle);
+
+				// 3열 이름
+				cell = row.createCell(2);// 해당 행의 2열
+				cell.setCellValue(tempMap.get("2"));// 값넣기
+				cell.setCellStyle(bodyStyle);
+				
+				
+				cell = row.createCell(3);// 해당 행의 2열
+				cell.setCellValue("");// 값넣기
+				cell.setCellStyle(bodyStyle);
+ 
+			}
+
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_hhmmss");
+			Calendar cal = Calendar.getInstance();
+			String fileName = formatter.format(cal.getTime());
+
+			FileOutputStream output = new FileOutputStream(excelFile_Path + "Auto_" + fileName + ".xls");
+			writebook.write(output);// 파일 생성
+			
+			
+			//검증 타입 
+			File file = new File(excelFile_Path + "User_" + fileName + ".xls");
+			log.debug("파일이 생성되었나요? : " + file.exists());
+			output.close();
+
+			response.put("resultCode", "0000");
+			response.put("filePath", "Auto_" + fileName + ".xls");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.put("resultCode", "0001");
+			response.put("filePath", "");
+		}
+
+		return response;
+	}
 	
+	
+	/**
+     * 테스트자동화 화면에서 결과 액셀 다운로드 기능
+     *
+     * @param     reqMap  화면에서 입력된 데이터 
+     * @return      응답 결과
+     * @exception Exception
+     *     액셀파일 쓰는 도중 애러 발생시 호출됨
+     */
+	public Map<String, Object> downloadAutoResultExcel(Map<String, Object> reqMap) {
+
+		Map<String, Object> response = new HashMap<String, Object>();
+		//id -> 테스트자동화 id 
+		//테스트 자동화 저장된 데이터 조회 함
+		List<Object> list = sqlSession.selectList("PushDAO.selectAutotest_detail", reqMap);
+		//"{""list"":[{""0"":""open"",""1"":[""https:\/\/www.samsungallife.co.kr\/ad\/landing_2020\/pc\/allife\/m02.html?Type=Q_00""],""2"":""""},{""0"":""selectFrame"",""1"":[""index=0""],""2"":""""},{""0"":""clickAt"",""1"":[""css=label.male_01"",""\/\/form[@id='dataForm1']\/div\/dl\/dd\/div\/label"",""\/\/label""],""2"":""18,29""},{""0"":""clickAt"",""1"":[""id=name"",""name=name"",""css=#name"",""\/\/input[@id='name']"",""\/\/form[@id='dataForm1']\/div\/dl\/dd\/input"",""\/\/dd\/input""],""2"":""89,17""},{""0"":""type"",""1"":[""id=name"",""name=name"",""css=#name"",""\/\/input[@id='name']"",""\/\/form[@id='dataForm1']\/div\/dl\/dd\/input"",""\/\/dd\/input""],""2"":""한정민""},{""0"":""clickAt"",""1"":[""id=ssn1"",""name=ssn1"",""css=#ssn1"",""\/\/input[@id='ssn1']"",""\/\/form[@id='dataForm1']\/div\/dl\/dd\/input[2]"",""\/\/dd\/input[2]""],""2"":""58,29""},{""0"":""type"",""1"":[""id=ssn1"",""name=ssn1"",""css=#ssn1"",""\/\/input[@id='ssn1']"",""\/\/form[@id='dataForm1']\/div\/dl\/dd\/input[2]"",""\/\/dd\/input[2]""],""2"":""20010101""},{""0"":""type"",""1"":[""id=phone"",""name=phone"",""css=#phone"",""\/\/input[@id='phone']"",""\/\/form[@id='dataForm1']\/div\/dl\/dd\/input[3]"",""\/\/dd\/input[3]""],""2"":""01055552222""},{""0"":""clickAt"",""1"":[""css=label.agree_icon"",""\/\/form[@id='dataForm1']\/div\/div\/label\/label"",""\/\/label\/label""],""2"":""0,9""},{""0"":""selectFrame"",""1"":[""relative=parent""],""2"":""""},{""0"":""clickAt"",""1"":[""css=button.confirm"",""\/\/button[@onclick=\""$('.popup').hide();\""]"",""\/\/p[2]\/button""],""2"":""45,220""},{""0"":""selectFrame"",""1"":[""index=0""],""2"":""""},{""0"":""clickAt"",""1"":[""\/\/form[@id='dataForm1']\/div\/div\/label[2]\/span"",""\/\/label[2]\/span""],""2"":""48,15""},{""0"":""selectFrame"",""1"":[""relative=parent""],""2"":""""},{""0"":""clickAt"",""1"":[""xpath=(\/\/button[@onclick=\""$('.popup').hide();\""])[2]"",""\/\/div[4]\/div\/div[2]\/p[2]\/button""],""2"":""57,216""},{""0"":""selectFrame"",""1"":[""index=0""],""2"":""""},{""0"":""clickAt"",""1"":[""\/\/form[@id='dataForm1']\/div\/div\/label[3]\/span"",""\/\/label[3]\/span""],""2"":""78,10""},{""0"":""selectFrame"",""1"":[""relative=parent""],""2"":""""},{""0"":""clickAt"",""1"":[""xpath=(\/\/button[@onclick=\""$('.popup').hide();\""])[3]"",""\/\/div[5]\/div\/div[2]\/p[2]\/button""],""2"":""46,-115""},{""0"":""selectFrame"",""1"":[""index=0""],""2"":""""},{""0"":""clickAt"",""1"":[""css=img"",""\/\/form[@id='dataForm1']\/div\/div[2]\/a\/img"",""\/\/img""],""2"":""282,13""}]}"
+		
+		
+		// 액셀파일 설정 하기
+		HSSFWorkbook writebook = new HSSFWorkbook();// 새 엑셀파일만들기
+		HSSFSheet mySheet = writebook.createSheet("사용자 목록");// 새 시트 만들기 (zone이라는 이름의 시트)
+
+		mySheet.setColumnWidth(0, 2000); // 순번
+		mySheet.setColumnWidth(1, 7500); // event
+		mySheet.setColumnWidth(2, 5000); // obj
+		
+		int rowIndex = 3;
+		// 파일 생성
+		HSSFRow row;
+		HSSFCell cell;
+		
+		row = mySheet.createRow(1);// 행 생성
+		row.setHeightInPoints((2 * mySheet.getDefaultRowHeightInPoints()) + 10);
+		cell = row.createCell(0);
+		cell.setCellValue("자동테스트 결과 확인");// 값넣기
+		mySheet.addMergedRegion(new CellRangeAddress(1, 1, 0, 9));
+
+		CellStyle cs = writebook.createCellStyle();
+		cs.setWrapText(true);
+		cell.setCellStyle(cs);
+
+		//////////////////// Header /////////////////////////
+		HSSFCellStyle headerStyle = writebook.createCellStyle();
+		headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex()); // 배경색
+		headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+		headerStyle.setBorderRight(BorderStyle.THIN);
+		headerStyle.setBorderLeft(BorderStyle.THIN);
+		headerStyle.setBorderTop(BorderStyle.THIN);
+		headerStyle.setBorderBottom(BorderStyle.THIN);
+
+		ExcelUtil.setCellData(mySheet, rowIndex, 0, "순번", headerStyle);
+		ExcelUtil.setCellData(mySheet, rowIndex, 1, "이벤트", headerStyle);
+		ExcelUtil.setCellData(mySheet, rowIndex, 2, "Object", headerStyle);
+				
+		
+		HSSFCellStyle bodyStyle = writebook.createCellStyle();
+
+		bodyStyle.setBorderRight(BorderStyle.THIN);
+		bodyStyle.setBorderLeft(BorderStyle.THIN);
+		bodyStyle.setBorderTop(BorderStyle.THIN);
+		bodyStyle.setBorderBottom(BorderStyle.THIN);
+		
+				
+		for(int i=0; i<list.size(); i++) {
+			
+			Map<String, Object> obj = (Map<String, Object>) list.get(i);
+			long seq = (Long) obj.get("seq");
+			String html = (String) obj.get("html");
+			String result = (String) obj.get("result");
+
+			log.info("seq : {} " + seq);
+			log.info("result : {} " + result);
+			log.info("html : {} " + html);
+			
+			JSONParser parser = new JSONParser();
+			JSONObject jsonObj = null;
+			try {
+				jsonObj = (JSONObject) parser.parse( html );
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			JSONArray jsonArray = (JSONArray) jsonObj.get("list");
+			
+			int count = 0;
+			rowIndex = 3;
+			
+			int kk = 0;
+			for(int k=0; k<jsonArray.size();k++) {
+				Map<String, String> stepMap = (HashMap<String, String>) jsonArray.get(k);
+				log.info("event : {} " + stepMap.get("0"));
+				
+				if(i==0) {
+
+					log.info("rowIndex1 : {} ", rowIndex);
+					row = mySheet.createRow(++rowIndex);// 행 생성
+					
+					// 1열 아이디
+					cell = row.createCell(0);
+					cell.setCellValue(k+1);// 값넣기
+					cell.setCellStyle(bodyStyle);
+
+					cell = row.createCell(1);
+					cell.setCellValue(stepMap.get("0"));// 값넣기
+					cell.setCellStyle(bodyStyle);
+					
+					cell = row.createCell(2);
+					// class org.json.simple.JSONArray cannot be cast to class java.lang.String 
+					Object tempObj = stepMap.get("1");
+					cell.setCellValue(tempObj.toString() );// 값넣기
+					cell.setCellStyle(bodyStyle);
+					
+					cell = row.createCell(3);
+					cell.setCellValue(stepMap.get("2"));// 값넣기
+					cell.setCellStyle(bodyStyle);
+					
+				}
+				else {
+					
+					log.info("rowIndex2 : {} ", rowIndex);
+					row = mySheet.getRow(++rowIndex);// 행 생성
+					
+					cell = row.createCell(i+3);
+					cell.setCellValue(stepMap.get("2"));// 값넣기
+					cell.setCellStyle(bodyStyle);
+				}
+			}
+			
+			//test 결과 세팅
+			mySheet.setColumnWidth(i+3, 5000); // obj
+			ExcelUtil.setCellData(mySheet, 3, i+3, "테스트", headerStyle);
+			if(i==0) {
+				row = mySheet.createRow(++rowIndex);// 행 생성
+				cell = row.createCell(3);
+				cell.setCellValue(result);// 값넣기
+				cell.setCellStyle(bodyStyle);
+			}
+			else {
+				row = mySheet.getRow(++rowIndex);// 행 생성
+				cell = row.createCell(i+3);
+				cell.setCellValue(result);// 값넣기
+				cell.setCellStyle(bodyStyle);
+			}
+		}
+		
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_hhmmss");
+			Calendar cal = Calendar.getInstance();
+			String fileName = formatter.format(cal.getTime());
+	
+			FileOutputStream output = new FileOutputStream(excelFile_Path + "Auto_" + fileName + ".xls");
+			writebook.write(output);// 파일 생성
+			
+			
+			//검증 타입 
+			File file = new File(excelFile_Path + "Auto_result_" + fileName + ".xls");
+			log.debug("파일이 생성되었나요? : " + file.exists());
+			output.close();
+	
+			response.put("resultCode", "0000");
+			response.put("filePath", "Auto_" + fileName + ".xls");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.put("resultCode", "0001");
+			response.put("filePath", "");
+		}
+		return response;
+	}
+	
+	/**
+     * 사용자 화면에서 액셀 업로드 기능
+     *
+     * @param     arrayList  액셀파일에서 읽어온 데이터
+     * @return      응답 결과
+     * @exception Exception
+     *     액셀파일 쓰는 도중 애러 발생시 호출됨
+     */
+	public HashMap<String, Object> uploadExcelAuto(ArrayList<Map<String, String>> arrayList, String key) {
+		// TODO Auto-generated method stub
+		
+//		아이디	비밀번호	이름	팀명	조직	직급	전화번호	성별	생년월일
+//		D001	D001	이성준	일반계약	프리	대리	010-1111-1111	남성	901010
+		//password |user_id |name |phone_num   |sex |organization |position |birth  |team_name |team_id |
+		ArrayList< JSONArray > testDataList = new ArrayList< JSONArray >();
+		int successCnt = 0;
+		
+		int auto_id = Integer.parseInt(key);
+		//원본 쿼리 조회 함
+
+		Map responseMap = sqlSession.selectOne("PushDAO.selectAutoDetail", auto_id);
+		
+		String html = (String) responseMap.get("html");
+		System.out.println("원본 HTML :  " + html);
+		System.out.println("원본 HTML :  " + html);
+		System.out.println("원본 HTML :  " + html);
+		
+		JSONParser parser = new JSONParser();
+		Object obj = null;
+		try {
+			obj = parser.parse( html );
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		JSONObject jsonObj = (JSONObject) obj;
+		JSONArray jsonArray = (JSONArray) jsonObj.get("list");
+//		"{""list"":[{""0"":""open"",""1"":[""https://www.samsungallife.co.kr/ad/landing_2020/pc/allife/m02.html?Type=Q_00""],""2"":""""},{""0"":""selectFrame"",""1"":[""index=0""],""2"":""""},{""0"":""clickAt"",""1"":[""css=label.male_01"",""//form[@id='dataForm1']/div/dl/dd/div/label"",""//label""],""2"":""18,29""},{""0"":""clickAt"",""1"":[""id=name"",""name=name"",""css=#name"",""//input[@id='name']"",""//form[@id='dataForm1']/div/dl/dd/input"",""//dd/input""],""2"":""89,17""},{""0"":""type"",""1"":[""id=name"",""name=name"",""css=#name"",""//input[@id='name']"",""//form[@id='dataForm1']/div/dl/dd/input"",""//dd/input""],""2"":""홍길동""},{""0"":""clickAt"",""1"":[""id=ssn1"",""name=ssn1"",""css=#ssn1"",""//input[@id='ssn1']"",""//form[@id='dataForm1']/div/dl/dd/input[2]"",""//dd/input[2]""],""2"":""58,29""},{""0"":""type"",""1"":[""id=ssn1"",""name=ssn1"",""css=#ssn1"",""//input[@id='ssn1']"",""//form[@id='dataForm1']/div/dl/dd/input[2]"",""//dd/input[2]""],""2"":""19850312""},{""0"":""type"",""1"":[""id=phone"",""name=phone"",""css=#phone"",""//input[@id='phone']"",""//form[@id='dataForm1']/div/dl/dd/input[3]"",""//dd/input[3]""],""2"":""01051413333""},{""0"":""clickAt"",""1"":[""css=label.agree_icon"",""//form[@id='dataForm1']/div/div/label/label"",""//label/label""],""2"":""0,9""},{""0"":""selectFrame"",""1"":[""relative=parent""],""2"":""""},{""0"":""clickAt"",""1"":[""css=button.confirm"",""//button[@onclick=\""$('.popup').hide();\""]"",""//p[2]/button""],""2"":""45,220""},{""0"":""selectFrame"",""1"":[""index=0""],""2"":""""},{""0"":""clickAt"",""1"":[""//form[@id='dataForm1']/div/div/label[2]/span"",""//label[2]/span""],""2"":""48,15""},{""0"":""selectFrame"",""1"":[""relative=parent""],""2"":""""},{""0"":""clickAt"",""1"":[""xpath=(//button[@onclick=\""$('.popup').hide();\""])[2]"",""//div[4]/div/div[2]/p[2]/button""],""2"":""57,216""},{""0"":""selectFrame"",""1"":[""index=0""],""2"":""""},{""0"":""clickAt"",""1"":[""//form[@id='dataForm1']/div/div/label[3]/span"",""//label[3]/span""],""2"":""78,10""},{""0"":""selectFrame"",""1"":[""relative=parent""],""2"":""""},{""0"":""clickAt"",""1"":[""xpath=(//button[@onclick=\""$('.popup').hide();\""])[3]"",""//div[5]/div/div[2]/p[2]/button""],""2"":""46,-115""},{""0"":""selectFrame"",""1"":[""index=0""],""2"":""""},{""0"":""clickAt"",""1"":[""css=img"",""//form[@id='dataForm1']/div/div[2]/a/img"",""//img""],""2"":""282,13""}]}"
+		
+		int count = 0;
+		for(int i=0; i<arrayList.size();i++) {
+			Map<String, String> map = (HashMap<String, String>) arrayList.get(i);
+			//헤더열 여기서 총 건수를 구해야 합니다.
+			if(i == 0) {
+				
+				int tempCnt = 3;
+				while(true) {
+					String temp = map.get("col" + tempCnt);
+					
+					if(temp == null ) {
+						break;
+					}
+					temp = temp.replaceAll(" ", "");
+					if("".equals(temp)) {
+						break;
+					}
+					
+					JSONArray listTemp = new JSONArray();
+					testDataList.add(listTemp);
+					count++;
+					tempCnt++;
+				}
+			}
+			
+			else {
+
+				String event = map.get("col0");
+				String object = map.get("col1");
+				String sampleValue = map.get("col2");
+				for(int k=3 ;k<3+count; k++) {
+					String testValue = map.get("col"+k);
+					JSONArray listTemp = testDataList.get(k-3);
+					HashMap<String, Object> tempMap = new HashMap<String, Object>();
+					tempMap.put("0", event);
+//					tempMap.put("1", object);
+					JSONObject jsonObjTemp = (JSONObject) jsonArray.get(i-1);
+
+					log.info("TEST 00001 : " + jsonObjTemp.get("1"));
+					log.info("TEST 00002 : " + object);
+					tempMap.put("1", jsonObjTemp.get("1"));
+					
+					if("".equals(testValue)) {
+						testValue = sampleValue;
+					}
+					tempMap.put("2", testValue);
+					listTemp.add(tempMap);
+//					testDataList.add(listTemp);
+					
+				}
+			}
+		}
+		
+		HashMap<String, Object> response = new HashMap<String, Object>(); 
+
+		Map<String, Object> queryMap = new HashMap<String, Object>();
+
+
+		int id =  sqlSession.selectOne("PushDAO.selectAutotestId"); 
+		queryMap.put("id", id);
+		queryMap.put("auto_id", auto_id);
+		queryMap.put("count", count);
+		queryMap.put("cookieUserId", "admin");
+		
+		
+		int result = sqlSession.insert("PushDAO.insertAutotest", queryMap);
+		
+		for(int i=0;i<testDataList.size();i++) {
+//			ArrayList tempArray = testDataList.get(i);
+			Map<String, Object> queryMap2 = new HashMap<String, Object>();
+			JSONArray jArray = testDataList.get(i);
+			
+			System.out.println("TEST : " + jArray.toJSONString());
+			JSONObject jobj = new JSONObject();
+			jobj.put("list", jArray);
+			queryMap2.put("autotest_id", id);
+			queryMap2.put("seq", i);
+			queryMap2.put("html",  jobj.toJSONString());
+			successCnt += sqlSession.insert("insertAutotestDetail", queryMap2);
+			
+		}
+		
+		response.put("resultCode", "0000");
+		response.put("message", "("+successCnt+"/"+ count + ")건이 저장되었습니다.");
+//		response.put("list", testDataList);
+		return response;
+	}
+	
+	
+	//downloadAutoResultExcel
 }

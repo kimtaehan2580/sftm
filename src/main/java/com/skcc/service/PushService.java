@@ -342,7 +342,7 @@ public class PushService {
 			Map tempMap = (HashMap) userList.get(i);
 			String user_id = (String) tempMap.get("user_id");
 			String role_code = (String) tempMap.get("role_code");
-			if( !"ALL".equals(push_receive) && role_code.equals(push_receive) ) {
+			if( !"ALL".equals(push_receive) && !role_code.equals(push_receive) ) {
 				continue;	
 			}
 			pushMap.put("recv_user", user_id);
@@ -385,8 +385,90 @@ public class PushService {
 		return true;
 	}
 
+	public Map<String, Object> selectAutoList( Map<String, Object> reqMap ) {	
+		
+		List<Object> list = sqlSession.selectList("PushDAO.selectAutoList", reqMap);
+		Map<String, Object> response = new HashMap<String, Object>();
+		if(list.size() != -1) { 
+			Message.SetSuccesMsg(response, "select");
+			response.put("list", list);
+		}
+		return response;
+	}
 	
+	
+	public Map<String, Object> selectAutoDetail( Map<String, Object> reqMap ) {	
+		
+		int id = (Integer) reqMap.get("id");
+		Map responseMap = sqlSession.selectOne("PushDAO.selectAutoDetail",id);
+		List<Object> list = sqlSession.selectList("PushDAO.selectAutoTestList", reqMap);
+		if(responseMap!= null) { 
+			Message.SetSuccesMsg(responseMap, "select");
+			responseMap.put("list", list);
+		}
+		
+		return responseMap;
+	}
+	
+	
+	public Map<String, Object> selectAutotest_detail( Map<String, Object> reqMap ) {	
+		
+		List<Object> list = sqlSession.selectList("PushDAO.selectAutotest_detail", reqMap);
+		Map<String, Object> response = new HashMap<String, Object>();
+		if(list.size() != -1) { 
+			Message.SetSuccesMsg(response, "select");
+			response.put("list", list);
+		}
+		return response;
+	}
+	 
+	/*
+	 * 사번으로 PUSH 수신건 확인
+	 */
+	public Map<String, Object> updateAutotest_result( Map<String, Object> reqMap ) {	
+		
+		//{"autotest_id":"18","list":[{"seq":0,"result":"7,735"}],"cookieUserId":"admin"}
+		Map<String, Object> response = new HashMap<String, Object>();
+	
+		sqlSession.update("PushDAO.updateAutotest", reqMap);
+		
+		List list = (List) reqMap.get("list");
+		for(int i=0; i<list.size(); i++) {
+			
+			Map<String, Object> queryMap = new HashMap<String, Object>();
+			Map data = (Map) list.get(i);
+			String result = (String) data.get("result");
+			
+			log.info("결과는 {} " , result);
+			
+			
+			queryMap.put("autotest_id", reqMap.get("autotest_id"));
+			queryMap.put("seq", data.get("seq"));
+			queryMap.put("result", result);
+			
+			if(result == null || "".equals(result)) {
 
+				queryMap.put("success_yn", "N");
+			}
+			else {
+				queryMap.put("success_yn", "Y");
+			}
+			
+			sqlSession.update("PushDAO.updateAutotest_detail", queryMap);
+			
+		}
+		Message.SetSuccesMsg(response, "update");
+		
+//		List<Object> list = sqlSession.selectList("PushDAO.selectPushListById", reqMap);
+//		
+//		if(list.size() != -1) { 
+//			sqlSession.update("PushDAO.updatePushListById", reqMap);
+//			Message.SetSuccesMsg(response, "select");
+//			response.put("list", list);
+//		}
+		return response;
+	}
 	
+		
 	
 }

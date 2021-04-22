@@ -201,7 +201,6 @@ var calBackS = function(tran, data){
 		if(data["resultCode"] == "0000" ){
 			basicInquiry();
 			var list = data["list"];
-			
 		
 			//파일 업로드 파일 초기화
 			$("#file1").val("");

@@ -12,6 +12,11 @@ var selectPushMsg = function (){
 	}
 	
 };
+//var _list = null;
+var  updateAutotest_result = function (list){
+	var jsonObj = JSON.parse(list);
+	ajaxTranCall("push/updateAutotest_result.do", jsonObj, c_window.callbackS, c_window.callbackE, false);
+};
 
 //enterkey 입력시 호출됩니다.
 //각화면에 정의가 되어 있을떄 호출합니다.
@@ -52,7 +57,13 @@ c_window.autoTestShow = function(title, html, type, user_info, time){
 	if(typeof skInterface != "undefined"){
 		skInterface.autoTestShow(title, html, type, user_info, time);
 	}
+}
+
+c_window.autoTestShowList = function( htmlList){
 	
+	if(typeof skInterface != "undefined"){
+		skInterface.autoTestShowList( JSON.stringify(htmlList) );
+	}
 }
 
 c_window.setUserInfo = function(user_id, yn){

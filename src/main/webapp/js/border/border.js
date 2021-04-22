@@ -13,7 +13,8 @@ var borderTable = null;
  */
 var initDoucument = function(){
 	
-	ajaxTranCall("code/selectCodeList.do", {"code_group":"D001"}, callbackS, callbackE, false);
+	ajaxTranCall("code/selectCodeList.do", {"code_group":"D001"}, callbackS, callbackE);
+	ajaxTranCall("user/selectTeamList.do", {}, callbackS, callbackE, false);
 	
 	//button event
 	$('button').click(function(){
@@ -90,6 +91,25 @@ var initDoucument = function(){
 			
 			break;
 			
+		//'담당자 변경' button 
+		case "btnMgUpdate":
+			$('#modalUser').modal();
+			break;
+			
+		
+		//담당자변경 팝업 > '저장' button 	
+		case "btnModalSave":
+		
+			if($("#selectModalUser").val() == ""){
+				alert("선택된 담당자가 없습니다.");
+				$("#selectModalUser").focus();
+				return;
+			}
+			$("#manager_user").val($("#selectModalUser").val());
+			$("#manager_user_name").val($("#selectModalUser option:selected").text());
+			$('#modalUser').modal('hide');
+			
+			break;
 		}
 		
 	}); //button event
@@ -101,6 +121,10 @@ var initDoucument = function(){
 		//상세조회 선택
 		ajax_selectBorderDetail(data.id);
 	});
+	
+	
+
+	
 	
 	
 	//첨부파일 리스트 변경시 호출됩니다.
@@ -125,6 +149,14 @@ var initDoucument = function(){
 		});
 		
 	});
+	
+	//개발자변경 팝업 > 프로젝트팀 select 변경시 호출 됩니다.
+	$('#selectModalTeam').on('change', function(e){
+		var json = {
+			team_id : $("#selectModalTeam").val()		
+		};
+		ajaxTranCall("user/selectUserList.do", json, callbackS, callbackE);
+	});
 
 }
 
@@ -139,6 +171,28 @@ var callbackS = function(tran, data){
 	
 	switch(tran){
 	
+	//팀 정보 전체 조회
+	case "user/selectTeamList.do":
+	
+		var list = data["list"];
+		for(var i=0; i<list.length; i++){
+			appendSelectBox2( $("#selectModalTeam"), list[i].id, list[i].name); //개발자 변경시 사용되는 팝업에서 사용
+		}
+		break;
+		
+	//사용자 정보 전체 조회
+	case "user/selectUserList.do":
+		$("#selectModalUser").html("");
+		appendSelectBox2( $("#selectModalUser"), "", "선택"); //개발자 변경시 사용되는 팝업에서 사용
+		var list = data["list"]; 
+		for(var i=0; i<list.length; i++){
+			appendSelectBox2( $("#selectModalUser"), list[i].user_id, list[i].name + " (" +list[i].user_id+ ")");
+		}
+		
+		 $("#selectModalUser").val("");
+		
+		break;
+		
 	//코드 조회
 	case "code/selectCodeList.do":
 		
@@ -201,7 +255,14 @@ var callbackS = function(tran, data){
 	                action: function ( e, dt, node, config ) {
 						
 						//1. 초기화
-						modal.modalClear("borderUpdateTable");
+//						modal.modalClear("borderUpdateTable");
+		 				
+		 				
+						$("#title").val("");
+						$("#border_id").val("");
+						$("#manager_user").val("");
+						$("#msg").val("");
+						
 		 				
 						$("#fileMain").val("");
 						$("#existingMainImgs").html("");
@@ -211,7 +272,12 @@ var callbackS = function(tran, data){
 						$("#trExistingMainImgs").hide();
 						
 						$("#type_code").val("D001_01");
-						$('input:radio[name="radio_push"]').filter('[value="not"]').attr('checked', true);
+//						$('input:radio[name="radio_push"]').filter('[value="not"]').attr('checked', true);
+
+						//김태한(kpayins081)
+						$("#manager_user_name").val(getCookie("name") + "("+getCookie("user_id")+")");
+						$("#manager_user").val(getCookie("user_id"));
+						
 						
 						//2. 화면수정
 						$("#panal_detail").hide();
@@ -235,7 +301,8 @@ var callbackS = function(tran, data){
 								$("#existingMainImgs").html("");
 								$("#NewMainImgs").html("");
 								
-								$("#imgkey").val("-1");
+								
+								$("#imgkey").val(borderTable.row($(this)).data().imgkey);
 								$("#trExistingMainImgs").show();
 								
 								$('input:radio[name="radio_push"]').filter('[value="not"]').attr('checked', true);
@@ -297,6 +364,8 @@ var callbackS = function(tran, data){
 		var imgList = data["imgList"];
 		$("#btnAddFile").text("첨부파일 ("+ imgList.length +")");
 		setEdmsModalOnlyPopup(imgList);
+		
+		$("#imgkey").val(data.imgkey);
 		
 		$("#panal_detail").show();
 		$("#panal_list").hide();

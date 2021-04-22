@@ -142,10 +142,9 @@ var initDoucument = function(){
 		
 		case "btnExcute":
 		
-		
 			//test 이력 재 확인
 			if(typeof skInterface != "undefined"){
-				ajaxTranCall("auto/selectAutoDetail.do", {"id": $("#auto_id").val()}, callbackS, callbackE);
+				ajaxTranCall("push/selectAutoDetail.do", {"id": Number($("#auto_id").val())}, callbackS, callbackE);
 			}
 			else{
 				;
@@ -360,7 +359,7 @@ var callbackS = function(tran, data){
 		$("#panal_list").hide();
 		
 		//서브 테이블 값들 조회
-		ajaxTranCall("auto/selectAutoList.do", 		{ "defect_id" : data.defect_id }, callbackS, callbackE, false);
+		ajaxTranCall("push/selectAutoList.do", 		{ "defect_id" : data.defect_id }, callbackS, callbackE, false);
 		ajaxTranCall("defect/selectDefectHistory.do", {"defect_id": data.defect_id}, callbackS, callbackE, false);
 		
 		//초기화
@@ -464,9 +463,9 @@ var callbackS = function(tran, data){
 		break;	
 		
 	/*
-	 * auto/selectAutoList.do -> 테스트케이스에 연결된 UI 테스트 
+	 * push/selectAutoList.do -> 테스트케이스에 연결된 UI 테스트 
 	 */
-	 case "auto/selectAutoList.do":
+	 case "push/selectAutoList.do":
 	 	
 	 	var list = data["list"];
 	 	
@@ -569,12 +568,11 @@ var callbackS = function(tran, data){
 	/*
 	 * auto/selectAutoDetail.do -> UI 녹화 상세 이력 조회 
 	 */		
-	case "auto/selectAutoDetail.do":
+	case "push/selectAutoDetail.do":
 	
-	 	var list = data["list"];
 		c_window.autoTestShow(
 			$("#auto_title").text()					//결함제목
-			, list[0].html						//html json list
+			, data.html						//html json list
 			, $("#selectViewType").val()  		//녹화재생 유형 (auto : 자동수행, manual : 수동수행)
 			, $("#auto_reg_user").text()	
 			, $("#auto_reg_time").text()

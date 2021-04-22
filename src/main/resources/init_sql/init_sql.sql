@@ -619,3 +619,96 @@ ALTER TABLE sftm.itm_border OWNER TO sftm_admin;
 ALTER TABLE sftm.itm_border_id_seq OWNER TO sftm_admin;
 ALTER SEQUENCE sftm.itm_border_id_seq OWNED BY sftm.itm_border.id;
 ALTER TABLE sftm.itm_border ADD PRIMARY KEY(id);
+
+
+
+
+---------------------------------------------------------------------
+-- 16. 사이트맵 테이블  (sftm.itm_sitemap)  -------------------------------- 
+---------------------------------------------------------------------     
+CREATE SEQUENCE sftm.itm_sitemap_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE TABLE sftm.itm_sitemap
+(
+	  id bigint DEFAULT nextval('sftm.itm_sitemap_id_seq'::regclass) NOT NULL,
+	  title character varying(100) NOT NULL, 
+	  sub_title character varying(100) NOT NULL,
+	  url character varying(200) NOT NULL,
+	  login_info character varying(200) NOT NULL,
+	  priority bigint,	 -- 우선순위 
+	  use_yn character varying(1),
+	  reg_user character varying(64), 			-- 등록자
+	  reg_date timestamp with time zone, 		-- 등록일자
+      modify_user character varying(64),
+      modify_date timestamp without time zone
+)
+WITH (
+  OIDS=FALSE
+);    
+
+ALTER TABLE sftm.itm_sitemap OWNER TO sftm_admin;
+ALTER TABLE sftm.itm_sitemap_id_seq OWNER TO sftm_admin;
+ALTER SEQUENCE sftm.itm_sitemap_id_seq OWNED BY sftm.itm_sitemap.id;
+ALTER TABLE sftm.itm_sitemap ADD PRIMARY KEY(id);
+
+
+
+
+-------------------------------------------------------------- 
+-- 17. 자동화 테이블  (sftm.itm_autotest)------------------------------ 
+--------------------------------------------------------------   
+
+CREATE SEQUENCE sftm.itm_autotest_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+    
+    
+CREATE TABLE sftm.itm_autotest 
+(
+	  id bigint DEFAULT nextval('sftm.itm_autotest_id_seq'::regclass) NOT NULL,
+	  auto_id bigint not null, -- 제목 
+	  count bigint not null,
+	  excute_yn character varying(1), -- 수행여부
+	  excute_date timestamp with time zone , --수행일시
+  	  use_yn character varying(1) NOT NULL,
+	  reg_user character varying(64), 			-- 등록자
+	  reg_date timestamp with time zone 		-- 등록일자
+)
+WITH (
+  OIDS=FALSE
+);
+
+ALTER TABLE sftm.itm_autotest OWNER TO sftm_admin;
+ALTER TABLE sftm.itm_autotest_id_seq OWNER TO sftm_admin;
+ALTER SEQUENCE sftm.itm_autotest_id_seq OWNED BY sftm.itm_autotest.id;
+ALTER TABLE sftm.itm_autotest ADD PRIMARY KEY(id);    
+ 
+
+-------------------------------------------------------------- 
+-- 18. 자동화 테이블  (sftm.itm_autotest_list)------------------------------ 
+--------------------------------------------------------------   
+CREATE TABLE sftm.itm_autotest_detail 
+(
+	  autotest_id bigint  not null,
+	  seq bigint  not null, 
+	  html text NOT NULL,
+	  success_yn character varying(1), -- 수행여부
+	  result character varying(256)
+)
+WITH (
+  OIDS=FALSE
+);
+
+
+ALTER TABLE sftm.itm_autotest_detail OWNER TO sftm_admin;
+ALTER TABLE sftm.itm_autotest_detail ADD PRIMARY KEY(autotest_id, seq);    
+ 

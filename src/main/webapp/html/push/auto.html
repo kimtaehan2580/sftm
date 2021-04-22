@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div id="panal_list">
+		<div class="row">
+			<div class="col-md-12">
+			 	<h6 id="grid-options" class="title">SFTM > 테스트 이력</h6>
+				<table id="autoTable" class="table table-bordered" style="width:100%">
+			        <thead>
+			            <tr>
+			                <th style="width:25%">제목</th>
+			                <th style="width:20%">케이스명</th>
+			                <th style="width:25%">결함명</th>
+			                <th style="width:15%">등록자</th>
+			                <th style="width:15%">등록일시</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+			        </tbody>
+			    </table>
+		   </div>
+	   </div>
+	</div> 
+	<div id="panal_detail" style="display:none;">
+		
+	    <div class="row">
+	    	<div class="col-md-12">
+	    	<div>
+		    	<button type="button" class="btn btn-dark" style="width: 100px; float:left;  " id="btnPrePage">목록으로</button>
+		    	<button type="button" class="btn btn-outline-secondary" style="width: 100px; float:right; " id="btnAddFile">상세보기</button>
+		    </div>
+		    </div>
+	    </div>
+	    <br/>
+		<div class="row">
+			<div class="col-md-5">
+				<h6 class="title" id="h6_title"></h6> 
+			    <table id="autoDetailTable" class="table table-bordered">
+					<thead>
+			            <tr>
+			                <th style="width:15%">순번</th>
+			                <th style="width:45%">이벤트</th>
+			                <th style="width:40%">이벤트</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+			        </tbody>
+				</table>
+			</div>
+			<div class="col-md-7">
+				<h6 class="title" id="">자동 테스트 수행이력</h6> 
+				<table id="autoTestHistoryTable" class="table table-bordered">
+					<thead>
+			            <tr>
+			                <th style="width:20%">등록자</th>
+			                <th style="width:20%">등록일시</th>
+			                <th style="width:20%">건수</th>
+			                <th style="width:20%">수행여부</th>
+			                <th style="width:20%">수행일시</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+			        </tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<input id="id" style="display:none;" /> 
+	
+</body>
+</html>

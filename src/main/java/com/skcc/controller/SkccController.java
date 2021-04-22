@@ -292,6 +292,9 @@ public class SkccController {
 		String originalFilename = uploadFile.getOriginalFilename();
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		
+
+		log.info("KEY : " + request.getParameter("key"));
+		
 		
 		ArrayList< Map<String, String> > arrayList = null;
 		if(originalFilename.indexOf(".xlsx")!= -1) {
@@ -310,40 +313,43 @@ public class SkccController {
 		
 		log.debug("array 길이 : " + arrayList.size());
 		//arrayList
-		
-		
-		Class<?>[] paramTypes = { ArrayList.class };
 
 		String reqUrl = request.getRequestURI();
-
 		String funcName = reqUrl.substring(reqUrl.lastIndexOf("/") + 1).replace(".excel", "");
 		String subDir = reqUrl.split("/")[2];
 
 		log.debug("funcName :" + funcName);
-			try {
+		try {
+			
+			String key = request.getParameter("key");
+			if(key == null || "".equals(key)) {
+				Class<?>[] paramTypes = { ArrayList.class };
 				Method getNameMethod = excelService.getClass().getMethod(funcName, paramTypes);
 				response = (HashMap<String, Object>) getNameMethod.invoke(excelService, arrayList);
-			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
-			catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			else {
+				Class<?>[] paramTypes = { ArrayList.class, String.class };
+				Method getNameMethod = excelService.getClass().getMethod(funcName, paramTypes);
+				response = (HashMap<String, Object>) getNameMethod.invoke(excelService, arrayList, key);
 			}
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 			
 		return response;
-		//HashMap<String, Object> response = null;
-        //return (HashMap<String, Object>) userService.saveUserExcel(uploadFile);
     }
 	
 	

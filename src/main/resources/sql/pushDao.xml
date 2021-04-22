@@ -72,7 +72,7 @@
 	</select>
 	
 	
-	<!-- 팀 수정 -->
+	
     <update id="updatePushListById" parameterType="java.util.HashMap">
     UPDATE
         sftm.itm_push
@@ -107,16 +107,24 @@
 			now()
 		)
   	</insert>
-  	<select id="selectAutoList" parameterType="java.util.Map" resultMap="PackageHeaderMap">
+
+	
+	
+  	<!-- selectAutoList : 테스트자동화 화면에서 list 조회시 -->
+	<select id="selectAutoList" parameterType="java.util.Map" resultMap="PackageHeaderMap">
 	    select auto.id, 
 	    	auto.case_id, 
-	    	auto.defect_id, 
+	    	coalesce(tc.case_name, '') as case_name,
+			auto.defect_id, 
+			coalesce(df.title, '') as defect_name,
 	    	auto.reg_user, 
 	    	coalesce(auto.title, '무제') as title,
 			us.name,
 	    	to_char(auto.reg_date, 'YYYY-MM-DD HH24:MI') reg_date
 	    from sftm.itm_auto as auto
 			left outer join sftm.itm_user us on auto.reg_user = us.user_id
+			left outer join sftm.itm_test_case tc on auto.case_id = tc.case_id
+			left outer join sftm.itm_defect df on auto.defect_id = df.defect_id
 	    where 1=1
 	    and auto.use_yn != 'n'  
 	    <if test="case_id != null and case_id != ''"> 
@@ -128,21 +136,83 @@
 	    order by auto.reg_date desc
 	</select>
 	
-	<select id="selectAutoDetail" parameterType="java.util.Map" resultMap="PackageHeaderMap">
+	<select id="selectAutoDetail" parameterType="java.lang.Integer" resultMap="PackageHeaderMap">
 	     
 		 select  at.id
+		 		,coalesce(at.title, '무제') as title
 		 		,at.defect_id
+		 		,coalesce(df.title, '') as defect_name
 		 		,at.case_id
+	    		,coalesce(tc.case_name, '') as case_name
 				,at.html
 				,us.name 
 				,us.user_id 
-				, TO_CHAR(at.reg_date, 'YYYY-MM-DD HH24:MI')  reg_date_str
+				, to_char(at.reg_date, 'YYYY-MM-DD HH24:MI')  reg_date
 		 from sftm.itm_auto at
-		 	LEFT outer join sftm.itm_user us on at.reg_user = us.user_id
+		 	left outer join sftm.itm_user us on at.reg_user = us.user_id
+			left outer join sftm.itm_test_case tc on at.case_id = tc.case_id
+			left outer join sftm.itm_defect df on at.defect_id = df.defect_id
 		 
 	    where id = #{id}::bigint
 	</select>
   	
+  	<select id="selectAutoTestList" parameterType="java.lang.Integer" resultMap="PackageHeaderMap">
+		 select at.auto_id
+		 		,at.id
+		 		,at.count
+		 		,at.excute_yn 
+				,coalesce(to_char(at.excute_date, 'YYYY-MM-DD HH24:MI'), '')  excute_date
+				,us.name 
+				,us.user_id 
+				, to_char(at.reg_date, 'YYYY-MM-DD HH24:MI')  reg_date
+		 from sftm.itm_autotest at
+		 	left outer join sftm.itm_user us on at.reg_user = us.user_id 
+	    where at.auto_id = #{id}::bigint
+	</select>
+	
+	
+	
+	<select id="selectAutotestId" resultType="java.lang.Integer">
+		select
+		nextval('sftm.itm_autotest_id_seq'::regclass);
+	</select>
+	
+	
+	<insert id="insertAutotest" parameterType="map" useGeneratedKeys="true">
+		INSERT INTO sftm.itm_autotest
+		(	
+			id
+			, auto_id
+			, count
+			, excute_yn 
+			, use_yn
+			, reg_user
+			, reg_date
+		)
+		VALUES (
+			#{ id }::bigint, 
+			#{ auto_id }::bigint, 
+			#{ count }::bigint, 
+			'N', 
+			'Y',  
+			#{ cookieUserId },
+			now()
+		)
+  	</insert>
+  	
+  	<insert id="insertAutotestDetail" parameterType="map" useGeneratedKeys="true">
+		INSERT INTO sftm.itm_autotest_detail
+		(	
+			autotest_id
+			, seq
+			, html 
+		)
+		VALUES (
+			#{ autotest_id }::bigint, 
+			#{ seq }::bigint, 
+			#{ html }
+		)
+  	</insert> 
   	
   	<select id="selectDefectInfoForPush" parameterType="java.lang.Integer" resultMap="PackageHeaderMap">
   		select df.title      -- 결함 Title
@@ -165,6 +235,34 @@
 		and dv.div_id = sc.div_id
 		and dv.team_id = tm.id
   	</select>
+  	
+  	
+    <select id="selectAutotest_detail" parameterType="java.util.Map" resultMap="PackageHeaderMap">
+	   select * 
+		from sftm.itm_autotest_detail
+		where autotest_id = #{id}::bigint
+	</select>
+	
+	
+    <update id="updateAutotest" parameterType="java.util.HashMap">
+	    update
+	        sftm.itm_autotest
+	    set
+	        excute_yn = 'Y',
+	        excute_date =NOW() 
+	    where
+	       id = #{autotest_id}::bigint
+    </update> 
+    
+    <update id="updateAutotest_detail" parameterType="java.util.HashMap">
+	    update
+	        sftm.itm_autotest_detail
+	    set
+	        success_yn = #{success_yn},
+	        result = #{result} 
+	    where autotest_id = #{autotest_id}::bigint
+	    and seq = #{seq}::bigint
+    </update> 
     
 	
 </mapper>
