@@ -495,10 +495,17 @@
 	<update id="updateTestCaseDetail" parameterType="map" useGeneratedKeys="true">
 		update sftm.itm_test_case
 		set imgkey = #{imgkey}::bigint
+			<if test="state != null and state != ''">
 		    ,state = #{state} 
-		    ,modify_user = #{cookieUserId}
+		    </if>
+			<if test="cookieUserId != null and cookieUserId != ''">
+		   	 	,modify_user = #{cookieUserId}
+			</if>
 			,modify_date = now()
-		WHERE scenario_id 	= #{scenario_id}::bigint
+		WHERE 1=1 
+		<if test="scenario_id != null and scenario_id != ''">
+			and scenario_id 	= #{scenario_id}::bigint
+		</if>
 		AND case_id 		= #{case_id}::bigint 
 	</update>
 	

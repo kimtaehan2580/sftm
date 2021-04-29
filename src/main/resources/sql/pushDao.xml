@@ -61,7 +61,7 @@
 			, ps.msg
 			, ps.event
 			, ps.reg_user
-			, us.name as req_user_name 
+			, coalesce(us.name,'') as req_user_name 
 			, ps.reg_date
 			, sftm.GET_WHAT_DAY(ps.reg_date) reg_date_str
 		from sftm.itm_push ps

@@ -28,7 +28,7 @@
             NOW(),
             'admin',
             NOW()
-        )
+        );
 	
 	 INSERT INTO sftm.itm_user
 		( user_id, password, "name", phone_num, birth, organization, "position", sex, team_id,  reg_user, reg_date, modify_user, modify_date, admin)

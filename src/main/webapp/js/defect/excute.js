@@ -146,18 +146,8 @@ var initDoucument = function(){
 			
 		case "btnAutoTest":
 			//test 자동화 버튼 클릭
-		
-			if(typeof skInterface != "undefined"){
-				skInterface.autoTestRecording(
-					getCookie("user_id")
-					,$("#case_id").val() 
-					,""
-					,$("#testcase_info").text()
-				);
-			}
-			else{
-				;
-			}
+			c_window.autoTestRecording(getCookie("user_id"), $("#case_id").val() , "", $("#testcase_info").text());
+			
 			break;
 		
 		case "btnExcute":

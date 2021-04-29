@@ -114,6 +114,7 @@
 			, st.login_info
 			, st.priority
 			, st.use_yn
+			, st.test_page_yn
 			, st.reg_user
 			, reg.name as reg_user_name
 			, to_char(st.reg_date , 'YYYY-MM-DD HH24:MI') reg_date
@@ -126,14 +127,17 @@
 		left outer join sftm.itm_user reg
 			on st.reg_user = reg.user_id
 	    <if test="use_yn != null and use_yn != ''"> 
-	    	and st.use_yn = 'y'
+	    	and st.use_yn = 'Y'
+	    </if>
+	    <if test="test_page_yn != null and test_page_yn != ''"> 
+	    	and st.test_page_yn = 'Y'
 	    </if>
 	    order by st.priority desc
 	</select>
     
     <insert id="insertSitemap" parameterType="map" useGeneratedKeys="true">
 		insert into sftm.itm_sitemap
-		(id, title, sub_title, url, login_info, priority, use_yn, reg_user, reg_date, modify_user, modify_date)
+		(id, title, sub_title, url, login_info, priority, use_yn, test_page_yn, reg_user, reg_date, modify_user, modify_date)
 		values (
 			nextval('sftm.itm_border_id_seq'::regclass)
 			, #{title}
@@ -142,6 +146,7 @@
 			, #{login_info}
 			, #{priority}::bigint
 			,  #{use_yn}
+			,  #{test_page_yn}
 			, #{cookieUserId} 
 			, now()
 			, #{cookieUserId} 
@@ -157,6 +162,7 @@
 				, login_info=#{login_info} 
 				, priority=#{priority}::bigint
 				, use_yn=#{use_yn}
+				, test_page_yn=#{test_page_yn}
 				, modify_user=  #{cookieUserId}
 				, modify_date=now()
 		where id = #{id}::bigint

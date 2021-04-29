@@ -190,9 +190,9 @@ public class PushService {
 			String reader_id 	= (String) defectMap.get("reader_id");
 			String dev_id 		= (String) defectMap.get("dev_id");
 			String test_id 		= (String) defectMap.get("test_id");
-			long team_id 		= Long.parseLong((String) defectMap.get("team_id"));
+//			long team_id 		= Long.parseLong((String) defectMap.get("team_id"));
 			
-			
+			long team_id 		= (Long) defectMap.get("team_id" );
 			
 			Map<String, String> pushMap = new HashMap<String, String>();
 			StringBuffer sbEvent = new StringBuffer();

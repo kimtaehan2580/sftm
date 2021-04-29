@@ -642,6 +642,7 @@ CREATE TABLE sftm.itm_sitemap
 	  login_info character varying(200) NOT NULL,
 	  priority bigint,	 -- 우선순위 
 	  use_yn character varying(1),
+	  test_page_yn character varying(1),
 	  reg_user character varying(64), 			-- 등록자
 	  reg_date timestamp with time zone, 		-- 등록일자
       modify_user character varying(64),

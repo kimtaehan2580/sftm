@@ -1,32 +1,16 @@
 package com.skcc.service;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.DVConstraint;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFDataValidation;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.ss.util.CellRangeAddressList;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.skcc.util.ExcelUtil;
 import com.skcc.util.Message;
 
 
@@ -179,7 +162,7 @@ public class CommonService {
 	/*
 	 * insertAutoRecording -> chrom extention에서 전송한 데이터
 	 */
-	public HashMap<String, Object> insertAutoRecording(Map<String, Object> reqMap) {
+	public HashMap<String, Object> regiAutoTest(Map<String, Object> reqMap) {
 		// TODO Auto-generated method stub
 		
 		
@@ -222,6 +205,97 @@ public class CommonService {
 		
 		return response;
 	}
+	/*
+	 * insertAutoRecording -> chrom extention에서 전송한 데이터
+	 */
+	public HashMap<String, Object> regiImageAuto(Map<String, Object> reqMap) {
+		
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		String user_id 		= (String) reqMap.get("user_id");
+		String defect_id 	= (String) reqMap.get("defect_id");
+		String case_id 		= (String) reqMap.get("case_id");
+		
+		String ext = "png";
+		String safeFile = user_id + "_" + System.currentTimeMillis() + "." + ext;
+		
+		
+		byte[] data = Base64.decodeBase64((String) reqMap.get("blobFile"));
+		File file = new File( file_Path + "//" + safeFile );
+		try {
+			FileUtils.writeByteArrayToFile( file, data );
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		file = new File( file_Path + "//" + safeFile );
+		
+		log.info("file.length call : " + file.length());
+		
+		Map<String, Object> imgQueryMap = new HashMap<String, Object>();
+		long imgkey = -1;
+		if(defect_id == null || "".equals(defect_id)) {
+			log.info("case_id call : " + case_id);
+			List<Object> list = sqlSession.selectList("ScenarioDAO.selectTestCaseList", reqMap);
+			if( list.size() > 0 ) {
+				HashMap<String, Object> tempMap = (HashMap<String, Object>) list.get(0);
+				imgkey = (Long) tempMap.get("imgkey");
+			}
+			
+			imgQueryMap.put("tbName", "itm_scenario");
+			
+		}
+		else {
+			log.info("defect_id call : " + defect_id);
+			
+			List<Object> list = sqlSession.selectList("DefectDAO.selectDefectDetailByDefectId", reqMap);
+			if( list.size() > 0 ) {
+				HashMap<String, Object> tempMap = (HashMap<String, Object>) list.get(0);
+				imgkey = (Long) tempMap.get("imgkey");
+			}
+
+			imgQueryMap.put("tbName", "itm_defect");
+		}
+
+		if(imgkey == -1) {
+			int tempInt = sqlSession.selectOne("ImgDAO.selectImgId"); 
+			imgkey = Long.parseLong( Integer.toString(tempInt) );
+		}
+		
+		log.info("imgkey call : " + imgkey);
+		
+//		Map<String, Object> imgQueryMap = new HashMap<String, Object>();
+		imgQueryMap.put("id", imgkey);
+		
+		SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat ( "yyyyMMdd", Locale.KOREA );
+		Date currentTime = new Date ();
+		String mTime = mSimpleDateFormat.format ( currentTime );
+		imgQueryMap.put("tbDate", mTime);
+		imgQueryMap.put("user_id", user_id);
+		
+		
+		imgQueryMap.put("saveFileName", safeFile);
+		imgQueryMap.put("originFileName", safeFile);
+		imgQueryMap.put("fileLength", file.length());
+		imgQueryMap.put("ext", ext);
 	
+		int result = sqlSession.insert("ImgDAO.insertImg", imgQueryMap);
+			
+		Map<String, Object> defectQueryMap = new HashMap<String, Object>();
+		if(defect_id == null || "".equals(defect_id)) {
+			defectQueryMap.put("case_id", case_id);
+			defectQueryMap.put("cookieUserId", user_id);
+			defectQueryMap.put("imgkey", imgkey);
+			int result1 = sqlSession.update("ScenarioDAO.updateTestCaseDetail", defectQueryMap);
+		}
+		else {
+			defectQueryMap.put("defect_id", defect_id);
+			defectQueryMap.put("cookieUserId", user_id);
+			defectQueryMap.put("imgkey", imgkey);
+			int result1 = sqlSession.insert("DefectDAO.updateDefectState", reqMap);
+		}
+		
+//		int result = sqlSession.insert("PushDAO.insertAuto", reqMap);
+		return response;
+	}
 	
 }

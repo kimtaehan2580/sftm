@@ -167,14 +167,21 @@
 	
 	<update id="updateDefectState" parameterType="map" useGeneratedKeys="true">
 		update sftm.itm_defect
-		set dev_id = #{developer_id},
-			defect_code = #{defect_code},
-			defect_type = #{defect_type},
-			imgkey = #{ imgkey }::bigint,
-			modify_user = #{ cookieUserId },
-			modify_date = now()
+		set modify_date = now()
+			, modify_user = #{ cookieUserId }
+		    <if test="developer_id != null and developer_id != ''">
+				, dev_id = #{developer_id}
+			</if>
+			<if test="defect_code != null and defect_code != ''">
+				, defect_code = #{defect_code}
+			</if>
+			<if test="defect_type != null and defect_type != ''">
+				, defect_type = #{defect_type}
+			</if>
+			<if test="imgkey != null and imgkey != ''">
+				, imgkey = #{ imgkey }::bigint
+			</if>
 		where defect_id = #{defect_id}::bigint
-		
 	</update>
 
 	<!-- 사용자 조회 -->

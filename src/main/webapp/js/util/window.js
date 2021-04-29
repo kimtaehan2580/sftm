@@ -27,6 +27,59 @@ var WebForm_KeyUp = function (){
 	
 }
 
+/*
+ * c_window.autoTestRecording -> 테스트수행, 결함등록 화면에서 테스트 수행 버튼 클릭시 호출함
+ */
+c_window.autoTestRecording = function(user_id, case_id, defect_id, test_name){
+
+	console.log("user_id -> " + user_id);
+	console.log("case_id -> " + case_id);
+	console.log("defect_id -> " + defect_id);
+	console.log("test_name -> " + test_name);
+	
+	
+	$("#modalRecord_user_id").val(user_id);
+	$("#modalRecord_case_id").val(case_id);
+	$("#modalRecord_defect_id").val(defect_id);
+	$("#modalRecord_test_name").val(test_name);
+	
+	if(typeof skInterface == "undefined"){
+		alert("WEB에서는 수행 불가합니다.");
+		return;
+	}
+	
+	ajaxTranCall("border/selectSitemapList.do", {"test_page_yn":"Y"}, function(tran, data){
+
+		var list = data["list"];
+		$("#modalRecordSelect").html("");
+		
+		for(var i=0; i<list.length; i++){
+			appendSelectBox2( $("#modalRecordSelect"), list[i].url, list[i].title + " (" + list[i].sub_title + ")");
+		}
+		$('#modalRecord').modal();
+
+	}, callbackE);
+	
+//	
+	
+}
+
+/*
+ * c_window.autoTestGo -> 테스트 화면 선택 팝업에서 실행 버튼 이벤트입니다.
+ */
+c_window.autoTestGo = function(){
+
+	skInterface.autoTestRecording(
+	
+		$("#modalRecordSelect").val()
+		,$("#modalRecord_user_id").val()
+		,$("#modalRecord_case_id").val()
+		,$("#modalRecord_defect_id").val()
+		,$("#modalRecord_test_name").val()
+	);
+}
+
+
 c_window.callbackS = function(tran, data){
 	
 	switch(tran){
@@ -46,10 +99,6 @@ c_window.callbackS = function(tran, data){
 c_window.callbackE = function(tran, data){
 	
 };
-
-c_window.autoTestRecording = function(id){
-	skInterface.autoTestRecording(id);
-}
 
 //
 c_window.autoTestShow = function(title, html, type, user_info, time){

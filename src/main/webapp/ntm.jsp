@@ -105,6 +105,33 @@
 		</div>
 	</div> <!-- EDMS 모달 -->
 	
+	<!-- EDMS 모달 공통 손대면 안됩니다. -->
+	<div class="modal fade" id="modalRecord">
+		<div id="modelId" class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header bg-ntm">
+					<h6  class="modal-title color-white">테스트 화면 선택하기</h6>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<select class="form-control" id="modalRecordSelect" name="selectTeam" title="">
+						</select>
+						<input style="display:none;" id="modalRecord_user_id">
+						<input style="display:none;" id="modalRecord_case_id">
+						<input style="display:none;" id="modalRecord_defect_id">
+						<input style="display:none;" id="modalRecord_test_name">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button id="btnGoTest" type="button" class="btn btn-dark" onclick="c_window.autoTestGo();">실행</button>
+					<button type="button" class="btn btn-dark" data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div> <!-- EDMS 모달 -->
+	
 	
 </div>
 	

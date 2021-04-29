@@ -15,7 +15,7 @@ var initDoucument = function(){
 	
 //	use_yn
 	if(getCookie('role_code') == "ADMIN"){
-		ajaxTranCall("border/selectSitemapList.do", {"use_yn":"y"}, callbackS, callbackE);
+		ajaxTranCall("border/selectSitemapList.do", {"use_yn":"Y"}, callbackS, callbackE);
 	}
 	else{
 		ajaxTranCall("border/selectSitemapList.do", {}, callbackS, callbackE);
@@ -160,7 +160,7 @@ var callbackS = function(tran, data){
 		$('#modalSiteMap').modal('hide');
 		
 		if(getCookie('role_code') == "ADMIN"){
-			ajaxTranCall("border/selectSitemapList.do", {"use_yn":"y"}, callbackS, callbackE);
+			ajaxTranCall("border/selectSitemapList.do", {"use_yn":"Y"}, callbackS, callbackE);
 		}
 		else{
 			ajaxTranCall("border/selectSitemapList.do", {}, callbackS, callbackE);

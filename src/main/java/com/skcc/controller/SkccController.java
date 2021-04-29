@@ -291,7 +291,6 @@ public class SkccController {
 		log.debug("업로드 파일명 : " + uploadFile.getOriginalFilename());
 		String originalFilename = uploadFile.getOriginalFilename();
 		HashMap<String, Object> response = new HashMap<String, Object>();
-		
 
 		log.info("KEY : " + request.getParameter("key"));
 		
@@ -355,12 +354,20 @@ public class SkccController {
 	
 	@RequestMapping("/*.at")
 	@ResponseBody
-	public HashMap<String, Object> atRequest(HttpServletRequest req, @RequestBody Map<String, Object> reqMap) {
+	public HashMap<String, Object> atRequest(HttpServletRequest req, @RequestBody Map<String, Object> reqMap) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+			
+		HashMap<String, Object> response = null;
+		Class<?>[] paramTypes = { Map.class };
 
-		log.info((String) reqMap.get("htmlFileStr"));
-		log.info((String) reqMap.get("sftm_id"));
-//		
-//		HashMap<String, Object> response = new HashMap<String, Object>();
-		return commonService.insertAutoRecording(reqMap);
+		String reqUrl = req.getRequestURI();
+
+		String funcName = reqUrl.substring(reqUrl.lastIndexOf("/") + 1).replace(".at", "");
+		String subDir = reqUrl.split("/")[2];
+			
+		Method getNameMethod = commonService.getClass().getMethod(funcName, paramTypes);
+		response = (HashMap<String, Object>) getNameMethod.invoke(commonService, reqMap);
+		
+		return response;
+//		return commonService.insertAutoRecording(reqMap);
 	}
 }

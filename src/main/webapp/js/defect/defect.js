@@ -126,18 +126,8 @@ var initDoucument = function(){
 			
 		case "btnAutoTest":
 			//test 자동화 버튼 클릭
-		
-			if(typeof skInterface != "undefined"){
-				skInterface.autoTestRecording(
-					getCookie("user_id")
-					,""
-					,selectedData.defect_id+""
-					,$("#defect_info").text()
-				);
-			}
-			else{
-				;
-			}
+			c_window.autoTestRecording(getCookie("user_id"), $("#case_id").val(), selectedData.defect_id+"", $("#defect_info").text());
+		 
 			break;
 		
 		case "btnExcute":
@@ -187,8 +177,6 @@ var initDoucument = function(){
 			});
 		}, 100);
 	});
-	
-	
 	
 	
 	//첨부파일 리스트 변경시 호출됩니다.
@@ -444,6 +432,7 @@ var callbackS = function(tran, data){
 		$("#td_div_name").text(data.div_name_total);
 		$("#td_scenario").text(data.scenario_name+ "(" + data.scenario_code + ")");
 		$("#td_testcase").text(data.case_name);
+		$("#case_id").val(data.case_id);
 		
 		//상세보기 2
 		$("#td_defect_type").text(data.defect_type_name);

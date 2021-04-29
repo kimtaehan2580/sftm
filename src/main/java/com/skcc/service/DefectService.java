@@ -162,14 +162,6 @@ public class DefectService {
 	 */
 	public Map<String, Object> updateDefectState( Map<String, Object> reqMap ) {	
 		
-//		case_code: "android_002"
-//		cookieUserId: "T002"
-//		defect_code: "B001_02"
-//		description: "tset"
-//		id: 32
-//		imgkey: "42"
-//		scenario_code: "ANDROID"
-//		title: "test"
 		Map<String, Object> response = new HashMap<String, Object>();
 		String 	defect_code = (String) reqMap.get("defect_code");
 		String 	imgkey = (String) reqMap.get("imgkey");

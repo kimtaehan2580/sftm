@@ -363,7 +363,7 @@ var callbackS = function(tran, data){
 		
 		var imgList = data["imgList"];
 		$("#btnAddFile").text("첨부파일 ("+ imgList.length +")");
-		setEdmsModalOnlyPopup(imgList);
+		setEdmsModal( imgList, $("#d_existingMainImgs") );
 		
 		$("#imgkey").val(data.imgkey);
 		

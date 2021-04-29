@@ -55,7 +55,7 @@
 
 	<!-- properties -->
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations" value="classpath:/config_local.properties" />
+        <property name="locations" value="classpath:/config.properties" />
         <property name="fileEncoding" value="UTF-8" />
     </bean>
 
