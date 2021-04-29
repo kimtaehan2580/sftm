@@ -132,7 +132,7 @@
 		</div>
 	</div> <!-- EDMS 모달 -->
 	
-	
+	<div id='mask' style='position:absolute; z-index:9000; background-color:#000000; display:none; left:0; top:0;'></div>
 </div>
 	
 	
