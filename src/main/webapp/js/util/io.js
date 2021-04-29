@@ -196,16 +196,9 @@ function LoadingWithMask() {
      
     //화면에 출력할 마스크를 설정해줍니다.
     var mask       ="<div id='mask' style='position:absolute; z-index:9000; background-color:#000000; display:none; left:0; top:0;'></div>";
-    var loadingImg ='';
-      
-    loadingImg +="<div id='loadingImg'>";
-    loadingImg +=" <img src='LoadingImg.gif' style='position: relative; display: block; margin: 0px auto;'/>";
-    loadingImg +="</div>"; 
-  
     //화면에 레이어 추가
     $('body')
         .append(mask)
-        .append(loadingImg)
         
     //마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채웁니다.
     $('#mask').css({
