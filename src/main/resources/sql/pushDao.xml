@@ -39,6 +39,7 @@
 			, sftm.GET_CODENAME('P001', ps.push_code) as push_code_name
 			, ps.title
 			, ps.msg
+			, ps.event
 			, ps.reg_user
 			, us.name as req_user_name 
 			, ps.reg_date
