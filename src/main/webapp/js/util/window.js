@@ -18,6 +18,16 @@ var  updateAutotest_result = function (list){
 	ajaxTranCall("push/updateAutotest_result.do", jsonObj, c_window.callbackS, c_window.callbackE, false);
 };
 
+
+/*
+ * go_page -> C#에서 호출 (push 바로가기 있는 경우)
+ */
+//var _list = null;
+var go_page = function (event){
+	location.href="/ntm?" + event; //개인 미처리 내용 확인
+};
+
+
 //enterkey 입력시 호출됩니다.
 //각화면에 정의가 되어 있을떄 호출합니다.
 var WebForm_KeyUp = function (){
@@ -91,7 +101,7 @@ c_window.callbackS = function(tran, data){
 		
 		for(var i=list.length-1; i>=0; i--){
 			var title = "["+list[i].push_code_name+"] " + list[i].title;
-			skInterface.pushCall(title, list[i].msg, list[i].what_day);
+			skInterface.pushCall(title, list[i].msg, list[i].what_day, list[i].event);
 		}
 		break;
 	}
