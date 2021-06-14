@@ -49,6 +49,7 @@ public class SkccController {
 	/**
 	 * log4j 선언
 	 * 
+	 * 
 	 * @see none
 	 */
 	private Logger log = LoggerFactory.getLogger(SkccController.class);
@@ -137,7 +138,7 @@ public class SkccController {
 					authMap.put("userId", (String) response.get("user_id"));
 					authMap.put("userName", (String) response.get("name"));
 					
-					req.getSession(false).setAttribute("user", authMap);
+					req.getSession(true).setAttribute("user", authMap);
 				}
 			}
 
